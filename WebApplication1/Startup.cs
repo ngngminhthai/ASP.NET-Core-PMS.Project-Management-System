@@ -108,6 +108,7 @@ namespace WebApplication1
 
             services.AddTransient<InitDatabase>();
 
+
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();
 

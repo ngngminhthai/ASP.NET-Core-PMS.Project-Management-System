@@ -86,5 +86,17 @@ namespace PMS.DataEF.Repositories
         {
             _context.Set<T>().Update(entity);
         }
+        public void Update(T entity, params string[] propertiesToExclude)
+        {
+            _context.Set<T>().Attach(entity);
+            var entry = _context.Entry(entity);
+            entry.State = EntityState.Modified;
+            foreach (var property in propertiesToExclude)
+            {
+                entry.Property(property).IsModified = false;
+            }
+        }
+
+
     }
 }

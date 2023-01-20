@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using PMS.Application.Products;
 using PMS.Controllers;
+using PMS.Data.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +19,13 @@ namespace WebApplication1.Controllers
     {
         private readonly ManageAppDbContext _context;
         private readonly IHubContext<SignalSever> _signalrHub;
+        private readonly IProductRepository productRepository;
 
-        public ProductsController(ManageAppDbContext context, IHubContext<SignalSever> signalrHub)
+        public ProductsController(ManageAppDbContext context, IHubContext<SignalSever> signalrHub, IProductRepository productRepository)
         {
             _context = context;
             _signalrHub = signalrHub;
+            this.productRepository = productRepository;
         }
 
         // GET: Products
@@ -121,7 +124,8 @@ namespace WebApplication1.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                    //_context.Update(product);
+                    productRepository.Update(product, "DateCreated");
 
                     await _context.SaveChangesAsync();
                     await _signalrHub.Clients.All.SendAsync("LoadProducts");

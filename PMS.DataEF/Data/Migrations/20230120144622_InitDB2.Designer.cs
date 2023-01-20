@@ -10,8 +10,8 @@ using WebApplication1.Data;
 namespace PMS.DataEF.Data.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
-    [Migration("20230120132609_InitDB")]
-    partial class InitDB
+    [Migration("20230120144622_InitDB2")]
+    partial class InitDB2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -321,6 +321,15 @@ namespace PMS.DataEF.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

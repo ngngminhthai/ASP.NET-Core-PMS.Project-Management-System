@@ -1,6 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PMS.Infrastructure.Interfaces;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using WebApplication1.Data.Entities;
 using WebApplication1.Data.Entities.ConversationAggregate;
 using WebApplication1.Data.Entities.ProjectAggregate;
@@ -91,7 +97,42 @@ namespace WebApplication1.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Function> Functions { get; set; }
         public DbSet<TicketResponse> TicketResponses { get; set; }
+        public override int SaveChanges()
+        {
+            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added);
 
+            foreach (EntityEntry item in modified)
+            {
+                var changedOrAddedItem = item.Entity as IUpdateTimeStamp;
+                if (changedOrAddedItem != null)
+                {
+                    if (item.State == EntityState.Added)
+                    {
+                        changedOrAddedItem.DateCreated = DateTime.Now;
+                    }
+                    changedOrAddedItem.DateModified = DateTime.Now;
+                }
+            }
+            return base.SaveChanges();
+        }
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added);
+
+            foreach (EntityEntry item in modified)
+            {
+                var changedOrAddedItem = item.Entity as IUpdateTimeStamp;
+                if (changedOrAddedItem != null)
+                {
+                    if (item.State == EntityState.Added)
+                    {
+                        changedOrAddedItem.DateCreated = DateTime.Now;
+                    }
+                    changedOrAddedItem.DateModified = DateTime.Now;
+                }
+            }
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
 
     }
 }
