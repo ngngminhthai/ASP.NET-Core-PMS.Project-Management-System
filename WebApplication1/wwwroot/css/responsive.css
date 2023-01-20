@@ -1,0 +1,405 @@
+@media only screen and  (max-width: 1820px) {
+    .box.card-box {
+        flex-wrap: wrap;
+    }
+     .box.card-box .icon-box {
+        width: 47%;
+        margin: 15px 10px;
+        padding-bottom: 15px;
+    }
+    .project .box.card-box .icon-box {
+        width: 45%;
+    }
+    .box.card-box .icon-box:nth-child(1) {
+        margin-left: 10px;
+    }
+    .box.card-box .icon-box:nth-child(4) {
+        margin-right: 10px;
+    }
+    .list-action {
+        margin-top: 20px;
+    }
+    .action {
+        flex-wrap: wrap;
+    }
+    .action a {
+        margin-bottom: 10px;
+    }
+    .project .box-body {
+        flex-wrap: wrap;
+    }
+}
+
+@media only screen and (max-width: 1700px) {
+    .canvas-container {
+        margin: 30px auto;
+    }
+    .btn-now {
+        padding-top: 30px;
+        padding-bottom: 20px;
+    }
+    .action {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .action {
+        margin-left: 0;
+    }
+    .action a:nth-child(1) {
+        margin-left: 0;
+    }
+}
+
+@media (min-width:1200px) and (max-width: 1640px) {
+    .w-55 {
+        width: 100%;
+    }
+    .box-manage .box-body {
+        flex-wrap: wrap;
+    }
+    .project a.create {
+        margin: 10px;
+    }
+    .w-10 {
+        width: 20% !important;
+    }
+    .content-item {
+        flex-wrap: wrap;
+    }
+    .content-item .left {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .content-item .right {
+        width: 100%;
+    }
+
+}
+
+@media only screen and (max-width: 1200px) {
+    .main-header {
+        height: 90px;
+        padding-left: 30px;
+    }
+
+    .box.card-box {
+        flex-wrap: wrap;
+    }
+    .box.card-box .icon-box {
+        width: 49%;
+        margin: 15px 0 !important;
+        padding-bottom: 15px;
+    }
+    
+    .project .box.card-box .icon-box {
+        width: 48%;
+    }
+    
+    .box.card-box .icon-box:nth-child(1) {
+        margin-left: 10px;
+    }
+    .box.card-box .icon-box:nth-child(4) {
+        margin-right: 10px;
+    }
+
+    .search-form select {
+        margin: 10px 0;
+    }
+    .search-form input,
+    .search-form select {
+        margin-right: 0;
+        padding: 0 15px 0 14px;
+    }
+    .main-content {
+        padding: 30px;
+    }
+
+    .canvas-container {
+        margin-top: -45px;
+        margin-left: auto;
+    }
+    .w-55 {
+        width: 100%;
+    }
+    .box-manage .box-body {
+        flex-wrap: wrap;
+    }
+    .btn-now {
+        padding-top: 30px;
+        padding-bottom: 20px;
+    }
+
+    .project a.create {
+        margin: 0;
+    }
+    .main-title {
+        font-size: 20px;
+    }
+
+}
+@media only screen and (max-width: 991px) {
+    .box {
+        padding: 25px 15px;
+    }
+    .content-item {
+        flex-wrap: wrap;
+    }
+    .content-item .left {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .content-item .right {
+        width: 100%;
+    }
+    .search-form {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    .list-action a:first-child {
+        margin-left: 0;
+    }
+    .box.card-box .icon-box {
+        margin: 0 0 15px !important;
+        padding: 20px 15px;
+    }
+    .box.card-box .icon-box:nth-child(3), .box.card-box .icon-box:nth-child(4) {
+        margin-bottom: 0 !important;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .dashboard .box-header {
+        flex-wrap: wrap;
+    }
+    ul.card-list li.custom-label:first-child {
+        padding-left: 7px;
+    }
+    ul.card-list {
+        margin-top: 10px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .main-header {
+        padding: 20px 15px !important;
+    }
+
+    .box.card-box .icon-box {
+        width: 100%;
+    }
+    .canvas-container {
+        margin-top: 0;
+    }
+    .main-content.project .box-header {
+        flex-wrap: wrap;
+    }
+    .project .card-options .btn-list {
+        margin-top: 20px;
+    }
+    .w-55 {
+        width: 100%;
+    }
+    .btn-now {
+        padding-top: 30px;
+        padding-bottom: 20px;
+    }
+    .main-content {
+        padding: 15px;
+        margin-top: 77px;
+    }
+    .main-content.board .box-header {
+        flex-wrap: wrap;
+    }
+    .main-content.board .box-header .box-right {
+        margin-top: 10px;
+    }
+    .action {
+        flex-wrap: wrap;
+    }
+    .action a {
+        margin: 0 5px 10px;
+        margin-left: 0;
+        padding: 12px 12px;
+    }
+    section.login .box-header {
+        flex-wrap: wrap;
+    }
+    .action-reg {
+        width: 100%;
+        margin-top: 30px;
+    }
+    section.login .box {
+        padding: 25px;
+    }
+    .mb-wrap {
+        flex-wrap: wrap;
+    }
+    .main-title {
+        display: none;
+    }
+    .dropdown.d-inline-block.mt-12 {
+        margin-top: 0;
+    }
+    button.btn.header-item {
+        padding: 0 10px;
+    }
+    .box-header h3 {
+        margin-bottom: 20px;
+    }
+    ul.card-list li.custom-label:nth-child(1) {
+        padding: 0;
+    }
+    .content-item .left {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .content-item .right {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .content-item .right .content-box {
+        width: 100%;
+    }
+    .content-item .right .content-box:nth-child(1) {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .content-item .right .content-box:nth-child(2) {
+        margin-left: 0;
+    }
+   
+    .singup .box-header {
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .singup .action-reg {
+        margin-top: 20px;
+    }
+    .form-check {
+        margin-top: 30px;
+    }
+    .project .card-options .btn-list {
+        flex-wrap: wrap;
+    }
+    .btn-list.d-flex {
+        padding-right: 0;
+    }
+    .btn-list a {
+        margin-bottom: 10px;
+    }
+    ul.message {
+        margin-top: 20px;
+    }
+    .d-flex.bd-highlight {
+        width: 100%;
+    }
+    .dlab-chat-user .card-options {
+        text-align: right;
+    }
+    .ml-19 {
+        margin-left: 0;
+    }
+    .box-header .card-title {
+        margin-bottom: 20px !important;
+    }
+    .pl-13 {
+        padding-left: 0;
+        padding-top: 10px;
+    }
+    .board .box-header,
+    .project .box-header {
+        flex-wrap: wrap;
+    }
+    .project .box-header .box-title {
+        margin-bottom: 20px;
+    }
+    .box-right a.btn {
+        padding: 10px 20px;
+    }
+    .project .box-body {
+        flex-wrap: wrap;
+    }
+    .form-chat form {
+        height: 200px;
+    }
+    .form-chat form .message-form-chat span.message-text {
+        width: 100%;
+    }
+    .form-chat form .message-form-chat span.camera {
+        margin-left: 20px;
+    }
+    .comment.d-flex {
+        flex-wrap: wrap;
+    }
+    .project .left {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .project .left .comment-body {
+        margin-top: 15px;
+    }
+    .project .right {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .comment.rep.d-flex {
+        padding-left: 0;
+        flex-wrap: wrap;
+    }
+    .project .comment.rep .left {
+        width: 100%;
+    }
+    .gr-btn a {
+        margin-bottom: 10px;
+    }
+    .custom-controls-stacked {
+        padding: 0;
+    }
+    .list-action a {
+        margin-left: 15px;
+    }
+    .client .panel-tabs {
+        justify-content: flex-start !important;
+    }
+    .client .panel-tabs li {
+        width: 33, 33%;
+    }
+    .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .fc .fc-toolbar-title {
+        padding: 20px 0;
+    }
+
+    .message-box .message-in, .message-box .message-out {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .message-in .message-body {
+        padding-right: 0;
+        margin-top: 20px;
+    }
+    .box-message .box-content ul li {
+        margin-right: 10px;
+    }
+    .message-box .message-out {
+        margin-right: 0;
+    }
+    .message-out .message-body {
+        padding-left: 0;
+        margin-top: 20px;
+    }
+
+    .box.card-box .icon-box:nth-child(3) {
+        margin-bottom: 15px !important;
+    }
+    .project .box.card-box .icon-box {
+        width: 100%;
+    }
+    .box-body.pb-0.pt-39 {
+        padding-top: 0 !important;
+    }
+    .sidebar-menu.tf {
+        padding: 43px 30px 63px;
+    }
+}
