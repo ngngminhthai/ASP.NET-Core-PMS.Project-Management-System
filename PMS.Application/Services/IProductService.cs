@@ -1,7 +1,11 @@
-﻿namespace PMS.Application.Services
+﻿using System.Collections.Generic;
+using WebApplication1.Models;
+
+namespace PMS.Application.Services
 {
-    public class IProductService
+    public interface IProductService
     {
+        List<ProductViewModel> GetAll();
 
     }
 }

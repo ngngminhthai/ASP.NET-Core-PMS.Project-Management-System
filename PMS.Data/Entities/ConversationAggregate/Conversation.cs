@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using PMS.Infrastructure.SharedKernel;
+using System.Collections.Generic;
 
 namespace WebApplication1.Data.Entities.ConversationAggregate
 {
-    public class Conversation
+    public class Conversation : DomainEntity<int>
     {
-        public int Id { get; set; }
         public string AdminId { get; set; }
         public ManageUser Admin { get; set; }
         public ICollection<ConversationUser> ConversationUser { get; set; }

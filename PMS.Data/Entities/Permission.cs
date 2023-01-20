@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using TeduCoreApp.Data.Entities;
-using TeduCoreApp.Infrastructure.SharedKernel;
+﻿using PMS.Infrastructure.SharedKernel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Data.Entities.UserAggregate
 {

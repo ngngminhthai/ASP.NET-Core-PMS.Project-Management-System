@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace TeduCoreApp.Data.Entities
+namespace WebApplication1.Data.Entities
 {
     public class AppRole : IdentityRole
     {

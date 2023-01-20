@@ -1,4 +1,4 @@
-﻿using TeduCoreApp.Infrastructure.SharedKernel;
+﻿using PMS.Infrastructure.SharedKernel;
 
 namespace WebApplication1.Data.Entities.UserAggregate
 {

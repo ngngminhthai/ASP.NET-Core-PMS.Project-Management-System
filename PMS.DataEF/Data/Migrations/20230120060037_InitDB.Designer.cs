@@ -10,7 +10,7 @@ using WebApplication1.Data;
 namespace PMS.DataEF.Data.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
-    [Migration("20230120014304_InitDB")]
+    [Migration("20230120060037_InitDB")]
     partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -216,6 +216,33 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("Message");
                 });
 
+            modelBuilder.Entity("WebApplication1.Data.Entities.Function", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ParentId")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Functions");
+                });
+
             modelBuilder.Entity("WebApplication1.Data.Entities.ManageUser", b =>
                 {
                     b.Property<string>("Id")
@@ -400,33 +427,6 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("TicketResponses");
                 });
 
-            modelBuilder.Entity("WebApplication1.Data.Entities.UserAggregate.Function", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("ParentId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("URL")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Functions");
-                });
-
             modelBuilder.Entity("WebApplication1.Data.Entities.UserAggregate.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -493,7 +493,7 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("UserCalendars");
                 });
 
-            modelBuilder.Entity("TeduCoreApp.Data.Entities.AppRole", b =>
+            modelBuilder.Entity("WebApplication1.Data.Entities.AppRole", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
 
@@ -646,11 +646,11 @@ namespace PMS.DataEF.Data.Migrations
 
             modelBuilder.Entity("WebApplication1.Data.Entities.UserAggregate.Permission", b =>
                 {
-                    b.HasOne("WebApplication1.Data.Entities.UserAggregate.Function", "Function")
+                    b.HasOne("WebApplication1.Data.Entities.Function", "Function")
                         .WithMany()
                         .HasForeignKey("FunctionId");
 
-                    b.HasOne("TeduCoreApp.Data.Entities.AppRole", "AppRole")
+                    b.HasOne("WebApplication1.Data.Entities.AppRole", "AppRole")
                         .WithMany()
                         .HasForeignKey("RoleId");
 

@@ -1,6 +1,9 @@
-﻿namespace PMS.Data.IRepositories
+﻿using PMS.Infrastructure.SharedKernel;
+using WebApplication1.Data.Entities;
+
+namespace PMS.Data.IRepositories
 {
-    public class IProductRepository
+    public interface IProductRepository : IRepository<Product, int>
     {
     }
 }

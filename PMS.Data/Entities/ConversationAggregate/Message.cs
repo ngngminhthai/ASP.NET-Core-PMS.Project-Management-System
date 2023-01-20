@@ -1,8 +1,9 @@
-﻿namespace WebApplication1.Data.Entities.ConversationAggregate
+﻿using PMS.Infrastructure.SharedKernel;
+
+namespace WebApplication1.Data.Entities.ConversationAggregate
 {
-    public class Message
+    public class Message : DomainEntity<int>
     {
-        public int Id { get; set; }
         public string Text { get; set; }
         /*        public int ConversationId { get; set; }
         */

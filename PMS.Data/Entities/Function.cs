@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PMS.Infrastructure.SharedKernel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TeduCoreApp.Infrastructure.SharedKernel;
 
-namespace WebApplication1.Data.Entities.UserAggregate
+namespace WebApplication1.Data.Entities
 {
     [Table("Functions")]
     public class Function : DomainEntity<string>

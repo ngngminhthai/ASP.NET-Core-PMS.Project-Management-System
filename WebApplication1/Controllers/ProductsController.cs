@@ -1,8 +1,9 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using PMS.Application.Products;
+using PMS.Controllers;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
@@ -13,7 +14,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : BaseController
     {
         private readonly ManageAppDbContext _context;
         private readonly IHubContext<SignalSever> _signalrHub;
@@ -29,22 +30,15 @@ namespace WebApplication1.Controllers
         {
             return View(await _context.Products.ToListAsync());
         }
-        public ProductViewModel Details2(int? id)
-        {
-            return Mapper.Map<Product, ProductViewModel>(_context.Products.Find(id));
-        }
 
+        /// <summary>
+        /// This method used to test result with CRQR Mediator
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetProducts2()
+        public async Task<ActionResult<List<ProductViewModel>>> GetProducts2()
         {
-            return Ok(await _context.Products.ProjectTo<ProductViewModel>().ToListAsync());
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetProducts3()
-        {
-            IQueryable<ProductViewModel> productsvm = _context.Products.ProjectTo<ProductViewModel>();
-            return Ok(productsvm.ProjectTo<Product>());
-
+            return await Mediator.Send(new List.Query());
         }
 
         [HttpGet]

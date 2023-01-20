@@ -1,14 +1,29 @@
 ﻿using MediatR;
+using PMS.Application.Services;
 using System.Collections.Generic;
-using System.Diagnostics;
-
+using System.Threading;
+using System.Threading.Tasks;
+using WebApplication1.Models;
 
 namespace PMS.Application.Products
 {
     public class List
     {
-        public class Query : IRequest<List<Activity>> { }
+        public class Query : IRequest<List<ProductViewModel>> { }
 
+        public class Handler : IRequestHandler<Query, List<ProductViewModel>>
+        {
+            private readonly IProductService productService;
 
+            public Handler(IProductService productService)
+            {
+                this.productService = productService;
+            }
+
+            public Task<List<ProductViewModel>> Handle(Query request, CancellationToken cancellationToken)
+            {
+                return Task.FromResult(productService.GetAll());
+            }
+        }
     }
 }

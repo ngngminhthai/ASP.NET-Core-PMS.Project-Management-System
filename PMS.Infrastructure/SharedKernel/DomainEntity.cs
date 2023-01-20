@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TeduCoreApp.Infrastructure.SharedKernel
+namespace PMS.Infrastructure.SharedKernel
 {
     public abstract class DomainEntity<T>
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -8,12 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PMS.Application.Implementations;
+using PMS.Application.Products;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
 using PMS.DataEF.Repositories;
 using System;
 using System.Collections.Generic;
-using TeduCoreApp.Data.Entities;
 using WebApplication1.AutoMapper;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities;
@@ -102,7 +103,7 @@ namespace WebApplication1
 
 
             services.AddControllersWithViews();
-            //services.AddMediatR(typeof(QuerySplittingBehavior.L));
+            services.AddMediatR(typeof(List.Handler));
             services.AddSignalR();
 
 
