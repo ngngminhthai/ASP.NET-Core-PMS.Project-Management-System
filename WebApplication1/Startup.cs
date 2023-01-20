@@ -106,6 +106,7 @@ namespace WebApplication1
             services.AddMediatR(typeof(List.Handler));
             services.AddSignalR();
 
+            services.AddTransient<InitDatabase>();
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();

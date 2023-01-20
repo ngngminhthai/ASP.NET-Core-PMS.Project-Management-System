@@ -14,4 +14,10 @@
     <ProjectReference Include="..\PMS.Data\PMS.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CQRS\Messages\" />
+    <Folder Include="CQRS\ProjectTasks\" />
+    <Folder Include="CQRS\Projects\" />
+  </ItemGroup>
+
 </Project>
