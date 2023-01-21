@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApplication1.RequestHelpers
 {
@@ -22,11 +20,11 @@ namespace WebApplication1.RequestHelpers
 
         public MetaData MetaData { get; set; }
 
-        public static async Task<PagedList<T>> ToPagedList(IQueryable<T> query,
+        public static PagedList<T> ToPagedList(IQueryable<T> query,
             int pageNumber, int pageSize)
         {
-            var count = await query.CountAsync();
-            var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            var count = query.Count();
+            var items = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }

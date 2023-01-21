@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using PMS.Application.CQRS.Products;
@@ -42,7 +43,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProductViewModel>>> GetProducts2()
         {
-            return await Mediator.Send(new List.Query());
+            return await Mediator.Send(new ListProduct.Query());
         }
 
         [HttpGet]
@@ -58,15 +59,13 @@ namespace WebApplication1.Controllers
             {
                 return NotFound();
             }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await Mediator.Send(new GetProductDetail.Query { ProductId = id });
             if (product == null)
             {
                 return NotFound();
             }
-
-            return View(product);
+            var passedProduct = Mapper.Map<Product>(product);
+            return View(passedProduct);
         }
 
         // GET: Products/Create
@@ -84,8 +83,7 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                await Mediator.Send(new CreateProduct.Command { Product = product });
                 await _signalrHub.Clients.All.SendAsync("LoadProducts");
                 return RedirectToAction(nameof(Index));
             }
@@ -100,7 +98,7 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await Mediator.Send(new GetProductDetail.Query { ProductId = id });
             await _signalrHub.Clients.All.SendAsync("LoadProducts");
             if (product == null)
             {
@@ -126,9 +124,7 @@ namespace WebApplication1.Controllers
                 try
                 {
                     //_context.Update(product);
-                    await Mediator.Send(new Update.Command { Product = product });
-
-                    await _context.SaveChangesAsync();
+                    await Mediator.Send(new UpdateProduct.Command { Product = product });
                     await _signalrHub.Clients.All.SendAsync("LoadProducts");
 
                 }
@@ -156,8 +152,7 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await Mediator.Send(new GetProductDetail.Query { ProductId = id });
             if (product == null)
             {
                 return NotFound();
@@ -171,9 +166,7 @@ namespace WebApplication1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            await Mediator.Send(new DeleteProduct.Command { ProductId = id });
             return RedirectToAction(nameof(Index));
         }
 

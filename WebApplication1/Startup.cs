@@ -37,7 +37,7 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            #region Database Services
             services.AddDbContext<ManageAppDbContext>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection"),
@@ -45,13 +45,13 @@ namespace WebApplication1
 
 
 
-            services.AddIdentity<ManageUser, AppRole>() // để cho nó dùng được UserManger và roleManager
+            services.AddIdentity<ManageUser, AppRole>()
                 .AddEntityFrameworkStores<ManageAppDbContext>()
                 .AddDefaultTokenProviders();
-            // add IdentiyServer
+            #endregion
 
 
-
+            #region Identity Server 4
             var builder = services.AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -100,10 +100,12 @@ namespace WebApplication1
                     }
                 });
             });
+            #endregion
 
 
+            #region Services
             services.AddControllersWithViews();
-            services.AddMediatR(typeof(List.Handler));
+            services.AddMediatR(typeof(ListProduct.Handler));
             services.AddSignalR();
 
             services.AddTransient<InitDatabase>();
@@ -111,11 +113,11 @@ namespace WebApplication1
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();
-
+            #endregion
 
             AutoMapperInitializer.Initialize();
 
-
+            #region Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApp Space Api", Version = "v1" });
@@ -145,9 +147,7 @@ namespace WebApplication1
 
 
             });
-
-
-
+            #endregion
 
 
         }

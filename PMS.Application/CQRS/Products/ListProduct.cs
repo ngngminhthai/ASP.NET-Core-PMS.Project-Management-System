@@ -7,7 +7,7 @@ using WebApplication1.Models;
 
 namespace PMS.Application.Products
 {
-    public class List
+    public class ListProduct
     {
         public class Query : IRequest<List<ProductViewModel>> { }
 
@@ -20,9 +20,9 @@ namespace PMS.Application.Products
                 this.productService = productService;
             }
 
-            public async Task<List<ProductViewModel>> Handle(Query request, CancellationToken cancellationToken)
+            public Task<List<ProductViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await productService.GetAllWithPagination("2", 2, 3);
+                return Task.FromResult(productService.GetAllWithPagination("2", 1, 3));
             }
         }
     }

@@ -2,9 +2,9 @@
 using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
+using PMS.Infrastructure.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApplication1.Data.Entities;
 using WebApplication1.Models;
 using WebApplication1.RequestHelpers;
@@ -21,6 +21,11 @@ namespace PMS.Application.Implementations
             this.productRepository = productRepository;
         }
 
+        public void Add(Product product)
+        {
+            productRepository.Add(product);
+        }
+
         public void Delete(int id)
         {
             productRepository.Remove(id);
@@ -31,9 +36,10 @@ namespace PMS.Application.Implementations
             return productRepository.FindAll().ProjectTo<ProductViewModel>().ToList();
         }
 
-        public async Task<List<ProductViewModel>> GetAllWithPagination(string keyword, int page, int pageSize)
+        public List<ProductViewModel> GetAllWithPagination(string keyword, int page, int pageSize)
         {
-            return await PagedList<ProductViewModel>.ToPagedList(productRepository.FindAll().ProjectTo<ProductViewModel>(), page, pageSize);
+            var query = productRepository.FindAll().Search(keyword, "Name");
+            return PagedList<ProductViewModel>.ToPagedList(query.ProjectTo<ProductViewModel>(), page, pageSize);
         }
 
         public ProductViewModel GetById(int id)
