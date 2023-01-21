@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using PMS.Application.CQRS.Products;
 using PMS.Application.Products;
 using PMS.Controllers;
 using PMS.Data.IRepositories;
@@ -125,7 +126,7 @@ namespace WebApplication1.Controllers
                 try
                 {
                     //_context.Update(product);
-                    productRepository.Update(product, "DateCreated");
+                    await Mediator.Send(new Update.Command { Product = product });
 
                     await _context.SaveChangesAsync();
                     await _signalrHub.Clients.All.SendAsync("LoadProducts");

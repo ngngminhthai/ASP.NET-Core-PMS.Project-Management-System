@@ -66,6 +66,13 @@ namespace PMS.DataEF.Repositories
                 user = await _userManager.FindByNameAsync("thuantd");
                 await _userManager.AddToRoleAsync(user, "User");
             }
+            if (_context.Products.Count() == 0)
+            {
+                for (int i = 1; i <= 20; i++)
+                {
+                    _context.Products.Add(new Product { Name = $"Product {i}", Price = i * 10 });
+                }
+            }
             await _context.SaveChangesAsync();
         }
     }

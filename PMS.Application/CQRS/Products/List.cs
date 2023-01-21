@@ -20,9 +20,9 @@ namespace PMS.Application.Products
                 this.productService = productService;
             }
 
-            public Task<List<ProductViewModel>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<ProductViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Task.FromResult(productService.GetAll());
+                return await productService.GetAllWithPagination("2", 2, 3);
             }
         }
     }

@@ -1,9 +1,13 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using WebApplication1.Data.Entities;
 using WebApplication1.Models;
+using WebApplication1.RequestHelpers;
 
 namespace PMS.Application.Implementations
 {
@@ -17,10 +21,30 @@ namespace PMS.Application.Implementations
             this.productRepository = productRepository;
         }
 
+        public void Delete(int id)
+        {
+            productRepository.Remove(id);
+        }
+
         public List<ProductViewModel> GetAll()
         {
             return productRepository.FindAll().ProjectTo<ProductViewModel>().ToList();
         }
 
+        public async Task<List<ProductViewModel>> GetAllWithPagination(string keyword, int page, int pageSize)
+        {
+            return await PagedList<ProductViewModel>.ToPagedList(productRepository.FindAll().ProjectTo<ProductViewModel>(), page, pageSize);
+        }
+
+        public ProductViewModel GetById(int id)
+        {
+            return Mapper.Map<ProductViewModel>(productRepository.FindById(id));
+        }
+
+        public void Update(Product product)
+        {
+            //Loại bỏ thuộc tính DateCreated khỏi hành động update
+            productRepository.Update(product, "DateCreated");
+        }
     }
 }
