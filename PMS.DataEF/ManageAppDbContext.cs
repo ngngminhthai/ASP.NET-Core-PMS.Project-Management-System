@@ -54,11 +54,6 @@ namespace WebApplication1.Data
                 .WithMany(c => c.ConversationUser)
                 .HasForeignKey(e => e.ConversationId)
                 .OnDelete(DeleteBehavior.Cascade);
-            /*
-                        builder.Entity<Message>()
-                            .HasOne(m => m.Conversation)
-                            .WithMany()
-                            .HasForeignKey(m => m.ConversationId);*/
 
             builder.Entity<Message>()
                 .HasOne(m => m.User)
@@ -97,25 +92,19 @@ namespace WebApplication1.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Function> Functions { get; set; }
         public DbSet<TicketResponse> TicketResponses { get; set; }
+
         public override int SaveChanges()
         {
-            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added);
-
-            foreach (EntityEntry item in modified)
-            {
-                var changedOrAddedItem = item.Entity as IUpdateTimeStamp;
-                if (changedOrAddedItem != null)
-                {
-                    if (item.State == EntityState.Added)
-                    {
-                        changedOrAddedItem.DateCreated = DateTime.Now;
-                    }
-                    changedOrAddedItem.DateModified = DateTime.Now;
-                }
-            }
+            TrackingEntities();
             return base.SaveChanges();
         }
+
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            TrackingEntities();
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+        private void TrackingEntities()
         {
             var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added);
 
@@ -131,7 +120,6 @@ namespace WebApplication1.Data
                     changedOrAddedItem.DateModified = DateTime.Now;
                 }
             }
-            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
     }
