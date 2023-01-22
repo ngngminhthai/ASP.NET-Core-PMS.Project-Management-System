@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PMS.DataEF.EntityConfigurations;
 using PMS.Infrastructure.Interfaces;
 using System;
 using System.Linq;
@@ -29,7 +29,16 @@ namespace WebApplication1.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityRole>().Property(x => x.Id).HasMaxLength(50).IsRequired(true);
+
+            builder.ApplyConfiguration(new IdentityRoleEntityConfiguration());
+            builder.ApplyConfiguration(new ManageUserEntityConfiguration());
+            builder.ApplyConfiguration(new ConversationUserEntityConfiguration());
+            builder.ApplyConfiguration(new ConversationEntityConfiguration());
+            builder.ApplyConfiguration(new MessageEntityConfiguration());
+            builder.ApplyConfiguration(new ProjectUserEntityConfiguration());
+
+            #region Configurations
+            /*builder.Entity<IdentityRole>().Property(x => x.Id).HasMaxLength(50).IsRequired(true);
             builder.Entity<ManageUser>().Property(x => x.Id).HasMaxLength(50).IsRequired(true);
 
 
@@ -40,8 +49,6 @@ namespace WebApplication1.Data
                 .HasOne(c => c.Admin)
                 .WithMany()
                 .HasForeignKey(c => c.AdminId);
-
-
 
             builder.Entity<ConversationUser>()
                 .HasOne(e => e.User)
@@ -60,7 +67,6 @@ namespace WebApplication1.Data
                 .WithMany()
                 .HasForeignKey(m => m.SenderId);
 
-
             builder.Entity<ProjectUser>()
              .HasKey(e => new { e.UserId, e.ProjectId });
 
@@ -74,7 +80,8 @@ namespace WebApplication1.Data
                 .HasOne(e => e.Project)
                 .WithMany(c => c.ProjectUsers)
                 .HasForeignKey(e => e.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade);*/
+            #endregion
         }
 
 
