@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
 using PMS.Infrastructure.Extensions;
+using PMS.Infrastructure.SharedKernel;
 using System.Collections.Generic;
 using System.Linq;
 using WebApplication1.Data.Entities;
@@ -15,15 +16,18 @@ namespace PMS.Application.Implementations
 
     {
         private readonly IProductRepository productRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork)
         {
             this.productRepository = productRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public void Add(Product product)
         {
             productRepository.Add(product);
+            Save();
         }
 
         public void Delete(int id)
@@ -45,6 +49,11 @@ namespace PMS.Application.Implementations
         public ProductViewModel GetById(int id)
         {
             return Mapper.Map<ProductViewModel>(productRepository.FindById(id));
+        }
+
+        public void Save()
+        {
+            unitOfWork.Commit();
         }
 
         public void Update(Product product)

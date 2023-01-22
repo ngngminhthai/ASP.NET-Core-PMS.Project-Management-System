@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using PMS.Application.CQRS.Products;
 using PMS.Application.Products;
 using PMS.Controllers;
-using PMS.Data.IRepositories;
+using PMS.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,13 +22,14 @@ namespace WebApplication1.Controllers
     {
         private readonly ManageAppDbContext _context;
         private readonly IHubContext<SignalSever> _signalrHub;
-        private readonly IProductRepository productRepository;
+        private readonly IFileUploadService _fileUploadService;
 
-        public ProductsController(ManageAppDbContext context, IHubContext<SignalSever> signalrHub, IProductRepository productRepository)
+        public ProductsController(ManageAppDbContext context, IHubContext<SignalSever> signalrHub,
+            IFileUploadService fileUploadService)
         {
             _context = context;
             _signalrHub = signalrHub;
-            this.productRepository = productRepository;
+            this._fileUploadService = fileUploadService;
         }
 
         // GET: Products
@@ -79,16 +81,20 @@ namespace WebApplication1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Product product)
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,Description")] Product product, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                var filePath = await _fileUploadService.UploadFile(file);
+                product.Image = filePath;
                 await Mediator.Send(new CreateProduct.Command { Product = product });
                 await _signalrHub.Clients.All.SendAsync("LoadProducts");
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
         }
+
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -12,6 +12,7 @@ namespace PMS.Application.Services
         void Update(Product product);
         void Delete(int id);
         ProductViewModel GetById(int id);
+        void Save();
 
     }
 }

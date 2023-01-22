@@ -13,6 +13,9 @@ using PMS.Application.Products;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
 using PMS.DataEF.Repositories;
+using PMS.Infrastructure.SharedKernel;
+using PMS.Services;
+using PMS.Services.Implementations;
 using System;
 using System.Collections.Generic;
 using WebApplication1.AutoMapper;
@@ -104,15 +107,20 @@ namespace WebApplication1
 
 
             #region Services
+            //base services
             services.AddControllersWithViews();
             services.AddMediatR(typeof(ListProduct.Handler));
             services.AddSignalR();
 
+            //database services
             services.AddTransient<InitDatabase>();
 
-
+            //implement services
+            services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
+            services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
             #endregion
 
             AutoMapperInitializer.Initialize();
