@@ -1,14 +1,19 @@
 {
   "version": "1.0",
   "defaultProvider": "unpkg",
-  "libraries": [
-    {
-      "library": "@microsoft/signalr@6.0.6",
-      "destination": "wwwroot/lib/microsoft/signalr/",
-      "files": [
-        "dist/browser/signalr.js",
-        "dist/browser/signalr.min.js"
-      ]
-    }
-  ]
+    "libraries": [
+        {
+            "library": "@microsoft/signalr@6.0.6",
+            "destination": "wwwroot/lib/microsoft/signalr/",
+            "files": [
+                "dist/browser/signalr.js",
+                "dist/browser/signalr.min.js"
+            ]
+        },
+        {
+            "provider": "cdnjs",
+            "library": "ckeditor@4.20.1",
+            "destination": "wwwroot/ckeditor/"
+        }
+    ]
 }

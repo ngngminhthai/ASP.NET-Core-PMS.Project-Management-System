@@ -60,7 +60,7 @@ namespace PMS.DataEF.Repositories
 
                 await _userManager.CreateAsync(new ManageUser()
                 {
-                    UserName = "thuantd",
+                    UserName = "emlasieunhan117@gmail.com",
                     Email = "emlasieunhan117@gmail.com",
                 }, "Pa$$w0rd");
                 user = await _userManager.FindByNameAsync("thuantd");
