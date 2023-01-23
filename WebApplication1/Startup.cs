@@ -115,7 +115,7 @@ namespace WebApplication1
             //database services
             services.AddTransient<InitDatabase>();
 
-            //implement services
+            //implemented services
             services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();

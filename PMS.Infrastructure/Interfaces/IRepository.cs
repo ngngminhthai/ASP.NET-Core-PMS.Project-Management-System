@@ -16,7 +16,9 @@ namespace PMS.Infrastructure.SharedKernel
         IQueryable<T> FindAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
 
         void Add(T entity);
+
         void Update(T entity, params string[] propertiesToExclude);
+
         void Update(T entity);
 
         void Remove(T entity);

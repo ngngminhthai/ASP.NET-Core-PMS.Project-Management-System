@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PMS.Data.Entities.UserAggregate;
 using PMS.DataEF.EntityConfigurations;
 using PMS.Infrastructure.Interfaces;
 using System;
@@ -99,6 +100,8 @@ namespace WebApplication1.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Function> Functions { get; set; }
         public DbSet<TicketResponse> TicketResponses { get; set; }
+        public DbSet<UploadedFiles> UploadedFiles { get; set; }
+
 
         public override int SaveChanges()
         {
