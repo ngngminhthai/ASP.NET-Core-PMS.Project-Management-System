@@ -41,7 +41,7 @@
 </table>
 *@
 
-<table id="product-table" class="table">
+<table id="product-table" class="table main-content">
 	<thead>
 		<tr>
 			<th>ID</th>
@@ -53,12 +53,15 @@
 	</tbody>
 </table>
 
+<div class="col-sm-7">
+    <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
+        <ul id="paginationUL"></ul>
+    </div>
+</div>
+
+
 @section Scripts{
-
-
-    <script src="~/js/site.js"></script>
+    <script src="~/js/product/site.js"></script>
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
-   
-
 }

@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
-using PMS.Infrastructure.Extensions;
 using PMS.Infrastructure.SharedKernel;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,12 +39,6 @@ namespace PMS.Application.Implementations
             return productRepository.FindAll().ProjectTo<ProductViewModel>().ToList();
         }
 
-        public List<ProductViewModel> GetAllWithPagination(string keyword, int page, int pageSize)
-        {
-            var query = productRepository.FindAll().Search(keyword, "Name");
-            return PagedList<ProductViewModel>.ToPagedList(query.ProjectTo<ProductViewModel>(), page, pageSize);
-        }
-
         public ProductViewModel GetById(int id)
         {
             return Mapper.Map<ProductViewModel>(productRepository.FindById(id));
@@ -60,6 +53,12 @@ namespace PMS.Application.Implementations
         {
             //Loại bỏ thuộc tính DateCreated khỏi hành động update
             productRepository.Update(product, "DateCreated");
+        }
+
+        PagedList<ProductViewModel> IProductService.GetAllWithPagination(string keyword, int page, int pageSize)
+        {
+            var query = productRepository.FindAll();
+            return PagedList<ProductViewModel>.ToPagedList(query.ProjectTo<ProductViewModel>(), page, pageSize);
         }
     }
 }

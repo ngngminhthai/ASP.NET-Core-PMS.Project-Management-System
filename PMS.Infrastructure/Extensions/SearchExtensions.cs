@@ -13,7 +13,7 @@ namespace PMS.Infrastructure.Extensions
         /// <param name="searchTerm"></param>
         /// <param name="propertyNames"></param>
         /// <returns></returns>
-        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> query, string searchTerm, params string[] propertyNames)
+        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> query, string searchTerm, params string[] propertyNames) where TEntity : class
         {
             var type = typeof(TEntity);
             var properties = type.GetProperties();

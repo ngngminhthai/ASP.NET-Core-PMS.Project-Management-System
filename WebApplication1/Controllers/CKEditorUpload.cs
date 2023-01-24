@@ -12,10 +12,9 @@ namespace PMS.Controllers
         [HttpPost]
         public async Task UploadImageForCKEditor(IList<IFormFile> upload, string CKEditorFuncNum, string CKEditor, string langCode)
         {
-            DateTime now = DateTime.Now;
             if (upload.Count == 0)
             {
-                //await HttpContext.Response.WriteAsync("Yêu cầu nhập ảnh");
+                await HttpContext.Response.WriteAsync("No file was uploaded.");
                 return;
             }
             else

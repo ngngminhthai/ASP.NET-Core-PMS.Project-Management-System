@@ -1,17 +1,22 @@
 ﻿using MediatR;
 using PMS.Application.Services;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using WebApplication1.Models;
+using WebApplication1.RequestHelpers;
 
 namespace PMS.Application.Products
 {
     public class ListProduct
     {
-        public class Query : IRequest<List<ProductViewModel>> { }
+        public class Query : IRequest<PagedList<ProductViewModel>>
+        {
+            public string SearchTerm { get; set; }
+            public int PageIndex { get; set; }
+            public int PageSize { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, List<ProductViewModel>>
+        public class Handler : IRequestHandler<Query, PagedList<ProductViewModel>>
         {
             private readonly IProductService productService;
 
@@ -20,9 +25,9 @@ namespace PMS.Application.Products
                 this.productService = productService;
             }
 
-            public Task<List<ProductViewModel>> Handle(Query request, CancellationToken cancellationToken)
+            public Task<PagedList<ProductViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Task.FromResult(productService.GetAllWithPagination("2", 1, 3));
+                return Task.FromResult(productService.GetAllWithPagination(request.SearchTerm, request.PageIndex, request.PageSize));
             }
         }
     }

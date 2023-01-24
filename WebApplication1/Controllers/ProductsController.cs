@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using API.Extensions;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -14,7 +15,7 @@ using WebApplication1.Data;
 using WebApplication1.Data.Entities;
 using WebApplication1.Hubs;
 using WebApplication1.Models;
-
+using WebApplication1.RequestHelpers;
 
 namespace WebApplication1.Controllers
 {
@@ -33,9 +34,9 @@ namespace WebApplication1.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View();
         }
 
         /// <summary>
@@ -49,9 +50,16 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts(string searchTerm, int page, int pageSize)
         {
-            return Ok(await _context.Products.ToListAsync());
+            PagedList<ProductViewModel> pvm = await Mediator.Send(new ListProduct.Query()
+            {
+                SearchTerm = searchTerm,
+                PageIndex = page,
+                PageSize = pageSize
+            });
+            Response.AddPaginationHeader(pvm.MetaData);
+            return Ok(pvm);
         }
 
         // GET: Products/Details/5
