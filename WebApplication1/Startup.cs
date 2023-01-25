@@ -79,6 +79,11 @@ namespace WebApplication1
              .AddLocalApi("Bearer", option =>
              {
                  option.ExpectedScope = "api.WebApp";
+             })
+             .AddFacebook(facebookOptions =>
+             {
+                 facebookOptions.AppId = "";
+                 facebookOptions.AppSecret = "";
              });
 
 

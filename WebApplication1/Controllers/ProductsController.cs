@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using PMS.Application.CQRS.Products;
 using PMS.Application.Products;
 using PMS.Controllers;
 using PMS.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +17,6 @@ using WebApplication1.Data;
 using WebApplication1.Data.Entities;
 using WebApplication1.Hubs;
 using WebApplication1.Models;
-using WebApplication1.RequestHelpers;
 
 namespace WebApplication1.Controllers
 {
@@ -24,13 +25,15 @@ namespace WebApplication1.Controllers
         private readonly ManageAppDbContext _context;
         private readonly IHubContext<SignalSever> _signalrHub;
         private readonly IFileUploadService _fileUploadService;
+        private readonly IMemoryCache cache;
 
         public ProductsController(ManageAppDbContext context, IHubContext<SignalSever> signalrHub,
-            IFileUploadService fileUploadService)
+            IFileUploadService fileUploadService, IMemoryCache cache)
         {
             _context = context;
             _signalrHub = signalrHub;
             this._fileUploadService = fileUploadService;
+            this.cache = cache;
         }
 
         // GET: Products
@@ -50,16 +53,21 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts(string searchTerm, int page, int pageSize)
+        public IActionResult GetProducts(string searchTerm, int page, int pageSize)
         {
-            PagedList<ProductViewModel> pvm = await Mediator.Send(new ListProduct.Query()
+            var cacheKey = $"productsList_{searchTerm}_{page}_{pageSize}";
+            var products = cache.GetOrCreate(cacheKey, entry =>
             {
-                SearchTerm = searchTerm,
-                PageIndex = page,
-                PageSize = pageSize
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+                return Mediator.Send(new ListProduct.Query()
+                {
+                    SearchTerm = searchTerm,
+                    PageIndex = page,
+                    PageSize = pageSize
+                });
             });
-            Response.AddPaginationHeader(pvm.MetaData);
-            return Ok(pvm);
+            Response.AddPaginationHeader(products.Result.MetaData);
+            return Ok(products.Result);
         }
 
         // GET: Products/Details/5
