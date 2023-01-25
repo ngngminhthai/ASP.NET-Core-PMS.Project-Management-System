@@ -44,18 +44,18 @@ namespace PMS.DataEF.Repositories
             {
                 await _userManager.CreateAsync(new ManageUser()
                 {
-                    UserName = "thainm",
+                    UserName = "emlasieunhan118@gmail.com",
                     Email = "emlasieunhan118@gmail.com",
                 }, "Pa$$w0rd");
-                var user = await _userManager.FindByNameAsync("thainm");
+                var user = await _userManager.FindByNameAsync("emlasieunhan118@gmail.com");
                 await _userManager.AddToRoleAsync(user, "Admin");
 
                 await _userManager.CreateAsync(new ManageUser()
                 {
-                    UserName = "anhltn",
+                    UserName = "emlasieunhan119@gmail.com",
                     Email = "emlasieunhan119@gmail.com",
                 }, "Pa$$w0rd");
-                user = await _userManager.FindByNameAsync("anhltn");
+                user = await _userManager.FindByNameAsync("emlasieunhan119@gmail.com");
                 await _userManager.AddToRoleAsync(user, "User");
 
                 await _userManager.CreateAsync(new ManageUser()
@@ -63,7 +63,7 @@ namespace PMS.DataEF.Repositories
                     UserName = "emlasieunhan117@gmail.com",
                     Email = "emlasieunhan117@gmail.com",
                 }, "Pa$$w0rd");
-                user = await _userManager.FindByNameAsync("thuantd");
+                user = await _userManager.FindByNameAsync("emlasieunhan117@gmail.com");
                 await _userManager.AddToRoleAsync(user, "User");
             }
             if (_context.Products.Count() == 0)
