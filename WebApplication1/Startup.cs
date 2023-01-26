@@ -82,8 +82,10 @@ namespace WebApplication1
              })
              .AddFacebook(facebookOptions =>
              {
-                 facebookOptions.AppId = "";
-                 facebookOptions.AppSecret = "";
+                 IConfiguration facebookAuthSection = Configuration.GetSection("Authentication:Facebook");
+                 facebookOptions.AppId = facebookAuthSection["AppId"];
+                 facebookOptions.AppSecret = facebookAuthSection["AppSecret"];
+                 facebookOptions.CallbackPath = "/signin-facebook";
              });
 
 
