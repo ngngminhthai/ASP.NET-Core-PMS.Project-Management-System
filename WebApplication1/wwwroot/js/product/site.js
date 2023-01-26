@@ -25,11 +25,11 @@ $(document).ready(function () {
                 $.each(data, function (index, product) {
                     tableContent += `
                         <tr> +
-                        <td> ${product.id} </td> +
-                        <td> ${product.name} </td> +
-                        <td> ${product.price} </td> +
-                        <td> <a href="/Products/Edit?id=${product.id}">Edit</a> |  </td> +
-                        <td> <a href="/Products/Delete?id=${product.id}">Delete</a>  </td> +
+                        <td> ${product.Id} </td> +
+                        <td> ${product.Name} </td> +
+                        <td> ${product.Price} </td> +
+                        <td> <a href="/Products/Edit?id=${product.Id}">Edit</a> |  </td> +
+                        <td> <a href="/Products/Delete?id=${product.Id}">Delete</a>  </td> +
 
                         </tr>
                     `
@@ -46,7 +46,6 @@ $(document).ready(function () {
 
         $('#paginationUL').twbsPagination({
             totalPages: pagination.totalCount, 
-            visiblePages: 5,
             startPage: pagination.currentPage,
             onPageClick: function (event, page) {
                 LoadProdData(page, 3);

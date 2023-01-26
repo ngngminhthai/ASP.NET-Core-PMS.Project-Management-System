@@ -3,11 +3,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using PMS.Application.Implementations;
 using PMS.Application.Products;
 using PMS.Application.Services;
@@ -18,6 +22,7 @@ using PMS.Services;
 using PMS.Services.Implementations;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using WebApplication1.AutoMapper;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities;
@@ -129,6 +134,38 @@ namespace WebApplication1
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
             services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
+
+
+            services.AddMvc()
+             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts =>
+             {
+                 opts.ResourcesPath = "Resources";
+             })
+             .AddDataAnnotationsLocalization()
+             .AddNewtonsoftJson(options =>
+             {
+                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+             });
+
+
+            services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
+
+            services.Configure<RequestLocalizationOptions>(
+             opts =>
+             {
+                 var supportedCultures = new List<CultureInfo>
+                 {
+                        new CultureInfo("en-US"),
+                        new CultureInfo("vi-VN")
+                 };
+
+                 opts.DefaultRequestCulture = new RequestCulture("en-US");
+                 // Formatting numbers, dates, etc.
+                 opts.SupportedCultures = supportedCultures;
+                 // UI strings that we have localized.
+                 opts.SupportedUICultures = supportedCultures;
+             });
+
             #endregion
 
             AutoMapperInitializer.Initialize();
@@ -191,6 +228,10 @@ namespace WebApplication1
             app.UseRouting();
 
             app.UseAuthorization();
+
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
+
 
             app.UseEndpoints(endpoints =>
             {

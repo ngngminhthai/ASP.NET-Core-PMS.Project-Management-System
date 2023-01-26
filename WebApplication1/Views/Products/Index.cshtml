@@ -40,8 +40,12 @@
     </tbody>
 </table>
 *@
+@inject IViewLocalizer Localizer
 
-<table id="product-table" class="table main-content">
+<div class="main-content">
+<h1>@Localizer["Products"]</h1>
+
+<table id="product-table" class="table">
 	<thead>
 		<tr>
 			<th>ID</th>
@@ -53,10 +57,13 @@
 	</tbody>
 </table>
 
+
 <div class="col-sm-7">
     <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
         <ul id="paginationUL"></ul>
     </div>
+</div>
+
 </div>
 
 
