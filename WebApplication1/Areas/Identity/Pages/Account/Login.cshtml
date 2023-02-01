@@ -1,4 +1,4 @@
-﻿@page
+﻿@*@page
 @model LoginModel
 
 @{
@@ -83,3 +83,87 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+*@
+
+@page
+@model LoginModel
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<!-- soccer/project/register.html  07 Jan 2020 03:42:43 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <title>Login</title>
+
+    <!-- Bootstrap Core and vandor -->
+	<link href="~/lib/authentication/bootstrap.min.css" rel="stylesheet" />
+    <!-- Core css -->
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/theme1.css" rel="stylesheet" />
+</head>
+<body class="font-montserrat">
+
+    <div class="auth">
+        <div class="auth_left">
+            <div class="card">
+                @*<div class="text-center mb-5">
+                    <a class="header-brand" href="index-2.html"><i class="fa fa-soccer-ball-o brand-logo"></i></a>
+                </div>*@
+                <div class="card-body">
+                    <div class="card-title">Login</div>
+                    <form id="account" method="post">
+                        <h4>Use a local account to log in.</h4>
+                        <hr />
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Password"></label>
+                            <input asp-for="Input.Password" class="form-control" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label asp-for="Input.RememberMe">
+                                    <input asp-for="Input.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Log in</button>
+                        </div>
+                        <div class="form-group">
+                            <p>
+                                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                            </p>
+                            <p>
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                            </p>
+                            <p>
+                                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                            </p>
+                        </div>
+                    </form>
+                   
+                </div>
+              
+            </div>
+        </div>
+        <div class="auth_right full_img"></div>
+    </div>
+	<script src="~/lib/bootstrap/js/lib.vendor.bundle.js"></script>
+	<script src="~/lib/bootstrap/js/core.js"></script>
+
+</body>
+
+<!-- soccer/project/register.html  07 Jan 2020 03:42:43 GMT -->
+</html>
