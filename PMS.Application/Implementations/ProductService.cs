@@ -23,8 +23,9 @@ namespace PMS.Application.Implementations
             this.unitOfWork = unitOfWork;
         }
 
-        public void Add(Product product)
+        public void Add(ProductViewModel productVm)
         {
+            var product = Mapper.Map<ProductViewModel, Product>(productVm);
             productRepository.Add(product);
             Save();
         }
@@ -49,10 +50,12 @@ namespace PMS.Application.Implementations
             unitOfWork.Commit();
         }
 
-        public void Update(Product product)
+        public void Update(ProductViewModel productVm)
         {
+            var product = Mapper.Map<ProductViewModel, Product>(productVm);
             //Loại bỏ thuộc tính DateCreated khỏi hành động update
             productRepository.Update(product, "DateCreated");
+            Save();
         }
 
         PagedList<ProductViewModel> IProductService.GetAllWithPagination(string keyword, int page, int pageSize)

@@ -12,8 +12,21 @@ namespace PMS.DataEF.Repositories
         }
         public void Commit()
         {
-            _context.SaveChanges();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
+
 
         public void Dispose()
         {

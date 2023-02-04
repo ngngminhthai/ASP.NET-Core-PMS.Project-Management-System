@@ -240,12 +240,12 @@ namespace WebApplication1
                 endpoints.MapHub<SignalSever>("/signalrServer");
             });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.OAuthClientId("swagger");
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApp Space Api V1");
-            });
+            /*  app.UseSwagger();
+              app.UseSwaggerUI(c =>
+              {
+                  c.OAuthClientId("swagger");
+                  c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApp Space Api V1");
+              });*/
 
         }
     }
