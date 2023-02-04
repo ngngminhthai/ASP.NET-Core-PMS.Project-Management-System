@@ -2,7 +2,7 @@
 using PMS.Application.Services;
 using System.Threading;
 using System.Threading.Tasks;
-using WebApplication1.Data.Entities;
+using WebApplication1.Models;
 
 namespace PMS.Application.CQRS.Products
 {
@@ -10,7 +10,7 @@ namespace PMS.Application.CQRS.Products
     {
         public class Command : IRequest
         {
-            public Product Product { get; set; }
+            public ProductViewModel Product { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
