@@ -7,7 +7,7 @@ public class ManageAppDbContextFactory : IDesignTimeDbContextFactory<ManageAppDb
     ManageAppDbContext IDesignTimeDbContextFactory<ManageAppDbContext>.CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ManageAppDbContext>();
-        optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS; database=SignalRCRUD; Integrated security=true; TrustServerCertificate=true");
+        optionsBuilder.UseSqlServer("Server=ThuanComputer;database=SignalRCRUD;user=sa;password=123456;TrustServerCertificate=true");
 
         return new ManageAppDbContext(optionsBuilder.Options);
     }

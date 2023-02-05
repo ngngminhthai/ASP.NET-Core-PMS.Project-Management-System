@@ -25,6 +25,7 @@
     <Folder Include="Resources\Models\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\js\project\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
     <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
