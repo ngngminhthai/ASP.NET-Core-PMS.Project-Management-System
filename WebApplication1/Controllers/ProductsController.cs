@@ -104,7 +104,7 @@ namespace WebApplication1.Controllers
             {
                 var filePath = await _fileUploadService.UploadFile(file);
                 product.Image = filePath;
-                await Mediator.Send(new CreateProduct.Command { Product = product });
+                //await Mediator.Send(new CreateProduct.Command { Product = product });
                 await _signalrHub.Clients.All.SendAsync("LoadProducts");
                 return RedirectToAction(nameof(Index));
             }
@@ -146,7 +146,7 @@ namespace WebApplication1.Controllers
                 try
                 {
                     //_context.Update(product);
-                    await Mediator.Send(new UpdateProduct.Command { Product = product });
+                    //await Mediator.Send(new UpdateProduct.Command { Product = product });
                     await _signalrHub.Clients.All.SendAsync("LoadProducts");
 
                 }
