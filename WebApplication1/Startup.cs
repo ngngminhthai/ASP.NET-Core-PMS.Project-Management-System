@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using PMS.Application.Implementations;
 using PMS.Application.Products;
@@ -20,7 +19,6 @@ using PMS.DataEF.Repositories;
 using PMS.Infrastructure.SharedKernel;
 using PMS.Services;
 using PMS.Services.Implementations;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using WebApplication1.AutoMapper;
@@ -170,7 +168,7 @@ namespace WebApplication1
 
             AutoMapperInitializer.Initialize();
 
-            #region Swagger
+            /*#region Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApp Space Api", Version = "v1" });
@@ -200,7 +198,7 @@ namespace WebApplication1
 
 
             });
-            #endregion
+            #endregion*/
 
 
         }
@@ -235,7 +233,12 @@ namespace WebApplication1
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapDefaultControllerRoute();
+
                 endpoints.MapRazorPages();
                 endpoints.MapHub<SignalSever>("/signalrServer");
             });
