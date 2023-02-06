@@ -1,6 +1,7 @@
 ﻿using PMS.Infrastructure.Interfaces;
 using PMS.Infrastructure.SharedKernel;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication1.Data.Entities
 {
@@ -12,5 +13,9 @@ namespace WebApplication1.Data.Entities
         public string Description { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
+
+        [Required]
+        [StringLength(3)]
+        public string TestProperty { get; set; }
     }
 }

@@ -70,7 +70,7 @@ namespace PMS.DataEF.Repositories
             {
                 for (int i = 1; i <= 20; i++)
                 {
-                    _context.Products.Add(new Product { Name = $"Product {i}", Price = i * 10 });
+                    _context.Products.Add(new Product { Name = $"Product {i}", Price = i * 10, TestProperty = "123" });
                 }
             }
             await _context.SaveChangesAsync();
