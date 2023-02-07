@@ -28,6 +28,7 @@ namespace PMS.Application.Implementations
 
         public void Add(ProductViewModel productVm)
         {
+
             var product = Mapper.Map<ProductViewModel, Product>(productVm);
             productRepository.Add(product);
             Save();

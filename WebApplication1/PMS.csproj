@@ -33,7 +33,9 @@
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
-    <Folder Include="wwwroot\uploads\" />
+    <Folder Include="wwwroot\uploads\profiles\emlasieunhan111%40gmail.com\" />
+    <Folder Include="wwwroot\uploads\profiles\emlasieunhan119%40gmail.com\" />
+    <Folder Include="wwwroot\uploads\projects\" />
   </ItemGroup>
 
   <ItemGroup>

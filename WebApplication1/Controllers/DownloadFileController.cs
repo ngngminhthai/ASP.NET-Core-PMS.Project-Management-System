@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,13 +9,16 @@ namespace PMS.Controllers
         [HttpGet]
         public IActionResult DownloadFile(string fileName)
         {
-            var fileNames = Directory.GetFiles(Directory.GetCurrentDirectory() + "/wwwroot/uploads");
+            //get all files in specific directory
+            /*var fileNames = Directory.GetFiles(Directory.GetCurrentDirectory() + "/wwwroot/uploads");
             foreach (string wwwfileName in fileNames)
             {
                 Console.WriteLine(Path.GetFileName(wwwfileName));
-            }
+            }*/
 
-            fileName = "20230122221004689godocker.jpg";
+            //fileName = "20230122221004689godocker.jpg";
+
+            //Download file based on its name
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
 
             var memory = new MemoryStream();
@@ -38,19 +40,19 @@ namespace PMS.Controllers
         private Dictionary<string, string> GetMimeTypes()
         {
             return new Dictionary<string, string>
-    {
-        {".txt", "text/plain"},
-        {".pdf", "application/pdf"},
-        {".doc", "application/vnd.ms-word"},
-        {".docx", "application/vnd.ms-word"},
-        {".xls", "application/vnd.ms-excel"},
-        {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
-        {".png", "image/png"},
-        {".jpg", "image/jpeg"},
-        {".jpeg", "image/jpeg"},
-        {".gif", "image/gif"},
-        {".csv", "text/csv"}
-    };
+            {
+                {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+                {".xls", "application/vnd.ms-excel"},
+                {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".csv", "text/csv"}
+            };
         }
 
     }

@@ -14,7 +14,6 @@ namespace WebApplication1.Data.Entities
         public DateTime? DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
 
-        [Required]
         [StringLength(3)]
         public string TestProperty { get; set; }
     }
