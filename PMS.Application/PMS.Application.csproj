@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="CQRS\Messages\" />
     <Folder Include="CQRS\ProjectTasks\" />
-    <Folder Include="CQRS\Projects\" />
   </ItemGroup>
 
 </Project>

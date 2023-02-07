@@ -1,0 +1,194 @@
+﻿@*@model IEnumerable<WebApplication1.Data.Entities.ProjectAggregate.Project>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@
+<div class="main-content project">
+<div class="row" style="box-sizing:border-box">
+    <div class="">
+        <div class="box-header pt-0 pl-0 ms-0 mb-1 mt-1 border-bottom-0 responsive-header">
+            <h4 class="box-title fs-22">Recent Project Update</h4>
+            <div class="card-options">
+                <div class="btn-list d-flex">
+                    <a href="#" class="btn text-primary border-primary d-flex align-items-center mr-5"><i class='bx bx-plus-circle mr-5'></i>Add Project</a>
+                    <a href="#" class="btn btn-light d-flex align-items-center mr-5"><i class="fas fa-eye mr-5"></i>View All</a>
+                    <a href="#" class="btn btn-light me-0 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false"> Latest <i class="feather feather-chevron-down"></i> </a>
+                    <ul class="dropdown-menu dropdown-menu-end" role="menu">
+                        <li><a href="#">Monthly</a></li>
+                        <li><a href="#">Yearly</a></li>
+                        <li><a href="#">Weekly</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            
+            <div class="col-3 col-xl-6 col-md-6 col-sm-12">
+                <div class="box left-dot">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-12 mb-10">
+                                <div class="mt-0 text-start">
+                                    <a href="project-details.html" class="box-title mb-0 mt-1 mb-3 font-w600 fs-18">HTML</a>
+                                    <p class="fs-14 font-w500 text-muted mb-6">HTML Coding Department</p>
+                                    <span class="fs-13  mt-2 text-muted">There are many variations of passages</span>
+                                </div>
+                                <img src="./images/icon/html.png" alt="img" class="img-box">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex mb-3 mb-md-0">
+                                <div class="mr-10">
+                                    <div class="chart-circle chart-circle-xs" data-value="0.75" data-thickness="3" data-color="#3C21F7">
+                                        <canvas width="40" height="40"></canvas>
+                                        <div class="chart-circle-value">75%</div>
+                                    </div>
+                                </div>
+                                <ul class="user-list mb-0">
+                                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                                </ul>
+
+                            </div>
+                            <div class="ms-auto mt-3 mt-sm-0">
+                                <div class="d-flex">
+                                    <div class="task-btn bg-success-1 text-success-1 fs-14" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Project Priority">Low</div> <a class="btn btn-outline-light  text-muted pd-0 fs-34" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class='bx bx-dots-vertical-rounded'></i></a>
+                                    <ul class="dropdown-menu " role="menu">
+                                        <li><a href="#"><i class="far fa-eye"></i>View</a></li>
+                                        <li><a href="#"><i class='bx bx-plus-circle'></i>Add</a></li>
+                                        <li><a href="#"><i class='bx bx-trash'></i>Remove</a></li>
+                                        <li><a href="#"><i class='bx bx-cog'></i>More</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 col-xl-6 col-md-6 col-sm-12">
+                <div class="box left-dot">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-12 mb-10">
+                                <div class="mt-0 text-start">
+                                    <a href="project-details.html" class="box-title mb-0 mt-1 mb-3 font-w600 fs-18">Digital Marketing</a>
+                                    <p class="fs-14 font-w500 text-muted mb-6">Marketing Department</p>
+                                    <span class="fs-13  mt-2 text-muted">There are many variations of passages</span>
+                                </div>
+                                <img src="./images/icon/marketing.png" alt="img" class="img-box">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex mb-3 mb-md-0">
+                                <div class="mr-10">
+                                    <div class="chart-circle chart-circle-xs" data-value="0.75" data-thickness="3" data-color="#3C21F7">
+                                        <canvas width="40" height="40"></canvas>
+                                        <div class="chart-circle-value">75%</div>
+                                    </div>
+                                </div>
+                                <ul class="user-list mb-0">
+                                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                                </ul>
+
+                            </div>
+                            <div class="ms-auto mt-3 mt-sm-0">
+                                <div class="d-flex">
+                                    <div class="task-btn bg-yellow-1 text-yellow-1 fs-14" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Project Priority">Medium</div> <a class="btn btn-outline-light  text-muted pd-0 fs-34" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class='bx bx-dots-vertical-rounded'></i></a>
+                                    <ul class="dropdown-menu " role="menu">
+                                        <li><a href="#"><i class="far fa-eye"></i>View</a></li>
+                                        <li><a href="#"><i class='bx bx-plus-circle'></i>Add</a></li>
+                                        <li><a href="#"><i class='bx bx-trash'></i>Remove</a></li>
+                                        <li><a href="#"><i class='bx bx-cog'></i>More</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 col-xl-6 col-md-6 col-sm-12">
+                <div class="box left-dot">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-12 mb-10">
+                                <div class="mt-0 text-start">
+                                    <a href="project-details.html" class="box-title mb-0 mt-1 mb-3 font-w600 fs-18">Angular</a>
+                                    <p class="fs-14 font-w500 text-muted mb-6">Angular Department</p>
+                                    <span class="fs-13  mt-2 text-muted">There are many variations of passages</span>
+                                </div>
+                                <img src="./images/icon/angular.png" alt="img" class="img-box">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex mb-3 mb-md-0">
+                                <div class="mr-10">
+                                    <div class="chart-circle chart-circle-xs" data-value="0.75" data-thickness="3" data-color="#3C21F7">
+                                        <canvas width="40" height="40"></canvas>
+                                        <div class="chart-circle-value">75%</div>
+                                    </div>
+                                </div>
+                                <ul class="user-list mb-0">
+                                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                                </ul>
+
+                            </div>
+                            <div class="ms-auto mt-3 mt-sm-0">
+                                <div class="d-flex">
+                                    <div class="task-btn bg-danger-1 text-danger fs-14" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Project Priority">High</div> <a class="btn btn-outline-light  text-muted pd-0 fs-34" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class='bx bx-dots-vertical-rounded'></i></a>
+                                    <ul class="dropdown-menu " role="menu">
+                                        <li><a href="#"><i class="far fa-eye"></i>View</a></li>
+                                        <li><a href="#"><i class='bx bx-plus-circle'></i>Add</a></li>
+                                        <li><a href="#"><i class='bx bx-trash'></i>Remove</a></li>
+                                        <li><a href="#"><i class='bx bx-cog'></i>More</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
