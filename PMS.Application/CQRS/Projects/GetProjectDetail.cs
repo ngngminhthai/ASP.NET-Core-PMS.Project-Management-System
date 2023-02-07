@@ -24,8 +24,8 @@ namespace PMS.Application.CQRS.Projects
 
             public Task<ProjectViewModel> Handle(Query request, CancellationToken cancellationToken)
             {
-                var product = _projectService.GetById((int)request.ProjectId);
-                return Task.FromResult(product);
+                var project = _projectService.GetById((int)request.ProjectId);
+                return Task.FromResult(project);
             }
         }
     }

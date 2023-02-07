@@ -15,7 +15,7 @@ namespace PMS.Application.Implementations
     {
         private readonly IProjectRepository projectRepository;
         private readonly IUnitOfWork unitOfWork;
-        public ProjectService(IProjectRepository ProjectRepository, IUnitOfWork unitOfWork)
+        public ProjectService(IProjectRepository projectRepository, IUnitOfWork unitOfWork)
         {
             this.projectRepository = projectRepository;
             this.unitOfWork = unitOfWork;
