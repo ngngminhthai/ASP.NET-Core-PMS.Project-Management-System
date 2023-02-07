@@ -125,6 +125,7 @@ namespace WebApplication1
             //database services
             services.AddTransient<InitDatabase>();
 
+            #region repository
             //implemented services
             services.AddScoped<IUserClaimsPrincipalFactory<ManageUser>, ClaimsPrincipalFactory>();
             services.AddScoped<IFileUploadService, FileUploadService>();
@@ -132,8 +133,9 @@ namespace WebApplication1
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
             services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
-
-
+            services.AddTransient<IProjectRepository, ProjectRepository>();
+            services.AddTransient<IProjectService, ProjectService>();
+            #endregion
             services.AddMvc()
              .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts =>
              {
