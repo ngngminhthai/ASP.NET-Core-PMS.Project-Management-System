@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using PMS.Application.CQRS.Projects;
 using PMS.Application.Implementations;
 using PMS.Application.Products;
 using PMS.Application.Services;
@@ -122,6 +123,8 @@ namespace WebApplication1
             //base services
             services.AddControllersWithViews();
             services.AddMediatR(typeof(ListProduct.Handler));
+            services.AddMediatR(typeof(ListProject.Handler));
+
             services.AddSignalR();
 
             //database services
