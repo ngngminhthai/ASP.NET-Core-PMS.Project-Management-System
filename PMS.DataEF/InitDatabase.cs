@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities;
+using WebApplication1.Data.Entities.ProjectAggregate;
 
 namespace PMS.DataEF.Repositories
 {
@@ -21,6 +23,7 @@ namespace PMS.DataEF.Repositories
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+
         }
 
         public async Task Seed()
@@ -40,6 +43,7 @@ namespace PMS.DataEF.Repositories
                     Description = "Who use the system services"
                 });
             }
+            //var user;
             if (!_userManager.Users.Any())
             {
                 await _userManager.CreateAsync(new ManageUser()
@@ -72,6 +76,20 @@ namespace PMS.DataEF.Repositories
                 {
                     _context.Products.Add(new Product { Name = $"Product {i}", Price = i * 10 });
                 }
+            }
+            if (_context.Projects.Count() == 0)
+            {
+                var user1 = await _userManager.FindByNameAsync("emlasieunhan118@gmail.com");
+                var user2 = await _userManager.FindByNameAsync("emlasieunhan117@gmail.com");
+                List<Project> projects = new List<Project>()
+
+                {
+                   new Project{Name= "Singleton", Description = "Singleton is a creational design pattern that lets you ensure that a class has only one instance, while providing a global access point to this instance.", Creator = user1  },
+                   new Project{Name= "vip", Description = "asdad asdasd adadsd adasdasd adasd asdasdas", Creator = user2  },
+                   new Project{Name= "adu", Description = "adu adu adu adu adu adu adu adu adu adu", Creator = user2  },
+                   new Project{Name= "promax", Description = "aa aaa aaa aaa aaa aaa aaa aaaaa aaaaa  aaaaa a aa aaaa aa aaa", Creator = user2  }
+                };
+                _context.Projects.AddRange(projects);
             }
             await _context.SaveChangesAsync();
         }
