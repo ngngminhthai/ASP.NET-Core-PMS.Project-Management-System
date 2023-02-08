@@ -10,8 +10,8 @@ using WebApplication1.Data;
 namespace PMS.DataEF.Data.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
-    [Migration("20230204104646_TestProp")]
-    partial class TestProp
+    [Migration("20230208025513_InitDatabase")]
+    partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -364,7 +364,6 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TestProperty")
-                        .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
@@ -382,6 +381,9 @@ namespace PMS.DataEF.Data.Migrations
 
                     b.Property<string>("CreatorId")
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

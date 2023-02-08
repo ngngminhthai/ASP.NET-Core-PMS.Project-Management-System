@@ -39,7 +39,7 @@ namespace PMS.Application.Implementations
 
         public ProjectViewModel GetById(int id)
         {
-            return Mapper.Map<ProjectViewModel>(projectRepository.FindById(id));
+            return Mapper.Map<ProjectViewModel>(projectRepository.FindById(id, p => p.Creator));
         }
 
         public void Save()

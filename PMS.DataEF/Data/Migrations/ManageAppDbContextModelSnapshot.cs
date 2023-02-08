@@ -362,7 +362,6 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TestProperty")
-                        .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
@@ -380,6 +379,9 @@ namespace PMS.DataEF.Data.Migrations
 
                     b.Property<string>("CreatorId")
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
