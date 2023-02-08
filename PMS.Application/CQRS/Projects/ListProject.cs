@@ -14,6 +14,7 @@ namespace PMS.Application.CQRS.Projects
             public string SearchTerm { get; set; }
             public int PageIndex { get; set; }
             public int PageSize { get; set; }
+            public string Email { get; set; }
         }
         public class Handler : IRequestHandler<Query, PagedList<ProjectViewModel>>
         {
@@ -26,7 +27,7 @@ namespace PMS.Application.CQRS.Projects
 
             public Task<PagedList<ProjectViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Task.FromResult(projectService.GetAllWithPagination(request.SearchTerm, request.PageIndex, request.PageSize));
+                return Task.FromResult(projectService.GetAllWithPagination(request.SearchTerm, request.PageIndex, request.PageSize, request.Email));
             }
         }
 
