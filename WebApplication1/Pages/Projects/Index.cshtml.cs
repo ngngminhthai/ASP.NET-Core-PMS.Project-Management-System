@@ -20,12 +20,15 @@ namespace PMS.Pages.Projects
         }
         public async Task<PagedList<ProjectViewModel>> GetProjects(string? searchTerm, int page, int pageSize)
         {
+            var email = HttpContext.User.Identity.Name;
             var result = await Mediator.Send(new ListProject.Query()
             {
                 SearchTerm = searchTerm,
                 PageIndex = page,
-                PageSize = pageSize
+                PageSize = pageSize,
+                Email = email
             });
+
             return result;
         }
 
