@@ -11,15 +11,17 @@ namespace PMS.Services.Implementations
 
         public async Task<string> UploadFile(IFormFile file, UploadedFileViewModel uploadedFileViewModel)
         {
-            var uploadedFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", uploadedFileViewModel.UploaderName);
+            /*            var uploadedFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", uploadedFileViewModel.UploaderName);
+            */
+            var uploadedFolder = "";
             if (file == null)
             {
                 return "No file was uploaded.";
             }
-            if (!Directory.Exists(uploadedFolder))
+            /*if (!Directory.Exists(uploadedFolder))
             {
                 Directory.CreateDirectory(uploadedFolder);
-            }
+            }*/
             var currentTime = DateTime.Now.ToString("yyyyMMddHHmmssfff");
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", uploadedFolder, currentTime + file.FileName);
 

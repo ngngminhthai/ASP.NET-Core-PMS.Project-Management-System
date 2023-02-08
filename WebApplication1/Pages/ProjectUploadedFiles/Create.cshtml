@@ -1,0 +1,36 @@
+﻿@page
+@model PMS.Pages.Projects.ProjectUploadedFiles.CreateModel
+
+@{
+    ViewData["Title"] = "Upload";
+}
+
+<div class="main-content">
+    <div class="box card-box">
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post" enctype="multipart/form-data">
+                    <input hidden asp-for="ProjectId" class="form-control" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <input type="file" name="file" id="file" />
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Upload" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-page="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

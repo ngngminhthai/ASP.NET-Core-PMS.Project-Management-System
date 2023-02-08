@@ -136,8 +136,13 @@ namespace WebApplication1
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
             services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectService, ProjectService>();
+
+            services.AddTransient<IProjectUploadedFileRepository, ProjectUploadedFileRepository>();
+            services.AddTransient<IProjectUploadedFileService, ProjectUploadedFileService>();
+
             #endregion
             services.AddMvc()
              .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts =>

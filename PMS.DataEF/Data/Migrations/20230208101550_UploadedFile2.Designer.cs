@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
 namespace PMS.DataEF.Data.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
-    partial class ManageAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230208101550_UploadedFile2")]
+    partial class UploadedFile2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -655,7 +657,7 @@ namespace PMS.DataEF.Data.Migrations
             modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectUploadedFile", b =>
                 {
                     b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
-                        .WithMany("ProjectUploadedFiles")
+                        .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -792,8 +794,6 @@ namespace PMS.DataEF.Data.Migrations
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.Project", b =>
                 {
-                    b.Navigation("ProjectUploadedFiles");
-
                     b.Navigation("ProjectUsers");
                 });
 #pragma warning restore 612, 618

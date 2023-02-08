@@ -1,4 +1,5 @@
-﻿using PMS.Infrastructure.SharedKernel;
+﻿using PMS.Data.Entities.ProjectAggregate;
+using PMS.Infrastructure.SharedKernel;
 using System.Collections.Generic;
 
 namespace WebApplication1.Data.Entities.ProjectAggregate
@@ -9,5 +10,6 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public string Description { get; set; }
         public ManageUser Creator { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
+        public ICollection<ProjectUploadedFile> ProjectUploadedFiles { get; set; }
     }
 }

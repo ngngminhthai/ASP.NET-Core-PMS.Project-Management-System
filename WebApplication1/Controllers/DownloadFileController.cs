@@ -21,6 +21,11 @@ namespace PMS.Controllers
             //Download file based on its name
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
 
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
             var memory = new MemoryStream();
             using (var stream = new FileStream(filePath, FileMode.Open))
             {

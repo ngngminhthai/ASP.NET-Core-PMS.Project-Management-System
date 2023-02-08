@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using PMS.Data.Entities.ProjectAggregate;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -84,13 +85,21 @@ namespace PMS.DataEF.Repositories
                 List<Project> projects = new List<Project>()
 
                 {
-                   new Project{Name= "Singleton", Description = "Singleton is a creational design pattern that lets you ensure that a class has only one instance, while providing a global access point to this instance.", Creator = user1  },
+                   new Project{Name= "Singleton", Description = "Singleton is a creational design pattern that lets you ensure that a class has only one instance, while providing a global access point to this instance.", Creator = user1, ProjectUploadedFiles =  new List<ProjectUploadedFile>()
+                   {
+                       new ProjectUploadedFile{File = "20230207135547660godocker.jpg"},
+                       new ProjectUploadedFile{File = "20230207182543323dienthoai.jpg"},
+                   }
+                },
                    new Project{Name= "vip", Description = "asdad asdasd adadsd adasdasd adasd asdasdas", Creator = user2  },
                    new Project{Name= "adu", Description = "adu adu adu adu adu adu adu adu adu adu", Creator = user2  },
                    new Project{Name= "promax", Description = "aa aaa aaa aaa aaa aaa aaa aaaaa aaaaa  aaaaa a aa aaaa aa aaa", Creator = user2  }
                 };
                 _context.Projects.AddRange(projects);
             }
+
+
+
             await _context.SaveChangesAsync();
         }
     }

@@ -113,14 +113,16 @@
                     <div class="team-name">
                         <a href="#" class="team">
                             <div class="icon"><i class="fas fa-tags"></i></div>
-                            <h5>aaaaaaaaaaaaaaaaaaa   @Html.DisplayFor(model => model.Project.Email)</h5>
+                            <h5>aaaaaaaaaaaaaaaaaaa</h5>
                         </a>
                     </div>
                     <div class="action">
                         <a href="#" class="comment">32 Comments</a>
                         <a href="#" class="edit">Edit</a>
                         <a href="#" class="invite"><i class="fas fa-user-plus mr-5"></i>Invite People</a>
-                        <a href="#" class="add">New<i class="fas fa-caret-down pl-12"></i></a>
+                        @*<a href="#" class="add">New<i class="fas fa-caret-down pl-12"></i></a>*@
+                        <a href="/ProjectUploadedFiles/Index?id=@Model.Project.Id">Files Attachments</a>
+
                     </div>
                   
                 <div class="divider"></div>
