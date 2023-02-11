@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PMS.DataEF.Data.Migrations
+namespace PMS.DataEF.Migrations
 {
-    public partial class InitDatabase : Migration
+    public partial class MyFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,18 +82,6 @@ namespace PMS.DataEF.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProjectTasks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProjectTasks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -350,6 +338,26 @@ namespace PMS.DataEF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ConversationUploadedFiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    File = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConversationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConversationUploadedFiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConversationUploadedFiles_Conversations_ConversationId",
+                        column: x => x.ConversationId,
+                        principalTable: "Conversations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ConversationUsers",
                 columns: table => new
                 {
@@ -422,6 +430,49 @@ namespace PMS.DataEF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProjectTasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProjectTasks_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectUploadedFiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    File = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateModified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectUploadedFiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProjectUploadedFiles_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProjectUsers",
                 columns: table => new
                 {
@@ -443,6 +494,25 @@ namespace PMS.DataEF.Data.Migrations
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Priority",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    ColorCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProjectTaskId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_Priority_ProjectTasks_ProjectTaskId",
+                        column: x => x.ProjectTaskId,
+                        principalTable: "ProjectTasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -490,6 +560,11 @@ namespace PMS.DataEF.Data.Migrations
                 column: "AdminId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ConversationUploadedFiles_ConversationId",
+                table: "ConversationUploadedFiles",
+                column: "ConversationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ConversationUsers_ConversationId",
                 table: "ConversationUsers",
                 column: "ConversationId");
@@ -520,6 +595,11 @@ namespace PMS.DataEF.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Priority_ProjectTaskId",
+                table: "Priority",
+                column: "ProjectTaskId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProjectComments_ProjectId",
                 table: "ProjectComments",
                 column: "ProjectId");
@@ -528,6 +608,16 @@ namespace PMS.DataEF.Data.Migrations
                 name: "IX_Projects_CreatorId",
                 table: "Projects",
                 column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectTasks_ProjectId",
+                table: "ProjectTasks",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectUploadedFiles_ProjectId",
+                table: "ProjectUploadedFiles",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectUsers_ProjectId",
@@ -558,6 +648,9 @@ namespace PMS.DataEF.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ConversationUploadedFiles");
+
+            migrationBuilder.DropTable(
                 name: "ConversationUsers");
 
             migrationBuilder.DropTable(
@@ -570,13 +663,16 @@ namespace PMS.DataEF.Data.Migrations
                 name: "Permissions");
 
             migrationBuilder.DropTable(
+                name: "Priority");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
                 name: "ProjectComments");
 
             migrationBuilder.DropTable(
-                name: "ProjectTasks");
+                name: "ProjectUploadedFiles");
 
             migrationBuilder.DropTable(
                 name: "ProjectUsers");
@@ -601,6 +697,9 @@ namespace PMS.DataEF.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Functions");
+
+            migrationBuilder.DropTable(
+                name: "ProjectTasks");
 
             migrationBuilder.DropTable(
                 name: "Projects");

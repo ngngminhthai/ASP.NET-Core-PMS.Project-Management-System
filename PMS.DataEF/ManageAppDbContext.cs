@@ -39,6 +39,7 @@ namespace WebApplication1.Data
             builder.ApplyConfiguration(new ConversationEntityConfiguration());
             builder.ApplyConfiguration(new MessageEntityConfiguration());
             builder.ApplyConfiguration(new ProjectUserEntityConfiguration());
+            builder.ApplyConfiguration(new PriorityEntityConfiguration());
 
             #region Configurations
             /*builder.Entity<IdentityRole>().Property(x => x.Id).HasMaxLength(50).IsRequired(true);

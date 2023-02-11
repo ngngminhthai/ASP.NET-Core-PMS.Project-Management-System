@@ -1,9 +1,12 @@
-﻿public class Priority
+﻿using WebApplication1.Data.Entities.ProjectAggregate;
+
+public class Priority
 {
     public string Name { get; private set; }
     public int Level { get; private set; }
     public string ColorCode { get; private set; }
 
+    public ProjectTask ProjectTask { get; set; }
     public Priority(string name, int level, string colorCode)
     {
         Name = name;

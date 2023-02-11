@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
-namespace PMS.DataEF.Data.Migrations
+namespace PMS.DataEF.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
     partial class ManageAppDbContextModelSnapshot : ModelSnapshot
@@ -224,6 +224,25 @@ namespace PMS.DataEF.Data.Migrations
                     b.HasIndex("UserUploadedId");
 
                     b.ToTable("UploadedFiles");
+                });
+
+            modelBuilder.Entity("Priority", b =>
+                {
+                    b.Property<string>("ColorCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProjectTaskId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ProjectTaskId");
+
+                    b.ToTable("Priority");
                 });
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ConversationAggregate.Conversation", b =>
@@ -469,7 +488,18 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectTasks");
                 });
@@ -672,6 +702,15 @@ namespace PMS.DataEF.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Priority", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", "ProjectTask")
+                        .WithMany()
+                        .HasForeignKey("ProjectTaskId");
+
+                    b.Navigation("ProjectTask");
+                });
+
             modelBuilder.Entity("WebApplication1.Data.Entities.ConversationAggregate.Conversation", b =>
                 {
                     b.HasOne("WebApplication1.Data.Entities.ManageUser", "Admin")
@@ -729,6 +768,17 @@ namespace PMS.DataEF.Data.Migrations
                     b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
+                        .WithMany("ProjectTasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Project");
                 });
@@ -792,6 +842,8 @@ namespace PMS.DataEF.Data.Migrations
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.Project", b =>
                 {
+                    b.Navigation("ProjectTasks");
+
                     b.Navigation("ProjectUploadedFiles");
 
                     b.Navigation("ProjectUsers");

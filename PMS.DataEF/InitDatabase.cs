@@ -82,6 +82,14 @@ namespace PMS.DataEF.Repositories
             {
                 var user1 = await _userManager.FindByNameAsync("emlasieunhan118@gmail.com");
                 var user2 = await _userManager.FindByNameAsync("emlasieunhan117@gmail.com");
+
+                List<ProjectTask> projects1Tasks = new List<ProjectTask>
+                {
+                    new ProjectTask{Name = "Project Task 1", Description = "Project Task 1", Priority = Priority.Low},
+                    new ProjectTask{Name = "Project Task 2", Description = "Project Task 2", Priority = Priority.High},
+                    new ProjectTask{Name = "Project Task 3", Description = "Project Task 3", Priority = Priority.Medium}
+                };
+
                 List<Project> projects = new List<Project>()
 
                 {
@@ -91,7 +99,7 @@ namespace PMS.DataEF.Repositories
                        new ProjectUploadedFile{File = "20230207182543323dienthoai.jpg"},
                    }
                 },
-                   new Project{Name= "vip", Description = "asdad asdasd adadsd adasdasd adasd asdasdas", Creator = user2  },
+                   new Project{Name= "vip", Description = "asdad asdasd adadsd adasdasd adasd asdasdas", Creator = user2, ProjectTasks = projects1Tasks },
                    new Project{Name= "adu", Description = "adu adu adu adu adu adu adu adu adu adu", Creator = user2  },
                    new Project{Name= "promax", Description = "aa aaa aaa aaa aaa aaa aaa aaaaa aaaaa  aaaaa a aa aaaa aa aaa", Creator = user2  }
                 };

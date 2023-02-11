@@ -11,5 +11,6 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public ManageUser Creator { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
         public ICollection<ProjectUploadedFile> ProjectUploadedFiles { get; set; }
+        public ICollection<ProjectTask> ProjectTasks { get; set; }
     }
 }
