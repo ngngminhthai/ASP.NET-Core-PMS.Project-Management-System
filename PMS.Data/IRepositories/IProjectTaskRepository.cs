@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PMS.Infrastructure.SharedKernel;
+using WebApplication1.Data.Entities.ProjectAggregate;
 
 namespace PMS.Data.IRepositories
 {
-    internal class IProjectTaskRepository
+    public interface IProjectTaskRepository : IRepository<ProjectTask, int>
     {
+
     }
 }

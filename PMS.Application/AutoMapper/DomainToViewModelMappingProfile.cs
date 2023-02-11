@@ -15,6 +15,8 @@ namespace WebApplication1.AutoMapper
             CreateMap<Project, ProjectViewModel>().ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Creator.Email));
 
             CreateMap<ProjectUploadedFile, ProjectUploadedFileViewModel>();
+
+            CreateMap<ProjectTask, ProjectTaskViewModel>();
         }
     }
 }

@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using WebApplication1.Data;
-using WebApplication1.Data.Entities.ProjectAggregate;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using PMS.Application.Services;
+using PMS.Application.ViewModels;
+using WebApplication1.RequestHelpers;
 
 namespace PMS.Pages.ProjectTasks
 {
     public class IndexModel : PageModel
     {
-        private readonly WebApplication1.Data.ManageAppDbContext _context;
+        private readonly IProjectTaskService projectTaskService;
+        public PaginationParams paginationParams { get; set; } = new PaginationParams();
 
-        public IndexModel(WebApplication1.Data.ManageAppDbContext context)
+        public IndexModel(IProjectTaskService projectTaskService)
         {
-            _context = context;
+            this.projectTaskService = projectTaskService;
         }
 
-        public IList<ProjectTask> ProjectTask { get;set; }
+        public PagedList<ProjectTaskViewModel> ProjectTask { get; set; }
 
-        public async Task OnGetAsync()
+        public void OnGetAsync(string? search, int p = 1, int s = 3)
         {
-            ProjectTask = await _context.ProjectTasks
-                .Include(p => p.Project).ToListAsync();
+            ProjectTask = projectTaskService.GetAllWithPagination("", p, s);
+
+            paginationParams.PageSize = s;
+            paginationParams.PageNumber = p;
+            paginationParams.Total = ProjectTask.MetaData.TotalCount;
         }
     }
 }

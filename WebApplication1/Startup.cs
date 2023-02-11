@@ -143,6 +143,11 @@ namespace WebApplication1
             services.AddTransient<IProjectUploadedFileRepository, ProjectUploadedFileRepository>();
             services.AddTransient<IProjectUploadedFileService, ProjectUploadedFileService>();
 
+            services.AddTransient<IProjectTaskRepository, ProjectTaskRepository>();
+            services.AddTransient<IProjectTaskService, ProjectTaskService>();
+
+
+
             #endregion
             services.AddMvc()
              .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts =>

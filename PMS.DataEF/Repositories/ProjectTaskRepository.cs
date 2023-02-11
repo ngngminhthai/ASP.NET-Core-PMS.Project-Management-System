@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PMS.Data.IRepositories;
+using WebApplication1.Data;
+using WebApplication1.Data.Entities.ProjectAggregate;
 
 namespace PMS.DataEF.Repositories
 {
-    internal class ProjectTaskRepository
+    public class ProjectTaskRepository : EFRepository<ProjectTask, int>, IProjectTaskRepository
     {
+        public ProjectTaskRepository(ManageAppDbContext context) : base(context)
+        {
+        }
     }
 }
