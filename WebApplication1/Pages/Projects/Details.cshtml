@@ -40,7 +40,7 @@
                         <div class="box-body">
                             <ul class="list">
                                 <li class="d-flex no-seen">
-                                    <div class="img-mess"><img class="mr-14" src="./images/avatar/avt-1.png" alt="avt"></div>
+                                    <div class="img-mess"><img class="mr-14" src="/images/avatar/avt-1.png" alt="avt"></div>
                                     <div class="info">
                                         <a href="#" class="font-w600 mb-0 color-primary">Elizabeth Holland</a>
                                         <p class="pb-0 mb-0 line-h14 mt-6">Proin ac quam et lectus vestibulum</p>
@@ -48,7 +48,7 @@
                                 </li>
 
                                 <li class="d-flex">
-                                    <div class="img-mess"><img class="mr-14" src="./images/avatar/avt-1.png" alt="avt"></div>
+                                    <div class="img-mess"><img class="mr-14" src="/images/avatar/avt-1.png" alt="avt"></div>
                                     <div class="info">
                                         <a href="#" class="font-w600 mb-0 color-primary">Elizabeth Holland</a>
                                         <p class="pb-0 mb-0 line-h14 mt-6">Proin ac quam et lectus vestibulum</p>
@@ -114,13 +114,16 @@
                         <a href="#" class="team">
                             <div class="icon"><i class="fas fa-tags"></i></div>
                             <h5>@Html.DisplayFor(model => model.Project.Email)</h5>
+                            <h5>aaaaaaaaaaaaaaaaaaa</h5>
                         </a>
                     </div>
                     <div class="action">
                         <a href="#" class="comment">32 Comments</a>
                         <a href="#" class="edit">Edit</a>
                         <a href="#" class="invite"><i class="fas fa-user-plus mr-5"></i>Invite People</a>
-                        <a href="#" class="add">New<i class="fas fa-caret-down pl-12"></i></a>
+                        @*<a href="#" class="add">New<i class="fas fa-caret-down pl-12"></i></a>*@
+                        <a href="/ProjectUploadedFiles/Index?id=@Model.Project.Id">Files Attachments</a>
+
                     </div>
                   
                 <div class="divider"></div>

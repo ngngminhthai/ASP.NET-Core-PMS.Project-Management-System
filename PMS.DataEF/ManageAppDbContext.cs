@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PMS.Data.Entities.ConversationAggregate;
+using PMS.Data.Entities.ProjectAggregate;
 using PMS.Data.Entities.UserAggregate;
 using PMS.DataEF.EntityConfigurations;
 using PMS.Infrastructure.Interfaces;
@@ -37,6 +39,7 @@ namespace WebApplication1.Data
             builder.ApplyConfiguration(new ConversationEntityConfiguration());
             builder.ApplyConfiguration(new MessageEntityConfiguration());
             builder.ApplyConfiguration(new ProjectUserEntityConfiguration());
+            builder.ApplyConfiguration(new PriorityEntityConfiguration());
 
             #region Configurations
             /*builder.Entity<IdentityRole>().Property(x => x.Id).HasMaxLength(50).IsRequired(true);
@@ -89,11 +92,13 @@ namespace WebApplication1.Data
         public DbSet<ManageUser> ManageUsers { get; set; }
         public DbSet<ConversationUser> ConversationUsers { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<ConversationUploadedFile> ConversationUploadedFiles { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<ProjectUser> ProjectUsers { get; set; }
         public DbSet<ProjectComment> ProjectComments { get; set; }
+        public DbSet<ProjectUploadedFile> ProjectUploadedFiles { get; set; }
         public DbSet<UserCalendar> UserCalendars { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Ticket> Tickets { get; set; }

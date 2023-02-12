@@ -13,13 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 Infrastructure", "4 Infra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 Domain", "3 Domain", "{1D67AE1C-2386-4148-B7E6-FE3A43B3A8FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Application", "PMS.Application\PMS.Application.csproj", "{DEA3A3E1-CAE5-4010-8C34-27320F7EA3AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Application", "PMS.Application\PMS.Application.csproj", "{DEA3A3E1-CAE5-4010-8C34-27320F7EA3AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Data", "PMS.Data\PMS.Data.csproj", "{ED9CA681-8493-41B8-8EA1-B264D01824BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Data", "PMS.Data\PMS.Data.csproj", "{ED9CA681-8493-41B8-8EA1-B264D01824BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.DataEF", "PMS.DataEF\PMS.DataEF.csproj", "{2DC4822D-4898-4592-BFA7-353F34095D27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.DataEF", "PMS.DataEF\PMS.DataEF.csproj", "{2DC4822D-4898-4592-BFA7-353F34095D27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Infrastructure", "PMS.Infrastructure\PMS.Infrastructure.csproj", "{E210EEB2-3FD2-45BB-8C5D-16AFF6D474F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Infrastructure", "PMS.Infrastructure\PMS.Infrastructure.csproj", "{E210EEB2-3FD2-45BB-8C5D-16AFF6D474F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

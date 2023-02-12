@@ -1,36 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Serialization;
-using PMS.Application.CQRS.Projects;
-using PMS.Application.Implementations;
-using PMS.Application.Products;
-using PMS.Application.Services;
-using PMS.Data.IRepositories;
-using PMS.DataEF.Repositories;
-using PMS.Infrastructure.SharedKernel;
-using PMS.Services;
-using PMS.Services.Implementations;
-using System.Collections.Generic;
-using System.Globalization;
-using WebApplication1.AutoMapper;
-using WebApplication1.Data;
-using WebApplication1.Data.Entities;
-using WebApplication1.Hubs;
-using WebApplication1.IdentityServer;
-using WebApplication1.Services;
-
-
-namespace WebApplication1
+﻿namespace WebApplication1
 {
     public class Startup
     {
@@ -137,9 +105,19 @@ namespace WebApplication1
             services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
             services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
 
+
             // project
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectService, ProjectService>();
+
+            services.AddTransient<IProjectUploadedFileRepository, ProjectUploadedFileRepository>();
+            services.AddTransient<IProjectUploadedFileService, ProjectUploadedFileService>();
+
+            services.AddTransient<IProjectTaskRepository, ProjectTaskRepository>();
+            services.AddTransient<IProjectTaskService, ProjectTaskService>();
+
+
+
             services.AddTransient<IProjectCommentRepository, ProjectCommentRepository>();
             services.AddTransient<IProjectCommentService, ProjectCommentService>();
             services.AddTransient<IProjectCommentService, ProjectCommentService>();

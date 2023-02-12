@@ -1,0 +1,50 @@
+﻿@page
+@model PMS.Pages.Projects.ProjectUploadedFiles.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ProjectUploadedFile</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProjectUploadedFile.File" class="control-label"></label>
+                <input asp-for="ProjectUploadedFile.File" class="form-control" />
+                <span asp-validation-for="ProjectUploadedFile.File" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectUploadedFile.ProjectId" class="control-label"></label>
+                <select asp-for="ProjectUploadedFile.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                <span asp-validation-for="ProjectUploadedFile.ProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectUploadedFile.DateCreated" class="control-label"></label>
+                <input asp-for="ProjectUploadedFile.DateCreated" class="form-control" />
+                <span asp-validation-for="ProjectUploadedFile.DateCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectUploadedFile.DateModified" class="control-label"></label>
+                <input asp-for="ProjectUploadedFile.DateModified" class="form-control" />
+                <span asp-validation-for="ProjectUploadedFile.DateModified" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="ProjectUploadedFile.Id" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
