@@ -91,6 +91,20 @@ namespace PMS.DataEF.Repositories
                 };
                 _context.Projects.AddRange(projects);
             }
+            if (_context.ProjectComments.Count() == 0)
+            {
+                var user1 = await _userManager.FindByNameAsync("emlasieunhan118@gmail.com");
+                var project1 = _context.Projects.Where(p => p.Name.Equals("Singleton")).FirstOrDefault();
+                List<ProjectComment> projectComment = new List<ProjectComment>()
+
+                {
+                   new ProjectComment{Project= project1, Author = user1 ,NumberOfLike =1
+                   ,Content = "Singleton is a creational design pattern that lets you ensure that a class has only one instance, while providing a global access point to this instance."
+                   , level=0  },
+
+                };
+                _context.ProjectComments.AddRange(projectComment);
+            }
             await _context.SaveChangesAsync();
         }
     }

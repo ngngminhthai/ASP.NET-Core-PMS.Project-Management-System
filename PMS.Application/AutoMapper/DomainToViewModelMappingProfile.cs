@@ -11,6 +11,7 @@ namespace WebApplication1.AutoMapper
         {
             CreateMap<Product, ProductViewModel>();
             CreateMap<Project, ProjectViewModel>().ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Creator.Email));
+            CreateMap<ProjectComment, ProjectCommentViewModel>().ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.UserName));
         }
     }
 }

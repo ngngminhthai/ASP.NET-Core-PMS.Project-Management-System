@@ -27,6 +27,7 @@ namespace PMS.Application.Products
 
             public Task<PagedList<ProductViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
+
                 return Task.FromResult(productService.GetAllWithPagination(request.SearchTerm, request.PageIndex, request.PageSize));
             }
         }

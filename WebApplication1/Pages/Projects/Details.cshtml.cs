@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using PMS.Application.CQRS.Projects;
+using PMS.Application.CQRS.Projects.Comments;
 using PMS.Pages.Shared;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApplication1.Models;
 
@@ -15,37 +16,36 @@ namespace PMS.Pages.Projects
             _context = context;
         }
         public ProjectViewModel Project { get; set; }
+        public List<ProjectCommentViewModel> ListComment { get; set; }
 
-        public async Task OnGetAsync(int id)
+        public async Task OnGetAsync(int id, string? search, int p = 1, int s = 3)
         {
 
-            var project = _context.Projects.Include(x => x.Creator).FirstOrDefault(x => x.Id == id);
-            Project = new ProjectViewModel { Id = project.Id, Description = project.Description, Name = project.Name, Email = project.Creator.Email };
+            Project = await Mediator.Send(new GetProjectDetail.Query { ProjectId = id });
+            ListComment = await Mediator.Send(new ListProjectComment.Query { SearchTerm = search, PageIndex = p, PageSize = s, ProjectId = id });
+            if (ListComment != null)
+            {
+                Project.ListComment = ListComment;
+                await NestedComment(ListComment);
+            }
 
 
         }
-        //public async Task<ProjectViewModel> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return null;
-        //    }
-        //    var project = await Mediator.Send(new GetProjectDetail.Query { ProjectId = id });
-        //    if (project == null)
-        //    {
-        //        return null;
-        //    }
-        //    var passedProduct = Mapper.Map<Project>(project);
-        //    return passedProduct;
-        //}
-        //public async Task<ProjectViewModel> GetProjectDetail(int id)
-        //{
-        //    var result = await Mediator.Send(new GetProjectDetail.Query()
-        //    {
-        //        ProjectId = id,
-        //    });
+        public async Task<List<ProjectCommentViewModel>> NestedComment(List<ProjectCommentViewModel> listChildComment)
+        {
 
-        //    return result;
-        //}
+            if (listChildComment != null)
+            {
+
+                foreach (ProjectCommentViewModel comment in listChildComment)
+                {
+                    var list = await Mediator.Send(new GetListChildComment.Query { ParentId = comment.Id });
+                    comment.ChildComments = await NestedComment(list);
+                }
+                return listChildComment;
+            }
+            return null;
+
+        }
     }
 }
