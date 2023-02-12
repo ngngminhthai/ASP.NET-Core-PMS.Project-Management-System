@@ -1,10 +1,4 @@
-﻿using PMS.Data.Entities.ProjectAggregate;
-using PMS.Infrastructure.Interfaces;
-using PMS.Infrastructure.SharedKernel;
-using System;
-using System.Collections.Generic;
-
-namespace WebApplication1.Data.Entities.ProjectAggregate
+﻿namespace WebApplication1.Data.Entities.ProjectAggregate
 {
     public class Project : DomainEntity<int>, IDateTimeStamp
     {
@@ -16,5 +10,6 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public ICollection<ProjectTask> ProjectTasks { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public ICollection<ProjectComment> ProjectComments { get; set; }
     }
 }

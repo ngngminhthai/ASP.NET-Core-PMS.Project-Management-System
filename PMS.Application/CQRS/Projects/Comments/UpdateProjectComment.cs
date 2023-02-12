@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PMS.DataEF.EntityConfigurations
+namespace PMS.Application.CQRS.Projects.Comments
 {
-    internal class NestedCommentEntityConfiguration
+    internal class UpdateProjectComment
     {
     }
 }

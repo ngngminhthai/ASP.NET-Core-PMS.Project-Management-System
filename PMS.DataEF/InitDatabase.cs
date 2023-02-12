@@ -1,13 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using PMS.Data.Entities.ProjectAggregate;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApplication1.Data;
-using WebApplication1.Data.Entities;
-using WebApplication1.Data.Entities.ProjectAggregate;
-
-namespace PMS.DataEF.Repositories
+﻿namespace PMS.DataEF.Repositories
 {
     public class InitDatabase
     {
@@ -108,6 +99,20 @@ namespace PMS.DataEF.Repositories
 
 
 
+            if (_context.ProjectComments.Count() == 0)
+            {
+                var user1 = await _userManager.FindByNameAsync("emlasieunhan118@gmail.com");
+                var project1 = _context.Projects.Where(p => p.Name.Equals("Singleton")).FirstOrDefault();
+                List<ProjectComment> projectComment = new List<ProjectComment>()
+
+                {
+                   new ProjectComment{Project= project1, Author = user1 ,NumberOfLike =1
+                   ,Content = "Singleton is a creational design pattern that lets you ensure that a class has only one instance, while providing a global access point to this instance."
+                   , level=0  },
+
+                };
+                _context.ProjectComments.AddRange(projectComment);
+            }
             await _context.SaveChangesAsync();
         }
     }

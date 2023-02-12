@@ -2,23 +2,24 @@
 
 namespace PMS.DataEF.Data.Migrations
 {
-    public partial class P1 : Migration
+    public partial class TestProp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "PriorityValue",
-                table: "ProjectTasks",
-                type: "int",
+            migrationBuilder.AddColumn<string>(
+                name: "TestProperty",
+                table: "Products",
+                type: "nvarchar(3)",
+                maxLength: 3,
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: "");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PriorityValue",
-                table: "ProjectTasks");
+                name: "TestProperty",
+                table: "Products");
         }
     }
 }
