@@ -1,0 +1,46 @@
+﻿@page 
+@model PMS.Pages.Projects.ProjectUploadedFiles.IndexModel
+
+@{
+    ViewData["Title"] = "Attachments";
+}
+
+
+<div class="main-content">
+    <div class="box card-box">
+        <p>
+            <a class="f-75" asp-page="Create" asp-route-id="@Model.ProjectId" >Upload new file</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProjectUploadedFile[0].File)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProjectUploadedFile[0].DateCreated)
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ProjectUploadedFile)
+                {
+                    <tr>
+                        <td>
+                            <a href="/DownloadFile/DownloadFile?fileName=@item.File"> @Html.DisplayFor(modelItem => item.File)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateCreated)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+

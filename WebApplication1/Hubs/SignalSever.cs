@@ -28,35 +28,38 @@ namespace WebApplication1.Hubs
                 var conversation = _context.ConversationUsers.Where(c => c.UserId == user.Id).ToList().FirstOrDefault();
                 System.Console.WriteLine(conversation);
 
-
-                if (!_groups.ContainsKey("g" + conversation.ConversationId))
+                if (_groups != null)
                 {
-                    await Groups.AddToGroupAsync(Context.ConnectionId, "g" + conversation.ConversationId);
-                    _groups.Add("g" + conversation.ConversationId, new List<string>
-                {
-                    Context.ConnectionId
-                });
 
+                    if (!_groups.ContainsKey("g" + conversation.ConversationId))
+                    {
+                        await Groups.AddToGroupAsync(Context.ConnectionId, "g" + conversation.ConversationId);
+                        _groups.Add("g" + conversation.ConversationId, new List<string>
+                        {
+                            Context.ConnectionId
+                         });
+
+                    }
+                    else
+                    {
+                        await Groups.AddToGroupAsync(Context.ConnectionId, "g" + conversation.ConversationId);
+                        _groups["g" + conversation.ConversationId].Add(Context.ConnectionId);
+                    }
+
+
+                    /*  if (MyEmail != null)
+                      {
+
+                          string connectionId = Context.ConnectionId;
+
+                          if (!_users.ContainsKey(email))
+                              _users.Add(email, connectionId);
+
+
+                      }*/
+
+                    await base.OnConnectedAsync();
                 }
-                else
-                {
-                    await Groups.AddToGroupAsync(Context.ConnectionId, "g" + conversation.ConversationId);
-                    _groups["g" + conversation.ConversationId].Add(Context.ConnectionId);
-                }
-
-
-                /*  if (MyEmail != null)
-                  {
-
-                      string connectionId = Context.ConnectionId;
-
-                      if (!_users.ContainsKey(email))
-                          _users.Add(email, connectionId);
-
-
-                  }*/
-
-                await base.OnConnectedAsync();
             }
         }
 

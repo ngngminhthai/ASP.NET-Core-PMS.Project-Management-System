@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using PMS.Application.CQRS.Projects;
 using PMS.Pages.Shared;
-using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Models;
 
@@ -19,8 +18,7 @@ namespace PMS.Pages.Projects
         public async Task OnGetAsync(int id)
         {
 
-            var project = _context.Projects.Include(x => x.Creator).FirstOrDefault(x => x.Id == id);
-            Project = new ProjectViewModel { Id = project.Id, Description = project.Description, Name = project.Name, Email = project.Creator.Email };
+            Project = await Mediator.Send(new GetProjectDetail.Query { ProjectId = id });
 
 
         }

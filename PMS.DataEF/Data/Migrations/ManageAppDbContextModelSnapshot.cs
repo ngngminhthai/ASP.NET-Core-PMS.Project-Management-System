@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
-namespace PMS.DataEF.Data.Migrations
+namespace PMS.DataEF.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
     partial class ManageAppDbContextModelSnapshot : ModelSnapshot
@@ -157,6 +157,52 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("PMS.Data.Entities.ConversationAggregate.ConversationUploadedFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("File")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.ToTable("ConversationUploadedFiles");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectUploadedFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("File")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectUploadedFiles");
+                });
+
             modelBuilder.Entity("PMS.Data.Entities.UserAggregate.UploadedFiles", b =>
                 {
                     b.Property<int>("Id")
@@ -178,6 +224,20 @@ namespace PMS.DataEF.Data.Migrations
                     b.HasIndex("UserUploadedId");
 
                     b.ToTable("UploadedFiles");
+                });
+
+            modelBuilder.Entity("Priority", b =>
+                {
+                    b.Property<string>("ColorCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Priority");
                 });
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ConversationAggregate.Conversation", b =>
@@ -362,7 +422,6 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TestProperty")
-                        .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
@@ -381,8 +440,17 @@ namespace PMS.DataEF.Data.Migrations
                     b.Property<string>("CreatorId")
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -421,7 +489,30 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PriorityValue")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WorkingStatusValue")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectTasks");
                 });
@@ -593,6 +684,28 @@ namespace PMS.DataEF.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PMS.Data.Entities.ConversationAggregate.ConversationUploadedFile", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ConversationAggregate.Conversation", "Conversation")
+                        .WithMany()
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectUploadedFile", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
+                        .WithMany("ProjectUploadedFiles")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("PMS.Data.Entities.UserAggregate.UploadedFiles", b =>
                 {
                     b.HasOne("WebApplication1.Data.Entities.ManageUser", "User")
@@ -663,6 +776,17 @@ namespace PMS.DataEF.Data.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
+                        .WithMany("ProjectTasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectUser", b =>
                 {
                     b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
@@ -722,6 +846,10 @@ namespace PMS.DataEF.Data.Migrations
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.Project", b =>
                 {
+                    b.Navigation("ProjectTasks");
+
+                    b.Navigation("ProjectUploadedFiles");
+
                     b.Navigation("ProjectUsers");
                 });
 #pragma warning restore 612, 618

@@ -39,7 +39,7 @@ namespace PMS.Application.Implementations
 
         public ProjectViewModel GetById(int id)
         {
-            return Mapper.Map<ProjectViewModel>(projectRepository.FindById(id));
+            return Mapper.Map<ProjectViewModel>(projectRepository.FindById(id, p => p.Creator));
         }
 
         public void Save()
@@ -53,9 +53,9 @@ namespace PMS.Application.Implementations
             projectRepository.Update(Project);
         }
 
-        public PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize)
+        public PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string email)
         {
-            var query = projectRepository.FindAll();
+            var query = projectRepository.FindAll().Where(p => p.Creator.Email == email);
             return PagedList<ProjectViewModel>.ToPagedList(query.ProjectTo<ProjectViewModel>(), page, pageSize);
         }
 

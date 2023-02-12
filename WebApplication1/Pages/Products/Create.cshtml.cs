@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PMS.Application.ViewModels;
 using PMS.Services;
 using System.Threading.Tasks;
 using WebApplication1.Data.Entities;
@@ -29,11 +30,13 @@ namespace PMS.Pages
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync(IFormFile file)
         {
+            Product.TestProperty = "123";
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            var filePath = await _fileUploadService.UploadFile(file);
+            UploadedFileViewModel uploadedFileViewModel = new UploadedFileViewModel { UploaderName = HttpContext.User.Identity.Name, UploadedPosition = Data.Enums.UploadedPosition.Project };
+            var filePath = await _fileUploadService.UploadFile(file, uploadedFileViewModel);
             Product.Image = filePath;
             _context.Products.Add(Product);
             await _context.SaveChangesAsync();

@@ -2722,7 +2722,7 @@ body.dark .search-form {
     }
 }
 
-button.search {
+button.search, a.search {
     height: 50px;
     color: #fff;
     background: var(--main-color);
@@ -2732,6 +2732,11 @@ button.search {
     align-items: center;
     padding: 0 37px 0 38px;
     transition: all .3s ease;
+    margin-right: 1%;
+}
+
+a.search{
+    white-space: nowrap;
 }
 
 button.search:hover {
@@ -5161,4 +5166,9 @@ body.dark .notification-list .list .no-seen {
 
 .custom-scroll {
     height: 100%
+}
+
+.work-status:hover{
+    user-select: none;
+    cursor: pointer
 }

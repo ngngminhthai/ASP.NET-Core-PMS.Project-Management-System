@@ -3,7 +3,6 @@
     public string Name { get; private set; }
     public int Level { get; private set; }
     public string ColorCode { get; private set; }
-
     public Priority(string name, int level, string colorCode)
     {
         Name = name;

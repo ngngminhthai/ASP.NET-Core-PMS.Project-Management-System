@@ -100,14 +100,15 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id,Name,Price,Description")] Product product, IFormFile file)
         {
-            if (ModelState.IsValid)
-            {
-                var filePath = await _fileUploadService.UploadFile(file);
-                product.Image = filePath;
-                //await Mediator.Send(new CreateProduct.Command { Product = product });
-                await _signalrHub.Clients.All.SendAsync("LoadProducts");
-                return RedirectToAction(nameof(Index));
-            }
+            /*   var userName = HttpContext.User.Identity.Name;
+               if (ModelState.IsValid)
+               {
+                   var filePath = await _fileUploadService.UploadFile(file, userName);
+                   product.Image = filePath;
+                   //await Mediator.Send(new CreateProduct.Command { Product = product });
+                   await _signalrHub.Clients.All.SendAsync("LoadProducts");
+                   return RedirectToAction(nameof(Index));
+               }*/
             return View(product);
         }
 
