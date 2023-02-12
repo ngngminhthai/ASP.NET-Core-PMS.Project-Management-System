@@ -5167,3 +5167,8 @@ body.dark .notification-list .list .no-seen {
 .custom-scroll {
     height: 100%
 }
+
+.work-status:hover{
+    user-select: none;
+    cursor: pointer
+}

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PMS.Application.Services;
+using System.Linq;
+using System.Threading.Tasks;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities.ProjectAggregate;
 
@@ -13,10 +12,12 @@ namespace PMS.Pages.ProjectTasks
 {
     public class EditModel : PageModel
     {
-        private readonly WebApplication1.Data.ManageAppDbContext _context;
+        private readonly IProjectTaskService projectTaskService;
+        private readonly ManageAppDbContext _context;
 
-        public EditModel(WebApplication1.Data.ManageAppDbContext context)
+        public EditModel(IProjectTaskService projectTaskService, ManageAppDbContext context)
         {
+            this.projectTaskService = projectTaskService;
             _context = context;
         }
 
@@ -37,8 +38,14 @@ namespace PMS.Pages.ProjectTasks
             {
                 return NotFound();
             }
-           ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
             return Page();
+        }
+
+        public IActionResult OnGetUpdateStatus(int id, int workStatus)
+        {
+            projectTaskService.UpdateStatus(id, workStatus);
+            return RedirectToPage("/ProjectTasks/Index");
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.

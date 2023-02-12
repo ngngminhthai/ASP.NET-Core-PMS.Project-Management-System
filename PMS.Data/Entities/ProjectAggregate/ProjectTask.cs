@@ -1,4 +1,5 @@
-﻿using PMS.Infrastructure.Interfaces;
+﻿using PMS.Data.Entities.ValueObjects;
+using PMS.Infrastructure.Interfaces;
 using PMS.Infrastructure.SharedKernel;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,6 +22,15 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         }
 
         public int PriorityValue { get; set; }
+
+        [NotMapped]
+        public WorkingStatus WorkingStatus
+        {
+            get => WorkingStatusValue == 1 ? WorkingStatus.Done :
+                   WorkingStatusValue == 2 ? WorkingStatus.InProgress : WorkingStatus;
+            set => WorkingStatus = value;
+        }
+        public int WorkingStatusValue { get; set; }
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }

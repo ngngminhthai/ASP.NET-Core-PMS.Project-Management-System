@@ -85,9 +85,9 @@ namespace PMS.DataEF.Repositories
 
                 List<ProjectTask> projects1Tasks = new List<ProjectTask>
                 {
-                    new ProjectTask{Name = "Project Task 1", Description = "Project Task 1", PriorityValue = 1},
-                    new ProjectTask{Name = "Project Task 2", Description = "Project Task 2", PriorityValue = 2},
-                    new ProjectTask{Name = "Project Task 3", Description = "Project Task 3", PriorityValue = 3}
+                    new ProjectTask{Name = "Project Task 1", Description = "Project Task 1", PriorityValue = 1, WorkingStatusValue = 1},
+                    new ProjectTask{Name = "Project Task 2", Description = "Project Task 2", PriorityValue = 2, WorkingStatusValue = 2},
+                    new ProjectTask{Name = "Project Task 3", Description = "Project Task 3", PriorityValue = 3, WorkingStatusValue = 1}
                 };
 
                 List<Project> projects = new List<Project>()
