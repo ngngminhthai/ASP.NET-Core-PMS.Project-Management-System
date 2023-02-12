@@ -1,4 +1,11 @@
-﻿namespace PMS.Pages.Projects
+﻿using PMS.Application.CQRS.Projects;
+using PMS.Application.CQRS.Projects.Comments;
+using PMS.Pages.Shared;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WebApplication1.Models;
+
+namespace PMS.Pages.Projects
 {
     public class DetailsModel : BasePageModel
     {
