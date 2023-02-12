@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
-namespace PMS.DataEF.Migrations
+namespace PMS.DataEF.Data.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
     partial class ManageAppDbContextModelSnapshot : ModelSnapshot
@@ -869,6 +869,12 @@ namespace PMS.DataEF.Migrations
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.Project", b =>
                 {
+                    b.Navigation("ProjectComments");
+
+                    b.Navigation("ProjectTasks");
+
+                    b.Navigation("ProjectUploadedFiles");
+
                     b.Navigation("ProjectUsers");
                 });
 #pragma warning restore 612, 618
