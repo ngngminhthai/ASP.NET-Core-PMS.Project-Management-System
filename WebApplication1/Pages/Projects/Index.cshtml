@@ -75,6 +75,13 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-7">
+        <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
+            <ul id="paginationUL"></ul>
+        </div>
+    </div>
 </div>
 
-<paging class="pagination" total-records="@Model.paginationParams.Total" show-total-pages="false" show-total-records="false" page-size="@Model.paginationParams.PageSize" page-no="@Model.paginationParams.PageNumber"></paging>
+<script src="~/js/project/comment/site.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>

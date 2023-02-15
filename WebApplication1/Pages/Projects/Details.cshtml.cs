@@ -1,4 +1,5 @@
-﻿using PMS.Application.CQRS.Projects;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using PMS.Application.CQRS.Projects;
 using PMS.Application.CQRS.Projects.Comments;
 using PMS.Pages.Shared;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace PMS.Pages.Projects
         public ProjectViewModel Project { get; set; }
         public List<ProjectCommentViewModel> ListComment { get; set; }
 
+        public string getUrl { get; set; }
         public async Task OnGetAsync(int id, string? search, int p = 1, int s = 3)
         {
 
@@ -33,7 +35,8 @@ namespace PMS.Pages.Projects
         }
         public async Task<List<ProjectCommentViewModel>> NestedComment(List<ProjectCommentViewModel> listChildComment)
         {
-
+            string currentUrl = HttpContext.Request.GetDisplayUrl();
+            getUrl = currentUrl.Substring(currentUrl.IndexOf("id"));
             if (listChildComment != null)
             {
 
