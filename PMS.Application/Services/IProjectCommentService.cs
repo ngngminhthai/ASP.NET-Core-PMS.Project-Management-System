@@ -9,7 +9,7 @@ namespace PMS.Application.Services
     {
         void Add(ProjectComment comment);
         public List<ProjectCommentViewModel> GetChildComments(int parentId);
-        PagedList<ProjectCommentViewModel> GetAllWithPagination(string keyword, int page, int pageSize, int? projectId);
+        PagedList<ProjectCommentViewModel> GetAllWithPagination(int page, int pageSize, int? projectId);
         List<ProjectCommentViewModel> GetAll();
         void Update(ProjectCommentViewModel comment);
         void Delete(int id);

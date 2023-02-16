@@ -44,7 +44,7 @@ namespace PMS.Application.Implementations
             return query.ProjectTo<ProjectCommentViewModel>().ToList();
         }
 
-        public PagedList<ProjectCommentViewModel> GetAllWithPagination(string keyword, int page, int pageSize, int? projectId)
+        public PagedList<ProjectCommentViewModel> GetAllWithPagination(int page, int pageSize, int? projectId)
         {
             var query = projectCommentRepository.FindAll();
             if (projectId != null)

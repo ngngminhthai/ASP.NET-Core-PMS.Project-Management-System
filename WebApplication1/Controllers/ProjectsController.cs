@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using PMS.Application.CQRS.Projects;
+using PMS.Application.CQRS.Projects.Comments;
 using PMS.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,11 +42,7 @@ namespace PMS.Controllers
         /// This method used to test result with CRQR Mediator
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<ActionResult<List<ProjectViewModel>>> GetProjects2()
-        {
-            return await Mediator.Send(new ListProject.Query());
-        }
+
         [HttpGet]
         public IActionResult GetProjects(string searchTerm, int page, int pageSize)
         {
@@ -62,22 +59,48 @@ namespace PMS.Controllers
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> GetProjectAndComment(int id, int page = 1, int pageSize = 5)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var project = await _context.Projects
-                .FirstOrDefaultAsync(m => m.Id == id);
+
+            var project = await Mediator.Send(new GetProjectDetail.Query { ProjectId = id });
             if (project == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            project.ListComment = await getListComment(id, page, pageSize);
+
+            return Ok(project);
         }
+
+
+        #region comment
+        public async Task<List<ProjectCommentViewModel>> getListComment(int id, int page, int pageSize)
+        {
+            List<ProjectCommentViewModel> listCmt = await Mediator.Send(new ListProjectComment.Query { PageIndex = page, PageSize = pageSize, ProjectId = id });
+
+            await NestedComment(listCmt);
+
+            return listCmt;
+        }
+        public async Task<List<ProjectCommentViewModel>> NestedComment(List<ProjectCommentViewModel> listChildComment)
+        {
+
+            if (listChildComment != null)
+            {
+
+                foreach (ProjectCommentViewModel comment in listChildComment)
+                {
+                    var list = await Mediator.Send(new GetListChildComment.Query { ParentId = comment.Id });
+                    comment.ChildComments = await NestedComment(list);
+                }
+                return listChildComment;
+            }
+            return null;
+
+        }
+        #endregion
 
         // GET: Projects/Create
         public IActionResult Create()

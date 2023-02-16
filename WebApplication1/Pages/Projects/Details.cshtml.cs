@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿using Microsoft.AspNetCore.SignalR;
 using PMS.Application.CQRS.Projects;
 using PMS.Application.CQRS.Projects.Comments;
 using PMS.Pages.Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApplication1.Hubs;
 using WebApplication1.Models;
 
 namespace PMS.Pages.Projects
@@ -11,32 +12,26 @@ namespace PMS.Pages.Projects
     public class DetailsModel : BasePageModel
     {
         private readonly WebApplication1.Data.ManageAppDbContext _context;
-
-        public DetailsModel(WebApplication1.Data.ManageAppDbContext context)
+        private readonly IHubContext<SignalSever> _signalrHub;
+        public DetailsModel(WebApplication1.Data.ManageAppDbContext context, IHubContext<SignalSever> signalrHub)
         {
             _context = context;
+            _signalrHub = signalrHub;
         }
         public ProjectViewModel Project { get; set; }
         public List<ProjectCommentViewModel> ListComment { get; set; }
 
-        public string getUrl { get; set; }
         public async Task OnGetAsync(int id, string? search, int p = 1, int s = 3)
         {
 
             Project = await Mediator.Send(new GetProjectDetail.Query { ProjectId = id });
-            ListComment = await Mediator.Send(new ListProjectComment.Query { SearchTerm = search, PageIndex = p, PageSize = s, ProjectId = id });
-            if (ListComment != null)
-            {
-                Project.ListComment = ListComment;
-                await NestedComment(ListComment);
-            }
+            ListComment = await getListComment(id, search, p, s);
 
 
         }
         public async Task<List<ProjectCommentViewModel>> NestedComment(List<ProjectCommentViewModel> listChildComment)
         {
-            string currentUrl = HttpContext.Request.GetDisplayUrl();
-            getUrl = currentUrl.Substring(currentUrl.IndexOf("id"));
+
             if (listChildComment != null)
             {
 
@@ -49,6 +44,14 @@ namespace PMS.Pages.Projects
             }
             return null;
 
+        }
+        public async Task<List<ProjectCommentViewModel>> getListComment(int id, string? search, int page, int pageSize)
+        {
+            List<ProjectCommentViewModel> listCmt = await Mediator.Send(new ListProjectComment.Query { PageIndex = page, PageSize = pageSize, ProjectId = id });
+
+            await NestedComment(listCmt);
+
+            return listCmt;
         }
     }
 }
