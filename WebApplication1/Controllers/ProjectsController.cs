@@ -123,6 +123,40 @@ namespace PMS.Controllers
             await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
             
         }
+        [HttpPost]
+        public async void DeleteComments(int id)
+        {
+            string email = HttpContext.User.Identity.Name;
+            var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+
+            var cmt = await Mediator.Send(new GetProjectCommentById.Query { Id = id });
+            if (author.Id == cmt.Author.Id)
+            {
+                NestedDeleteComment(id);
+            }
+            await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
+
+        }
+
+        public async void NestedDeleteComment(int id)
+        {
+            var list = await Mediator.Send(new GetListChildComment.Query { ParentId = id });
+
+            if (list != null)
+            {
+
+                foreach (ProjectCommentViewModel comment in list)
+                {
+                   
+                   NestedDeleteComment(comment.Id);
+                }
+               
+            }
+            await Mediator.Send(new DeleteProjectComment.Command { Id = id });
+
+
+        }
+
         #endregion
         // GET: Projects/Create
         public IActionResult Create()

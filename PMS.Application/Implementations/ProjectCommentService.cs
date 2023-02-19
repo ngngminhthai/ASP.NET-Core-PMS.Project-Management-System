@@ -6,6 +6,7 @@ using PMS.Infrastructure.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApplication1.Data.Entities;
 using WebApplication1.Data.Entities.ProjectAggregate;
 using WebApplication1.Models;
 using WebApplication1.RequestHelpers;
@@ -68,6 +69,13 @@ namespace PMS.Application.Implementations
         public void Update(ProjectCommentViewModel comment)
         {
             throw new NotImplementedException();
+        }
+
+      
+
+        public ProjectComment GetCommentById(int id)
+        {
+            return projectCommentRepository.FindById(id);
         }
     }
 }

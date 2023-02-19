@@ -25,6 +25,6 @@ namespace PMS.Infrastructure.SharedKernel
 
         void Remove(K id);
 
-        void RemoveMultiple(List<T> entities);
+        void RemoveMultiple(List<T> entities); 
     }
 }
