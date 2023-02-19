@@ -6,6 +6,7 @@ namespace WebApplication1.Models
     public class ProjectCommentViewModel
     {
         public int Id { get; set; }
+        public int? ProjectID { get; set; }
         public string Author { get; set; }
         public string Content { get; set; }
         public DateTime? DateCreated { get; set; }

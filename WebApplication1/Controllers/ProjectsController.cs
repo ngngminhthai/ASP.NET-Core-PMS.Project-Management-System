@@ -100,8 +100,28 @@ namespace PMS.Controllers
             return null;
 
         }
-        #endregion
 
+        [HttpPost]
+
+        public async Task<IActionResult> CreateComment(ProjectCommentViewModel comment)
+        {
+            string email = HttpContext.User.Identity.Name;
+            var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+
+            var newComment = new ProjectCommentViewModel
+            {
+                Author = author.Id,
+                Content = comment.Content,
+                ProjectID = comment.ProjectID,
+                ParentID = comment.ParentID,
+                Level = comment.Level,
+                NumberOfLike = 0
+            };
+            await Mediator.Send(new CreateProjectComment.Command { ProjectComment = newComment });
+            await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
+            return Ok();
+        }
+        #endregion
         // GET: Projects/Create
         public IActionResult Create()
         {

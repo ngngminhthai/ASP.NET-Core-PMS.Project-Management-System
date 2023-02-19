@@ -1,18 +1,27 @@
-﻿var projectId
+﻿
+
+var projectId
+
+
 function setId(id) {
     projectId = id;
 }
 
 $(document).ready(function () {
 
+    var connection = new signalR.HubConnectionBuilder().withUrl("/signalrServer").build();
+    connection.start();
+    connection.on("LoadProjectComment", function () {
+        LoadProdData();
+    })
     LoadProdData();
+
     var tableContent = "<div></div>";
     function LoadProdData(page, pageSize) {
         if (page == undefined) {
             page = 1;
             pageSize = 3;
         }
-
 
 
         $.ajax({
@@ -30,9 +39,12 @@ $(document).ready(function () {
                 nestedComment(data.ListComment);
                 document.querySelector('#comment-box').innerHTML = tableContent;
 
+            },
+            error: (error) => {
+                console.log(error)
             }
         });
-    }
+    }   
 
     function nestedComment(listComment) {
         if (listComment !== null) {

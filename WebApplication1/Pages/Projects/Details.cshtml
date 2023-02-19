@@ -137,36 +137,19 @@
 
 
                         <div class="form-chat">
-                            <form action="#" method="get" accept-charset="utf-8">
+                            <form action="/Projects/CreateComment" method="post" accept-charset="utf-8">
+                                <input type="hidden" name="comment.ProjectId" value="@Model.Project.Id"/>
+                                <input type="hidden" name="comment.Level" value="0"/>
+                                <input type="hidden" name="comment.NumberOfLike" value="0"/>
+
+
                                 <div class="message-form-chat">
                                     <!-- /.pin -->
                                     <span class="message-text">
-                                        <textarea name="message" placeholder="Type comment here" required="required"></textarea>
+                                        <textarea placeholder="Type comment here" required="required" name="comment.Content" ></textarea>
                                     </span>
-                                    <!-- /.message-text -->
-                                    <span class="camera">
-                                        <a href="#" title="">
-                                            <i class="fas fa-smile"></i>
-                                        </a>
-                                    </span>
-                                    <!-- /.camera -->
-                                    <span class="icon-message">
-                                        <a href="#" title="">
-                                            <i class="fas fa-paperclip"></i>
-                                        </a>
-                                    </span>
-                                    <!-- /.icon-right -->
-                                    <!-- <div class="icon-mobile">
-                                        <ul>
-                                            <li>
-                                                <a href="#" title=""><i class="fas fa-smile"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#" title=""><i class="fas fa-paperclip"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div> -->
-                                    <!-- /.icon-right -->
+                                   
+                                   
                                     <span class="btn-send">
                                         <button class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
                                     </span>
@@ -282,13 +265,13 @@
     
 </div>
 @section Scripts{
-        <script src="~/js/project/comment/site.js" type="text/javascript">  
-        </script>
+        
+        <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+        <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/project/comment/site.js" type="text/javascript"></script>
         <script>
             setId(@Model.Project.Id);
         </script>
-        <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
-        <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 }
 <!-- END MAIN CONTENT -->
 @*<div>

@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using PMS.Application.CQRS.Projects;
+﻿using PMS.Application.CQRS.Projects;
 using PMS.Application.CQRS.Projects.Comments;
 using PMS.Pages.Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApplication1.Hubs;
 using WebApplication1.Models;
 
 namespace PMS.Pages.Projects
@@ -12,11 +10,11 @@ namespace PMS.Pages.Projects
     public class DetailsModel : BasePageModel
     {
         private readonly WebApplication1.Data.ManageAppDbContext _context;
-        private readonly IHubContext<SignalSever> _signalrHub;
-        public DetailsModel(WebApplication1.Data.ManageAppDbContext context, IHubContext<SignalSever> signalrHub)
+        // private readonly IHubContext<SignalSever> _signalrHub;
+        public DetailsModel(WebApplication1.Data.ManageAppDbContext context)
         {
             _context = context;
-            _signalrHub = signalrHub;
+            //_signalrHub = signalrHub;
         }
         public ProjectViewModel Project { get; set; }
         public List<ProjectCommentViewModel> ListComment { get; set; }
