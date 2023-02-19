@@ -82,7 +82,7 @@ namespace PMS.Controllers
 
             await NestedComment(listCmt);
 
-            return listCmt;
+            return listCmt.OrderByDescending(p => p.DateModified ).ThenByDescending(p => p.DateCreated ).ToList();
         }
         public async Task<List<ProjectCommentViewModel>> NestedComment(List<ProjectCommentViewModel> listChildComment)
         {
@@ -95,7 +95,7 @@ namespace PMS.Controllers
                     var list = await Mediator.Send(new GetListChildComment.Query { ParentId = comment.Id });
                     comment.ChildComments = await NestedComment(list);
                 }
-                return listChildComment;
+                return listChildComment.OrderByDescending(p => p.DateModified).ThenByDescending(p => p.DateCreated).ToList();
             }
             return null;
 
@@ -103,23 +103,25 @@ namespace PMS.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> CreateComment(ProjectCommentViewModel comment)
+        public async void CreateComment(ProjectCommentViewModel comment)
         {
             string email = HttpContext.User.Identity.Name;
             var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
 
-            var newComment = new ProjectCommentViewModel
+            var projectComent = _context.Projects.Where(p => p.Id == comment.ProjectID).FirstOrDefault();
+            
+            var newComment = new ProjectComment
             {
-                Author = author.Id,
+                Author = author,
                 Content = comment.Content,
-                ProjectID = comment.ProjectID,
+                Project = projectComent,
                 ParentID = comment.ParentID,
-                Level = comment.Level,
+                level = comment.Level,
                 NumberOfLike = 0
             };
             await Mediator.Send(new CreateProjectComment.Command { ProjectComment = newComment });
             await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
-            return Ok();
+            
         }
         #endregion
         // GET: Projects/Create

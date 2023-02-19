@@ -21,10 +21,10 @@ namespace PMS.Application.Implementations
             this.projectCommentRepository = projectCommentRepository;
             this.unitOfWork = unitOfWork;
         }
-        public void Add(ProjectCommentViewModel commentVm)
+        public void Add(ProjectComment comment)
         {
-            var projectComment = Mapper.Map<ProjectCommentViewModel, ProjectComment>(commentVm);
-            projectCommentRepository.Add(projectComment);
+            
+            projectCommentRepository.Add(comment);
             Save();
         }
 

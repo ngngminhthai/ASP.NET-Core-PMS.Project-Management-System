@@ -137,7 +137,7 @@
 
 
                         <div class="form-chat">
-                            <form action="/Projects/CreateComment" method="post" accept-charset="utf-8">
+                            <form id="comment_to_project" action="/Projects/CreateComment" method="post" accept-charset="utf-8">
                                 <input type="hidden" name="comment.ProjectId" value="@Model.Project.Id"/>
                                 <input type="hidden" name="comment.Level" value="0"/>
                                 <input type="hidden" name="comment.NumberOfLike" value="0"/>
@@ -151,7 +151,7 @@
                                    
                                    
                                     <span class="btn-send">
-                                        <button class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
+                                        <button id="send_comment" class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
                                     </span>
                                     <!-- /.btn-send -->
 

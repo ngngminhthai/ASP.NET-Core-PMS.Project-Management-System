@@ -5174,3 +5174,9 @@ body.dark .notification-list .list .no-seen {
     user-select: none;
     cursor: pointer
 }
+.rep2{
+    padding-left :200px;
+}
+.rep1{
+    padding-left:150px;
+}

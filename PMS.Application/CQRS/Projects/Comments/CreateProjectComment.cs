@@ -2,6 +2,7 @@
 using PMS.Application.Services;
 using System.Threading;
 using System.Threading.Tasks;
+using WebApplication1.Data.Entities.ProjectAggregate;
 using WebApplication1.Models;
 
 namespace PMS.Application.CQRS.Projects.Comments
@@ -10,7 +11,7 @@ namespace PMS.Application.CQRS.Projects.Comments
     {
         public class Command : IRequest
         {
-            public ProjectCommentViewModel ProjectComment { get; set; }
+            public ProjectComment ProjectComment { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
