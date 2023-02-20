@@ -15,7 +15,7 @@ namespace PMS.Application.Services
 
         PagedList<ProjectCommentViewModel> GetAllWithPagination(int page, int pageSize, int? projectId);
         List<ProjectCommentViewModel> GetAll();
-        void Update(ProjectCommentViewModel comment);
+        void Update(int id , string content);
         void Delete(int id);
         ProjectCommentViewModel GetById(int id);
         void Save();

@@ -10,7 +10,7 @@ namespace PMS.Application.Services
         PagedList<ProductViewModel> GetAllWithPagination(string keyword, int page, int pageSize);
         List<ProductViewModel> GetAll();
         void Update(ProductViewModel product);
-        void Delete(int id);
+        //void Delete(int id);
         ProductViewModel GetById(int id);
         void Save();
 

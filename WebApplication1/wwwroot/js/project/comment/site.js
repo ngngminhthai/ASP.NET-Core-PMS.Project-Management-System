@@ -1,11 +1,18 @@
 ﻿
 
-var projectId
+var projectId;
 
 
 function setId(id) {
     projectId = id;
 }
+var authorEmail;
+
+function setAuthor(email) {
+    authorEmail = email;
+}
+
+
 
 $(document).ready(function () {
 
@@ -53,6 +60,21 @@ $(document).ready(function () {
                 var className = "comment d-flex";
                 if (listComment[i].Level === 1) { className = "comment rep d-flex" }
                 else if (listComment[i].Level >= 2) { className = "comment rep2 d-flex" };
+
+
+                const value = (listComment[i].level == 2) ? listComment[i].parentID + "," + (listComment[i].Level - 1) : listComment[i].Id + "," + listComment[i].Level;
+
+                let canDelete = (authorEmail === listComment[i].Author) ?
+                    "<form id='delete_comment" + listComment[i].Id + "' action='/Projects/DeleteComment'"
+                    + "method = 'post' accept - charset='utf-8' > "
+                    + " <input type='hidden' name='id' value='" + listComment[i].Id + "' />"
+                    + " <a  onclick=' deleteComment(  " + listComment[i].Id + ")' class='reply'>Delete</a>"
+                    + "</form> " :
+                    "";
+                let canUpdate = (authorEmail === listComment[i].Author) ?
+
+                    " <a  onclick='clickUpdate(  " + listComment[i].Id + ")' class='reply'>Update</a>" :
+                    "";
                 tableContent +=
                     "<div class='comment-container'>"
                     + "<div class='" + className + "'>"
@@ -63,14 +85,18 @@ $(document).ready(function () {
                     + "            <div class='comment-body'>"
                     + "                <div class='name'>"
                     + "                  <h5 class='font-w600 fs-18'>" + listComment[i].Author + "</h5>"
-                    + "                  <p class='text mb-0 fs-18'>" + listComment[i].Content + "</p>"
+                    + "                  <p Id='content_" + listComment[i].Id + "' class='text mb-0 fs-18'>"
+                    + listComment[i].Content
+                    + "                  </p>"
                     + "                                                 </div>"
                     + "                                             </div>"
                     + "                                         </div>"
                     + "                                         <div class='right'>"
                     + "                                             <div class='group-action mt-10'>"
-                    + "                                                 <a href='#' class='like'><i class='fas fa-thumbs-up'></i>" + listComment[i].NumberOfLike + "</a>"
-                    + "                                                 <a id='repId_" + listComment[i].Id + "' onclick='clickReply(  " + listComment[i].Id + "," + listComment[i].Level + ")' class='reply'><i class='fas fa-reply-all'></i>Reply</a>"
+                    + canDelete
+                    + canUpdate
+                    + "                                                 <a id='repId_" + listComment[i].Id + "' onclick='clickReply(  "
+                    + value + ")' class='reply'><i class='fas fa-reply-all'></i>Reply</a>"
                     + "                                             </div>"
                     + "                                         </div>"
                     + "                                     </div>"
@@ -131,16 +157,14 @@ sendBtn.addEventListener('click', function (e) {
 });
 
 function createInputBox(parentID, level) {
-    var childLevel = level + 1;
+    //  var childLevel = level + 1;
     let div = document.createElement("div");
     div.setAttribute("class", "form-chat rep" + level + " d-flex");
     div.setAttribute("id", "comment_to_project_box" + parentID);
 
-
-
     div.innerHTML += "<form style='width:100%' class='comment_rep' id='comment_to_project" + parentID + "' action='/Projects/CreateComment' method='post' accept-charset='utf-8'>"
         + "<input type = 'hidden' name = 'comment.ParentID' value = " + parentID + " />"
-        + " <input type='hidden' name='comment.Level' value=" + childLevel + " />"
+        + " <input type='hidden' name='comment.Level' value=" + level + 1 + " />"
         + "  <input type='hidden' name='comment.NumberOfLike' value='0' />"
         + " <div class='message-form-chat'>"
 
@@ -150,7 +174,7 @@ function createInputBox(parentID, level) {
 
 
         + " <span class='btn-send'>"
-        + "    <button  onclick=' repCommment(  "+ parentID + ")'  class='waves-effect'>Send <i class='fas fa-paper-plane'></i></button>"
+        + "    <button  onclick=' repCommment(  " + parentID + ")'  class='waves-effect'>Send <i class='fas fa-paper-plane'></i></button>"
         + " </span>"
 
 
@@ -165,6 +189,10 @@ function clickReply(parentID, level) {
     const delElement = document.getElementById("comment_to_project_box" + parentID);
     if (delElement !== null) {
         delElement.remove();
+    }
+    const delElementUpddate = document.getElementById("update_comment_box" + parentID);
+    if (delElementUpddate !== null) {
+        delElementUpddate.remove();
     }
     const repId = document.getElementById("repId_" + parentID);
 
@@ -200,4 +228,96 @@ function repCommment(parentId) {
 
 
     commentContent.remove();
+}
+
+function deleteComment(id) {
+    const formChild = document.getElementById('delete_comment' + id);
+    // console.log("delete");
+    const formData = new FormData(formChild); // create a new FormData object from the form
+    const xhr = new XMLHttpRequest(); // create a new XMLHttpRequest object
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            // when the request is complete
+            if (xhr.status === 200) { // if the response status is OK
+                console.log(xhr.responseText); // log the response text to the console
+            } else {
+                console.error(xhr.statusText); // log the error status text to the console
+            }
+        }
+    };
+
+    xhr.open(formChild.method, formChild.action); // set the request method and URL
+    xhr.setRequestHeader("Accept", "application/json"); // set the Accept header to application/json
+    xhr.send(formData); // send the form data to the server
+}
+
+function clickUpdate(id) {
+
+    const delElement = document.getElementById("comment_to_project_box" + id);
+    if (delElement !== null) {
+        delElement.remove();
+    }
+    const delElementUpddate = document.getElementById("update_comment_box" + id);
+    if (delElementUpddate !== null) {
+        delElementUpddate.remove();
+    }
+    const content = document.getElementById("content_" + id).textContent;
+ 
+    const repId = document.getElementById("repId_" + id);
+    let closestCard = repId.closest(".comment-container");
+    closestCard.appendChild(createInputUpdateBox(id, content));
+}
+
+function createInputUpdateBox(id, content) {
+    //  var childLevel = level + 1;
+    let div = document.createElement("div");
+    div.setAttribute("class", "form-chat rep2 d-flex");
+    div.setAttribute("id", "update_comment_box" + id);
+
+    div.innerHTML += "<form style='width:100%' class='comment_rep' id='update_comment" + id + "' action='/Projects/UpdateComment' method='post' accept-charset='utf-8'>"
+        + "<input type = 'hidden' name = 'id' value = " + id + " />"
+
+        + " <div class='message-form-chat'>"
+        + "   <span class='message-text'>"
+        + "     <textarea placeholder='Type comment here' required='required' name='content' >" + content + "</textarea>"
+        + "  </span>"
+
+
+        + " <span class='btn-send'>"
+        + "    <button onclick=' updateComment(  " + id + ")' >Send <i class='fas fa-paper-plane'></i></button>"
+        + " </span>"
+
+
+        + "   </div> "
+
+        + "</form> ";
+
+    return div;
+}
+function updateComment(id) {
+    console.log(id);
+    const formChild = document.getElementById("update_comment" + id);
+    const formData = new FormData(formChild); // create a new FormData object from the form // create a new FormData object from the form
+    const xhr = new XMLHttpRequest(); // create a new XMLHttpRequest object
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            // when the request is complete
+            if (xhr.status === 200) { // if the response status is OK
+                console.log(xhr.responseText); // log the response text to the console
+            } else {
+                console.error(xhr.statusText); // log the error status text to the console
+            }
+        }
+    };
+
+    xhr.open(formChild.method, formChild.action); // set the request method and URL
+    xhr.setRequestHeader("Accept", "application/json"); // set the Accept header to application/json
+    xhr.send(formData); // send the form data to the server
+
+    const commentcontent = document.querySelector("#update_comment_box" + id);
+
+
+    commentcontent.remove();
 }

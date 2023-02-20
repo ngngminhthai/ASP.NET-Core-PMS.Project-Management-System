@@ -28,10 +28,10 @@ namespace PMS.Application.Implementations
             Save();
         }
 
-        public void Delete(int id)
-        {
-            projectRepository.Remove(id);
-        }
+        //public void Delete(int id)
+        //{
+        //    projectRepository.Remove(id);
+        //}
 
         public List<ProjectViewModel> GetAll()
         {

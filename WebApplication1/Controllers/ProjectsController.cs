@@ -102,7 +102,6 @@ namespace PMS.Controllers
         }
 
         [HttpPost]
-
         public async void CreateComment(ProjectCommentViewModel comment)
         {
             string email = HttpContext.User.Identity.Name;
@@ -124,7 +123,7 @@ namespace PMS.Controllers
             
         }
         [HttpPost]
-        public async void DeleteComments(int id)
+        public async void DeleteComment(int id)
         {
             string email = HttpContext.User.Identity.Name;
             var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
@@ -132,13 +131,14 @@ namespace PMS.Controllers
             var cmt = await Mediator.Send(new GetProjectCommentById.Query { Id = id });
             if (author.Id == cmt.Author.Id)
             {
-                NestedDeleteComment(id);
+              //  NestedDeleteComment(id);
+                await Mediator.Send(new DeleteProjectComment.Command { Id = id });
             }
             await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
 
         }
 
-        public async void NestedDeleteComment(int id)
+        public async void nesteddeletecomment(int id)
         {
             var list = await Mediator.Send(new GetListChildComment.Query { ParentId = id });
 
@@ -147,13 +147,30 @@ namespace PMS.Controllers
 
                 foreach (ProjectCommentViewModel comment in list)
                 {
-                   
-                   NestedDeleteComment(comment.Id);
+
+                    nesteddeletecomment(comment.Id);
                 }
-               
+
             }
             await Mediator.Send(new DeleteProjectComment.Command { Id = id });
 
+
+        }
+
+
+
+        [HttpPost]
+        public async void UpdateComment(int id , string content)
+        {
+            string email = HttpContext.User.Identity.Name;
+            var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+            var cmt = await Mediator.Send(new GetProjectCommentById.Query { Id = id });
+            if (author.Id == cmt.Author.Id)
+            {
+                await Mediator.Send(new UpdateProjectComment.Command { Id = id, Content = content });
+            }
+         
+            await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
 
         }
 

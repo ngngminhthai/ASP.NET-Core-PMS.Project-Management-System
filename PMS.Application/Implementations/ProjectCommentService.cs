@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
+using PMS.DataEF.Repositories;
 using PMS.Infrastructure.SharedKernel;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace PMS.Application.Implementations
         public void Delete(int id)
         {
             projectCommentRepository.Remove(id);
+            Save();
         }
 
         public List<ProjectCommentViewModel> GetAll()
@@ -66,9 +68,12 @@ namespace PMS.Application.Implementations
             unitOfWork.Commit();
         }
 
-        public void Update(ProjectCommentViewModel comment)
+        public void Update( int id, string content )
         {
-            throw new NotImplementedException();
+            var projectComment = projectCommentRepository.FindById(id);
+
+            projectComment.Content = content;
+            Save();
         }
 
       

@@ -12,7 +12,7 @@ namespace PMS.Application.Services
         PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string email);
         List<ProjectViewModel> GetAll();
         void Update(Project project);
-        void Delete(int id);
+       /* void Delete(int id)*/
         ProjectViewModel GetById(int id);
         void Save();
 
