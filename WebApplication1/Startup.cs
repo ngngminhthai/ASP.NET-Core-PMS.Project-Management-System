@@ -151,7 +151,7 @@ namespace WebApplication1
 
             services.AddTransient<IProjectCommentRepository, ProjectCommentRepository>();
             services.AddTransient<IProjectCommentService, ProjectCommentService>();
-            services.AddTransient<IProjectCommentService, ProjectCommentService>();
+
 
             #endregion
             services.AddMvc()

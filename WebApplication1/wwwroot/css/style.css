@@ -3644,7 +3644,9 @@ ul.list-img li {
 .comment.rep.d-flex {
     padding-left: 85px;
 }
-
+.comment.rep2.d-flex {
+    padding-left: 140px;
+}
 .project .comment.rep .left {
     width: 85%;
 }
@@ -5171,4 +5173,10 @@ body.dark .notification-list .list .no-seen {
 .work-status:hover{
     user-select: none;
     cursor: pointer
+}
+.rep2{
+    padding-left :200px;
+}
+.rep1{
+    padding-left:150px;
 }

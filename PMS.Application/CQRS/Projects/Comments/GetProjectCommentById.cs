@@ -7,17 +7,18 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WebApplication1.Data.Entities.ProjectAggregate;
+using WebApplication1.Models;
 
 namespace PMS.Application.CQRS.Projects.Comments
 {
-    public class DeleteProjectComment
+    public class GetProjectCommentById
     {
-        public class Command : IRequest
+        public class Query : IRequest<ProjectComment>
         {
             public int Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Query, ProjectComment>
         {
             private readonly IProjectCommentService projectCommentService;
 
@@ -26,10 +27,9 @@ namespace PMS.Application.CQRS.Projects.Comments
                 this.projectCommentService = projectCommentService;
             }
 
-            public Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public Task<ProjectComment> Handle(Query request, CancellationToken cancellationToken)
             {
-                projectCommentService.Delete(request.Id);
-                return Task.FromResult(Unit.Value);
+                return Task.FromResult(projectCommentService.GetCommentById(request.Id));
             }
         }
     }

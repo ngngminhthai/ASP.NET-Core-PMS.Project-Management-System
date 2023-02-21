@@ -11,7 +11,6 @@ namespace PMS.Application.CQRS.Projects.Comments
     {
         public class Query : IRequest<PagedList<ProjectCommentViewModel>>
         {
-            public string SearchTerm { get; set; }
             public int PageIndex { get; set; }
             public int PageSize { get; set; }
             public int? ProjectId { get; set; }
@@ -28,7 +27,7 @@ namespace PMS.Application.CQRS.Projects.Comments
 
             public Task<PagedList<ProjectCommentViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Task.FromResult(projectCommentService.GetAllWithPagination(request.SearchTerm, request.PageIndex, request.PageSize, request.ProjectId));
+                return Task.FromResult(projectCommentService.GetAllWithPagination(request.PageIndex, request.PageSize, request.ProjectId));
             }
         }
     }

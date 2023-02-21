@@ -2,10 +2,12 @@
 using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
+using PMS.DataEF.Repositories;
 using PMS.Infrastructure.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApplication1.Data.Entities;
 using WebApplication1.Data.Entities.ProjectAggregate;
 using WebApplication1.Models;
 using WebApplication1.RequestHelpers;
@@ -23,6 +25,7 @@ namespace PMS.Application.Implementations
         }
         public void Add(ProjectComment comment)
         {
+            
             projectCommentRepository.Add(comment);
             Save();
         }
@@ -30,6 +33,7 @@ namespace PMS.Application.Implementations
         public void Delete(int id)
         {
             projectCommentRepository.Remove(id);
+            Save();
         }
 
         public List<ProjectCommentViewModel> GetAll()
@@ -44,7 +48,7 @@ namespace PMS.Application.Implementations
             return query.ProjectTo<ProjectCommentViewModel>().ToList();
         }
 
-        public PagedList<ProjectCommentViewModel> GetAllWithPagination(string keyword, int page, int pageSize, int? projectId)
+        public PagedList<ProjectCommentViewModel> GetAllWithPagination(int page, int pageSize, int? projectId)
         {
             var query = projectCommentRepository.FindAll();
             if (projectId != null)
@@ -64,9 +68,19 @@ namespace PMS.Application.Implementations
             unitOfWork.Commit();
         }
 
-        public void Update(ProjectCommentViewModel comment)
+        public void Update( int id, string content )
         {
-            throw new NotImplementedException();
+            var projectComment = projectCommentRepository.FindById(id);
+
+            projectComment.Content = content;
+            Save();
+        }
+
+      
+
+        public ProjectComment GetCommentById(int id)
+        {
+            return projectCommentRepository.FindById(id);
         }
     }
 }

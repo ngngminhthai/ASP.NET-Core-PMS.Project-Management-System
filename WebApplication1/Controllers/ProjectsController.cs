@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using PMS.Application.CQRS.Projects;
+using PMS.Application.CQRS.Projects.Comments;
 using PMS.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,11 +42,7 @@ namespace PMS.Controllers
         /// This method used to test result with CRQR Mediator
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<ActionResult<List<ProjectViewModel>>> GetProjects2()
-        {
-            return await Mediator.Send(new ListProject.Query());
-        }
+
         [HttpGet]
         public IActionResult GetProjects(string searchTerm, int page, int pageSize)
         {
@@ -62,23 +59,122 @@ namespace PMS.Controllers
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> GetProjectAndComment(int id, int page = 1, int pageSize = 5)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var project = await _context.Projects
-                .FirstOrDefaultAsync(m => m.Id == id);
+
+            var project = await Mediator.Send(new GetProjectDetail.Query { ProjectId = id });
             if (project == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            project.ListComment = await getListComment(id, page, pageSize);
+
+            return Ok(project);
         }
 
+
+        #region comment
+        public async Task<List<ProjectCommentViewModel>> getListComment(int id, int page, int pageSize)
+        {
+            List<ProjectCommentViewModel> listCmt = await Mediator.Send(new ListProjectComment.Query { PageIndex = page, PageSize = pageSize, ProjectId = id });
+
+            await NestedComment(listCmt);
+
+            return listCmt.OrderByDescending(p => p.DateModified ).ThenByDescending(p => p.DateCreated ).ToList();
+        }
+        public async Task<List<ProjectCommentViewModel>> NestedComment(List<ProjectCommentViewModel> listChildComment)
+        {
+
+            if (listChildComment != null)
+            {
+
+                foreach (ProjectCommentViewModel comment in listChildComment)
+                {
+                    var list = await Mediator.Send(new GetListChildComment.Query { ParentId = comment.Id });
+                    comment.ChildComments = await NestedComment(list);
+                }
+                return listChildComment.OrderByDescending(p => p.DateModified).ThenByDescending(p => p.DateCreated).ToList();
+            }
+            return null;
+
+        }
+
+        [HttpPost]
+        public async void CreateComment(ProjectCommentViewModel comment)
+        {
+            string email = HttpContext.User.Identity.Name;
+            var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+
+            var projectComent = _context.Projects.Where(p => p.Id == comment.ProjectID).FirstOrDefault();
+            
+            var newComment = new ProjectComment
+            {
+                Author = author,
+                Content = comment.Content,
+                Project = projectComent,
+                ParentID = comment.ParentID,
+                level = comment.Level,
+                NumberOfLike = 0
+            };
+            await Mediator.Send(new CreateProjectComment.Command { ProjectComment = newComment });
+            await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
+            
+        }
+        [HttpPost]
+        public async void DeleteComment(int id)
+        {
+            string email = HttpContext.User.Identity.Name;
+            var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+
+            var cmt = await Mediator.Send(new GetProjectCommentById.Query { Id = id });
+            if (author.Id == cmt.Author.Id)
+            {
+              //  NestedDeleteComment(id);
+                await Mediator.Send(new DeleteProjectComment.Command { Id = id });
+            }
+            await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
+
+        }
+
+        public async void nesteddeletecomment(int id)
+        {
+            var list = await Mediator.Send(new GetListChildComment.Query { ParentId = id });
+
+            if (list != null)
+            {
+
+                foreach (ProjectCommentViewModel comment in list)
+                {
+
+                    nesteddeletecomment(comment.Id);
+                }
+
+            }
+            await Mediator.Send(new DeleteProjectComment.Command { Id = id });
+
+
+        }
+
+
+
+        [HttpPost]
+        public async void UpdateComment(int id , string content)
+        {
+            string email = HttpContext.User.Identity.Name;
+            var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+            var cmt = await Mediator.Send(new GetProjectCommentById.Query { Id = id });
+            if (author.Id == cmt.Author.Id)
+            {
+                await Mediator.Send(new UpdateProjectComment.Command { Id = id, Content = content });
+            }
+         
+            await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
+
+        }
+
+        #endregion
         // GET: Projects/Create
         public IActionResult Create()
         {

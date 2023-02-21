@@ -7,26 +7,26 @@ namespace PMS.Application.CQRS.Products
 {
     public class DeleteProduct
     {
-        public class Command : IRequest
-        {
-            public int ProductId { get; set; }
-        }
+        //public class Command : IRequest
+        //{
+        //    public int ProductId { get; set; }
+        //}
 
-        public class Handler : IRequestHandler<Command>
-        {
-            private readonly IProductService _productService;
+        //public class Handler : IRequestHandler<Command>
+        //{
+        //    private readonly IProductService _productService;
 
-            public Handler(IProductService productService)
-            {
-                _productService = productService;
-            }
+        //    public Handler(IProductService productService)
+        //    {
+        //        _productService = productService;
+        //    }
 
-            public Task<Unit> Handle(Command request, CancellationToken cancellationToken)
-            {
-                _productService.Delete(request.ProductId);
-                return Task.FromResult(Unit.Value);
-            }
-        }
+        //    public Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        //    {
+        //        _productService.Delete(request.ProductId);
+        //        return Task.FromResult(Unit.Value);
+        //    }
+        //}
     }
 }
 
