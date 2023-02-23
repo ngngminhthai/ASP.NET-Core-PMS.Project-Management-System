@@ -1,5 +1,6 @@
 ﻿using API.Extensions;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -8,11 +9,14 @@ using Microsoft.Extensions.Caching.Memory;
 using PMS.Application.CQRS.Products;
 using PMS.Application.Products;
 using PMS.Controllers;
+using PMS.Data.IRepositories.ProjectTasks;
 using PMS.Services;
+using RBAC.Application.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TeduCoreApp.Authorization;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities;
 using WebApplication1.Hubs;
@@ -26,19 +30,28 @@ namespace WebApplication1.Controllers
         private readonly IHubContext<SignalSever> _signalrHub;
         private readonly IFileUploadService _fileUploadService;
         private readonly IMemoryCache cache;
+        private readonly IProjectTask_UserRepository projectTask_UserRepository;
+        private readonly IAuthorizationService authorizationService;
 
         public ProductsController(ManageAppDbContext context, IHubContext<SignalSever> signalrHub,
-            IFileUploadService fileUploadService, IMemoryCache cache)
+            IFileUploadService fileUploadService, IMemoryCache cache, IProjectTask_UserRepository projectTask_UserRepository,
+            IAuthorizationService authorizationService)
         {
             _context = context;
             _signalrHub = signalrHub;
             this._fileUploadService = fileUploadService;
             this.cache = cache;
+            this.projectTask_UserRepository = projectTask_UserRepository;
+            this.authorizationService = authorizationService;
         }
 
         // GET: Products
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var result = await authorizationService.AuthorizeAsync(User, new Payload { Resource = "Project" }, Operations.Update);
+            if (result.Succeeded == false)
+                return Unauthorized();
+            var projectTask = projectTask_UserRepository.FindAll();
             return View();
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using PMS.Data.Entities.ProjectAggregate;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,6 +18,7 @@ namespace WebApplication1.Data.Entities
 
         public virtual ICollection<ConversationUser> ConversationUser { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
+        public ICollection<ProjectTask_User> ProjectTask_Users { get; set; }
 
     }
 }

@@ -1,7 +1,9 @@
-﻿using PMS.Data.Entities.ValueObjects;
+﻿using PMS.Data.Entities.ProjectAggregate;
+using PMS.Data.Entities.ValueObjects;
 using PMS.Infrastructure.Interfaces;
 using PMS.Infrastructure.SharedKernel;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Data.Entities.ProjectAggregate
@@ -36,5 +38,7 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public Project Project { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        public ICollection<ProjectTask_User> ProjectTask_Users { get; set; }
     }
 }

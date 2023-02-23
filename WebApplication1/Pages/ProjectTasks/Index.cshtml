@@ -73,15 +73,27 @@
                             <td>@item.StartDate.ToString("d-M-yyyy")</td>
                             <td>@item.EndDate.ToString("d-M-yyyy")</td>
                             <td>
-                                @item.Priority.Name
+                                <div class="dropdown">
+                                    <span data-bs-toggle="dropdown" aria-expanded="false" 
+                                    
+                                    class="@(item.Priority == Priority.High ?
+                                    "work-status badge badge-success" : 
+                                    (item.Priority == Priority.Medium ? "work-status badge badge-warning" : "work-status badge badge-danger"))">@item.Priority.Name</span>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item badge-danger" href="/ProjectTasks/Edit?handler=UpdatePriority&id=@item.Id&priority=1&pid=@item.ProjectId">Low</a>
+                                        <a class="dropdown-item badge-warning" href="/ProjectTasks/Edit?handler=UpdatePriority&id=@item.Id&priority=2&pid=@item.ProjectId">Medium</a>
+                                        <a class="dropdown-item badge-success" href="/ProjectTasks/Edit?handler=UpdatePriority&id=@item.Id&priority=3&pid=@item.ProjectId">High</a>
+                                    </div>
+                                </div>
                             </td>
                             <td>
                                 <div class="dropdown">
                                     <span data-bs-toggle="dropdown" aria-expanded="false" class="@(item.WorkingStatus.Name == "Done" ? "work-status badge badge-success" : "work-status badge badge-warning")">@item.WorkingStatus.Name</span>
 
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item badge-success" href="/ProjectTasks/Edit?handler=UpdateStatus&id=@item.Id&workStatus=1">Done</a>
-                                        <a class="dropdown-item badge-warning" href="/ProjectTasks/Edit?handler=UpdateStatus&id=@item.Id&workStatus=2">In progress</a>
+                                        <a class="dropdown-item badge-success" href="/ProjectTasks/Edit?handler=UpdateStatus&id=@item.Id&workStatus=1&pid=@item.ProjectId">Done</a>
+                                        <a class="dropdown-item badge-warning" href="/ProjectTasks/Edit?handler=UpdateStatus&id=@item.Id&workStatus=2&pid=@item.ProjectId">In progress</a>
                                     </div>
                                 </div>
                             </td>

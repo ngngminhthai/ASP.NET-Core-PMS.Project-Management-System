@@ -1,4 +1,4 @@
-﻿using PMS.Data.IRepositories;
+﻿using PMS.Data.IRepositories.SystemRoles;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities;
 
