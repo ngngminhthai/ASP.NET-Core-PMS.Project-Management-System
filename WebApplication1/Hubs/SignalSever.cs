@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Hubs
+﻿using Microsoft.AspNetCore.SignalR;
+
+namespace WebApplication1.Hubs
 {
     public class SignalSever : Hub
     {

@@ -1,4 +1,13 @@
-﻿namespace PMS.DataEF.Repositories
+﻿using Microsoft.AspNetCore.Identity;
+using PMS.Data.Entities.ProjectAggregate;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using WebApplication1.Data;
+using WebApplication1.Data.Entities;
+using WebApplication1.Data.Entities.ProjectAggregate;
+namespace PMS.DataEF.Repositories
 {
     public class InitDatabase
     {
