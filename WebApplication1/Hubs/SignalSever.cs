@@ -19,48 +19,48 @@ namespace WebApplication1.Hubs
         }
         public override async Task OnConnectedAsync()
         {
+            /*
 
-
-            //string email = "emlasieunhan118@gmail.com";
-            var user = _context.Users.Where(u => u.UserName == Context.User.Identity.Name).FirstOrDefault();
-            if (user != null)
-            {
-                var conversation = _context.ConversationUsers.Where(c => c.UserId == user.Id).ToList().FirstOrDefault();
-                System.Console.WriteLine(conversation);
-
-                if (_groups != null)
-                {
-
-                    if (!_groups.ContainsKey("g" + conversation.ConversationId))
-                    {
-                        await Groups.AddToGroupAsync(Context.ConnectionId, "g" + conversation.ConversationId);
-                        _groups.Add("g" + conversation.ConversationId, new List<string>
+                        //string email = "emlasieunhan118@gmail.com";
+                        var user = _context.Users.Where(u => u.UserName == Context.User.Identity.Name).FirstOrDefault();
+                        if (user != null)
                         {
-                            Context.ConnectionId
-                         });
+                            var conversation = _context.ConversationUsers.Where(c => c.UserId == user.Id).ToList().FirstOrDefault();
+                            System.Console.WriteLine(conversation);
 
-                    }
-                    else
-                    {
-                        await Groups.AddToGroupAsync(Context.ConnectionId, "g" + conversation.ConversationId);
-                        _groups["g" + conversation.ConversationId].Add(Context.ConnectionId);
-                    }
+                            if (_groups != null)
+                            {
+
+                                if (!_groups.ContainsKey("g" + conversation.ConversationId))
+                                {
+                                    await Groups.AddToGroupAsync(Context.ConnectionId, "g" + conversation.ConversationId);
+                                    _groups.Add("g" + conversation.ConversationId, new List<string>
+                                    {
+                                        Context.ConnectionId
+                                     });
+
+                                }
+                                else
+                                {
+                                    await Groups.AddToGroupAsync(Context.ConnectionId, "g" + conversation.ConversationId);
+                                    _groups["g" + conversation.ConversationId].Add(Context.ConnectionId);
+                                }
 
 
-                    /*  if (MyEmail != null)
-                      {
+                                *//*  if (MyEmail != null)
+                                  {
 
-                          string connectionId = Context.ConnectionId;
+                                      string connectionId = Context.ConnectionId;
 
-                          if (!_users.ContainsKey(email))
-                              _users.Add(email, connectionId);
+                                      if (!_users.ContainsKey(email))
+                                          _users.Add(email, connectionId);
 
 
-                      }*/
+                                  }*//*
 
-                    await base.OnConnectedAsync();
-                }
-            }
+                                await base.OnConnectedAsync();
+                            }
+                        }*/
         }
 
 

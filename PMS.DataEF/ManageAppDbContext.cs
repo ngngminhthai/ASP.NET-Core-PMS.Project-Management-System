@@ -40,6 +40,7 @@ namespace WebApplication1.Data
             builder.ApplyConfiguration(new MessageEntityConfiguration());
             builder.ApplyConfiguration(new ProjectUserEntityConfiguration());
             builder.ApplyConfiguration(new PriorityEntityConfiguration());
+            //builder.ApplyConfiguration(new ProjecTask_UserEntityConfiguration());
 
             #region Configurations
             /*builder.Entity<IdentityRole>().Property(x => x.Id).HasMaxLength(50).IsRequired(true);
@@ -97,8 +98,13 @@ namespace WebApplication1.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<ProjectUser> ProjectUsers { get; set; }
+        public DbSet<ProjectTask_User> projectTask_Users { get; set; }
         public DbSet<ProjectComment> ProjectComments { get; set; }
         public DbSet<ProjectUploadedFile> ProjectUploadedFiles { get; set; }
+        public DbSet<ProjectPermission> ProjectPermissions { get; set; }
+        public DbSet<ProjectFunction> ProjectFunctions { get; set; }
+        public DbSet<ProjectRole> ProjectRoles { get; set; }
+        public DbSet<ProjectRole_User> ProjectRole_Users { get; set; }
         public DbSet<UserCalendar> UserCalendars { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Ticket> Tickets { get; set; }

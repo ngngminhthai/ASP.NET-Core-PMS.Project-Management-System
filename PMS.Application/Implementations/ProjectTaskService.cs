@@ -1,10 +1,12 @@
 ﻿using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
 using PMS.Application.ViewModels;
-using PMS.Data.IRepositories;
+using PMS.Data.Entities.ProjectAggregate;
+using PMS.Data.IRepositories.ProjectTasks;
 using PMS.Infrastructure.SharedKernel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WebApplication1.RequestHelpers;
 
 namespace PMS.Application.Implementations
@@ -35,6 +37,11 @@ namespace PMS.Application.Implementations
             throw new NotImplementedException();
         }
 
+        public List<ProjectTask_User> GetAllProjecTaskUser()
+        {
+            throw new NotImplementedException();
+        }
+
         public PagedList<ProjectTaskViewModel> GetAllWithPagination(int id, string keyword, int page, int pageSize)
         {
             var query = projectTaskRepository.FindAll(p => p.ProjectId == id, p => p.Project);
@@ -46,6 +53,19 @@ namespace PMS.Application.Implementations
             throw new NotImplementedException();
         }
 
+        public List<ProjectTaskViewModel> GetUpcommingTaskOfUser(string userid)
+        {
+            DateTime today = DateTime.Today;
+
+            var closestTasks = projectTaskRepository.FindAll(p => p.ProjectTask_Users)
+                .OrderBy(t => Math.Abs((t.StartDate - today).Days))
+                .Take(4);
+
+
+
+            return closestTasks.ProjectTo<ProjectTaskViewModel>().ToList();
+        }
+
         public void Save()
         {
             unitOfWork.Commit();
@@ -54,6 +74,13 @@ namespace PMS.Application.Implementations
         public void Update(ProjectTaskViewModel project)
         {
             throw new NotImplementedException();
+        }
+
+        public void UpdatePriority(int id, int priorityValue)
+        {
+            var projectTask = projectTaskRepository.FindById(id);
+            projectTask.PriorityValue = priorityValue;
+            Save();
         }
 
         public void UpdateStatus(int id, int workStatus)

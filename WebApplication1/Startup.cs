@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -13,13 +14,21 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using PMS.Application.CQRS.Projects;
 using PMS.Application.Implementations;
+using PMS.Application.Implementations.ProjectRoles;
+using PMS.Application.Implementations.ProjectTasks;
 using PMS.Application.Products;
 using PMS.Application.Services;
+using PMS.Application.Services.ProjectTasks;
 using PMS.Data.IRepositories;
+using PMS.Data.IRepositories.ProjectRoles;
+using PMS.Data.IRepositories.ProjectTasks;
+using PMS.Data.IRepositories.SystemRoles;
 using PMS.DataEF.Repositories;
+using PMS.DataEF.Repositories.ProjectRoles;
 using PMS.Infrastructure.SharedKernel;
 using PMS.Services;
 using PMS.Services.Implementations;
+using RBAC.Authorization;
 using System.Collections.Generic;
 using System.Globalization;
 using WebApplication1.AutoMapper;
@@ -146,12 +155,37 @@ namespace WebApplication1
 
             services.AddTransient<IProjectTaskRepository, ProjectTaskRepository>();
             services.AddTransient<IProjectTaskService, ProjectTaskService>();
+            services.AddTransient<IProjectRole_UserService, ProjectRole_UserService>();
+
+
+            services.AddTransient<IProjectRoleService, ProjectRoleService>();
+            services.AddTransient<IProjectFunctionService, ProjectFunctionService>();
+            services.AddTransient<IProjectPermissionService, ProjectPermissionService>();
+
+            services.AddTransient<IProjectRoleRepository, ProjectRoleRepository>();
+            services.AddTransient<IProjectFunctionRepository, ProjectFunctionRepository>();
+            services.AddTransient<IProjectPermissionRepository, ProjectPermissionRepository>();
+
+
+
+
+            services.AddTransient<IProjectTask_UserRepository, ProjectTask_UserRepository>();
+            services.AddTransient<IProjectRole_UserRepository, ProjectRole_UserRepository>();
+            services.AddTransient<IFunctionRepository, FunctionRepository>();
+            services.AddTransient<IPermissionRepository, PermissionRepository>();
+            services.AddTransient<IRoleService, RoleService>();
+
+
+            services.AddTransient<IProjectTask_UserService, ProjectTask_UserService>();
+            services.AddTransient<IProjectTask_UserRepository, ProjectTask_UserRepository>();
 
 
 
             services.AddTransient<IProjectCommentRepository, ProjectCommentRepository>();
             services.AddTransient<IProjectCommentService, ProjectCommentService>();
-            services.AddTransient<IProjectCommentService, ProjectCommentService>();
+
+
+            services.AddTransient<IAuthorizationHandler, BaseResourceAuthorizationHandler>();
 
             #endregion
             services.AddMvc()

@@ -42,10 +42,16 @@ namespace PMS.Pages.ProjectTasks
             return Page();
         }
 
-        public IActionResult OnGetUpdateStatus(int id, int workStatus)
+        public IActionResult OnGetUpdateStatus(int id, int workStatus, int pid)
         {
             projectTaskService.UpdateStatus(id, workStatus);
-            return RedirectToPage("/ProjectTasks/Index");
+            return RedirectToPage("/ProjectTasks/Index", new { id = pid });
+        }
+
+        public IActionResult OnGetUpdatePriority(int id, int priority, int pid)
+        {
+            projectTaskService.UpdatePriority(id, priority);
+            return RedirectToPage("/ProjectTasks/Index", new { id = pid });
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.

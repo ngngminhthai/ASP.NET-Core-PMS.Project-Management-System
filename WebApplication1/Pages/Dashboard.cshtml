@@ -1,0 +1,146 @@
+﻿@page
+@model PMS.Pages.DashboardModel
+@{
+
+}
+@section Styles{
+	<link href="~/lib/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar/css/main.min.css" rel="stylesheet" />
+
+}
+<div class="main-content">
+    <div>
+        <div class="row">
+            <div class="col-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h4 class="box-title mb-22">Upcomming Task</h4>
+                    </div>
+                    <div class="box-body">
+                        @for (int i = 0; i < Model.ProjectTasks.Count; i++)
+                        {
+                            <div class="content-item mb-wrap">
+                                <div class="left">
+                                    <h5 class="font-w500">@Model.ProjectTasks[i].Project.Name</h5>
+                                </div>
+                                <div class="right @Model.GetTaskClass(i)">
+                                    <div class="content-box w-100">
+                                        <h5 class="font-wb text-white fs-20">@Model.ProjectTasks[i].Name</h5>
+                                        <h6 class="font-w400 text-w07">@Model.ProjectTasks[i].EndDate</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @*<div class="content-item mb-wrap">
+                            <div class="left">
+                                <h5 class="font-w500">Project Name</h5>
+                            </div>
+                            <div class="right bg-orange">
+                                <div class="content-box w-100">
+                                    <h5 class="font-wb text-white fs-20">iOs Dev team meeting</h5>
+                                    <h6 class="font-w400 text-w07">10:00 - 11:00</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-item mb-wrap">
+                            <div class="left">
+                                <h5 class="font-w500">Project Name</h5>
+                            </div>
+                            <div class="right bg-yellow">
+                                <div class="content-box w-100">
+                                    <h5 class="font-wb text-white fs-20">iOs Dev team meeting</h5>
+                                    <h6 class="font-w400 text-w07">10:00 - 11:00</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-item mb-wrap">
+                            <div class="left">
+                                <h5 class="font-w500">Project Name</h5>
+                            </div>
+                            <div class="right bg-blue">
+                                <div class="content-box w-100">
+                                    <h5 class="font-wb text-white fs-20">iOs Dev team meeting</h5>
+                                    <h6 class="font-w400 text-w07">10:00 - 11:00</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="content-item mb-wrap mb-32">
+                            <div class="left">
+                                <h5 class="font-w500">11:00</h5>
+                            </div>
+                            <div class="right d-flex pd-0">
+                                <div class="content-box bg-yellow">
+                                    <h5 class="font-wb text-white fs-20">Design meeting</h5>
+                                    <h6 class="font-w400 text-w07">11:00 - 11:30</h6>
+                                </div>
+                                <div class="content-box bg-blue">
+                                    <h5 class="font-wb text-white fs-20">SEO meeting</h5>
+                                    <h6 class="font-w400 text-w07">11:30 12:00</h6>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="content-item mb-0 mb-wrap">
+                            <div class="left">
+                                <h5 class="font-w500">Project Name</h5>
+                            </div>
+                            <div class="right bg-light">
+                                <div class="content-box w-100">
+                                    <h5 class="font-w500">Lunch Break</h5>
+                                    <h6 class="font-w400 mt-10">12:00 - 1:00</h6>
+                                </div>
+                            </div>
+                        </div>*@
+                        <button class="btn btn-primary">View All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@section Scripts {
+
+    <script>
+        var tasks = [];
+
+        @foreach (var item in Model.ProjectTasks)
+        {
+            var startDate = item.StartDate.ToString("yyyy-MM-dd");
+            var endDate = item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+
+            @:tasks.push({
+            @:title: '@item.Name',
+            @:start: '@startDate',
+            @:end: '@endDate'
+            @:});
+        }
+    </script>
+    
+    <script src="~/lib/fullcalendar/js/main.min.js"></script>
+    <script src="~/js/pages/fullcalendar.js"></script>
+
+
+}
+
+@*<div class="main-content">
+    <ul>
+        @for (int i = 0; i < @Model.ProjectTasks.Count; i++)
+        {
+            <li class="@Model.GetTaskClass(i)">
+                @Model.ProjectTasks[i].Name
+            </li>
+        }
+    </ul>
+</div>*@

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PMS.DataEF.Data.Migrations
 {
-    public partial class InitDB1 : Migration
+    public partial class InitDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -94,6 +94,18 @@ namespace PMS.DataEF.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectFunctions",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectFunctions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -455,6 +467,27 @@ namespace PMS.DataEF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProjectRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectRoles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProjectRoles_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProjectTasks",
                 columns: table => new
                 {
@@ -505,22 +538,106 @@ namespace PMS.DataEF.Data.Migrations
                 name: "ProjectUsers",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     ProjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectUsers", x => new { x.UserId, x.ProjectId });
+                    table.PrimaryKey("PK_ProjectUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProjectUsers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ProjectUsers_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    FunctionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CanCreate = table.Column<bool>(type: "bit", nullable: false),
+                    CanRead = table.Column<bool>(type: "bit", nullable: false),
+                    CanUpdate = table.Column<bool>(type: "bit", nullable: false),
+                    CanDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectPermissions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProjectPermissions_ProjectFunctions_FunctionId",
+                        column: x => x.FunctionId,
+                        principalTable: "ProjectFunctions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectPermissions_ProjectRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "ProjectRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectRole_Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectRole_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProjectRole_Users_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectRole_Users_ProjectRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "ProjectRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "projectTask_Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    ProjectTaskId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_projectTask_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_projectTask_Users_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_projectTask_Users_ProjectTasks_ProjectTaskId",
+                        column: x => x.ProjectTaskId,
+                        principalTable: "ProjectTasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -615,9 +732,44 @@ namespace PMS.DataEF.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProjectPermissions_FunctionId",
+                table: "ProjectPermissions",
+                column: "FunctionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectPermissions_RoleId",
+                table: "ProjectPermissions",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectRole_Users_RoleId",
+                table: "ProjectRole_Users",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectRole_Users_UserId",
+                table: "ProjectRole_Users",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectRoles_ProjectId",
+                table: "ProjectRoles",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Projects_CreatorId",
                 table: "Projects",
                 column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_projectTask_Users_ProjectTaskId",
+                table: "projectTask_Users",
+                column: "ProjectTaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_projectTask_Users_UserId",
+                table: "projectTask_Users",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectTasks_ProjectId",
@@ -633,6 +785,11 @@ namespace PMS.DataEF.Data.Migrations
                 name: "IX_ProjectUsers_ProjectId",
                 table: "ProjectUsers",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectUsers_UserId",
+                table: "ProjectUsers",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UploadedFiles_UserUploadedId",
@@ -682,7 +839,13 @@ namespace PMS.DataEF.Data.Migrations
                 name: "ProjectComments");
 
             migrationBuilder.DropTable(
-                name: "ProjectTasks");
+                name: "ProjectPermissions");
+
+            migrationBuilder.DropTable(
+                name: "ProjectRole_Users");
+
+            migrationBuilder.DropTable(
+                name: "projectTask_Users");
 
             migrationBuilder.DropTable(
                 name: "ProjectUploadedFiles");
@@ -710,6 +873,15 @@ namespace PMS.DataEF.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Functions");
+
+            migrationBuilder.DropTable(
+                name: "ProjectFunctions");
+
+            migrationBuilder.DropTable(
+                name: "ProjectRoles");
+
+            migrationBuilder.DropTable(
+                name: "ProjectTasks");
 
             migrationBuilder.DropTable(
                 name: "Projects");
