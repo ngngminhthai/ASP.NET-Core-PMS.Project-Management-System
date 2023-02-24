@@ -148,10 +148,11 @@ namespace WebApplication1
             services.AddTransient<IProjectTaskService, ProjectTaskService>();
 
 
-
             services.AddTransient<IProjectCommentRepository, ProjectCommentRepository>();
             services.AddTransient<IProjectCommentService, ProjectCommentService>();
 
+            services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<ITagService, TagService>();
 
             #endregion
             services.AddMvc()

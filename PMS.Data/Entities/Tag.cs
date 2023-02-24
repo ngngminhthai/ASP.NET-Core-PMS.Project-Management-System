@@ -4,6 +4,6 @@ namespace PMS.Data.Entities
 {
     public class Tag : DomainEntity<int>
     {
-        string TagName { get; set; }
+        public string TagName { get; set; }
     }
 }
