@@ -1,8 +1,10 @@
-﻿using PMS.Data.Entities.ProjectAggregate;
+﻿using PMS.Data.Entities;
+using PMS.Data.Entities.ProjectAggregate;
 using PMS.Infrastructure.Interfaces;
 using PMS.Infrastructure.SharedKernel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Data.Entities.ProjectAggregate
 {
@@ -11,6 +13,8 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public string Name { get; set; }
         public string Description { get; set; }
         public ManageUser Creator { get; set; }
+        [ForeignKey("TagId")]
+        public Tag Tag { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
         public ICollection<ProjectUploadedFile> ProjectUploadedFiles { get; set; }
         public ICollection<ProjectTask> ProjectTasks { get; set; }

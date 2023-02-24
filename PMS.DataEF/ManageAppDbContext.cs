@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PMS.Data.Entities;
 using PMS.Data.Entities.ConversationAggregate;
 using PMS.Data.Entities.ProjectAggregate;
 using PMS.Data.Entities.UserAggregate;
@@ -106,6 +107,7 @@ namespace WebApplication1.Data
         public DbSet<Function> Functions { get; set; }
         public DbSet<TicketResponse> TicketResponses { get; set; }
         public DbSet<UploadedFiles> UploadedFiles { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
 
         public override int SaveChanges()
