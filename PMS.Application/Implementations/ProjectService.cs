@@ -15,10 +15,12 @@ namespace PMS.Application.Implementations
     {
         private readonly IProjectRepository projectRepository;
         private readonly IUnitOfWork unitOfWork;
+
         public ProjectService(IProjectRepository projectRepository, IUnitOfWork unitOfWork)
         {
             this.projectRepository = projectRepository;
             this.unitOfWork = unitOfWork;
+
         }
 
         public void Add(Project Project)
@@ -54,15 +56,32 @@ namespace PMS.Application.Implementations
             projectRepository.Update(Project);
         }
 
-        public PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string email)
+        public PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string email, int[] tag, bool mine)
         {
-            var query = projectRepository.FindAll().Where(p => p.Creator.Email == email);
+            var query = projectRepository.FindAll();
+            if (!mine)
+            {
+                query = query.Where(p => p.Creator.Email.Equals(email)
+            || p.ProjectUsers.Any(pu => pu.User.Email.Equals(email)));
+
+            }
+            else
+            {
+                query = query.Where(p => p.Creator.Email.Equals(email));
+            }
+            var x = tag;
+
+            if (tag.Length > 0)
+            {
+                query = query.Where(p => tag.Contains(p.Tag.Id));
+            }
+            if (keyword != null)
+            {
+                query = query.Where(p => p.Name.Contains(keyword));
+            }
             return PagedList<ProjectViewModel>.ToPagedList(query.ProjectTo<ProjectViewModel>(), page, pageSize);
         }
 
-        public PagedList<ProjectViewModel> GetAllWithPagination2(string keyword, int page, int pageSize, string email)
-        {
-            throw new System.NotImplementedException();
-        }
+
     }
 }

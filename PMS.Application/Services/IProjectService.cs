@@ -9,7 +9,7 @@ namespace PMS.Application.Services
     public interface IProjectService
     {
         void Add(Project project);
-        PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string emai);
+        PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string emai, int[] tag, bool mine);
         List<ProjectViewModel> GetAll();
         void Update(Project project);
         /* void Delete(int id)*/

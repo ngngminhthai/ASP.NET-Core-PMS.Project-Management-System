@@ -189,6 +189,7 @@ function clickReply(parentID, level) {
     const delElement = document.getElementById("comment_to_project_box" + parentID);
     if (delElement !== null) {
         delElement.remove();
+        return
     }
     const delElementUpddate = document.getElementById("update_comment_box" + parentID);
     if (delElementUpddate !== null) {
@@ -257,6 +258,7 @@ function clickUpdate(id) {
     const delElement = document.getElementById("comment_to_project_box" + id);
     if (delElement !== null) {
         delElement.remove();
+        return
     }
     const delElementUpddate = document.getElementById("update_comment_box" + id);
     if (delElementUpddate !== null) {

@@ -129,42 +129,50 @@
                     </div>
 
                     <div class="divider"></div>
-                    <div class="box-body content">
-                        <h4 class="title">Project Description</h4>
-                        <p class="fs-18 font-w400 font-main mt-27 mb-29">
-                            @Html.DisplayFor(model => model.Project.Description)
-                        </p>
+                    <div class="row" style="width:100%">
+                        <div class="col-12">
+                            <div class="box-body content" style="width: 100%">
+                                <h4 class="title">Project Description</h4>
+                                <p class="fs-18 font-w400 font-main mt-27 mb-29">
+                                    @Html.DisplayFor(model => model.Project.Description)
+                                </p>
+
+                                <div class="row" >
+                                    <div class="col-12" style="width: 100%">
+
+                                        <div class="form-chat" style="width: 100%">
+                                            <form id="comment_to_project" action="/Projects/CreateComment" method="post" accept-charset="utf-8">
+                                                <input type="hidden" name="comment.ProjectId" value="@Model.Project.Id" />
+                                                <input type="hidden" name="comment.Level" value="0" />
+                                                <input type="hidden" name="comment.NumberOfLike" value="0" />
 
 
-                        <div class="form-chat">
-                            <form id="comment_to_project" action="/Projects/CreateComment" method="post" accept-charset="utf-8">
-                                <input type="hidden" name="comment.ProjectId" value="@Model.Project.Id" />
-                                <input type="hidden" name="comment.Level" value="0" />
-                                <input type="hidden" name="comment.NumberOfLike" value="0" />
+                                                <div class="message-form-chat">
+                                                    <!-- /.pin -->
+                                                    <span class="message-text">
+                                                        <textarea placeholder="Type comment here" required="required" name="comment.Content"></textarea>
+                                                    </span>
 
 
-                                <div class="message-form-chat">
-                                    <!-- /.pin -->
-                                    <span class="message-text">
-                                        <textarea placeholder="Type comment here" required="required" name="comment.Content"></textarea>
-                                    </span>
+                                                    <span class="btn-send">
+                                                        <button id="send_comment" class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
+                                                    </span>
+                                                    <!-- /.btn-send -->
 
-
-                                    <span class="btn-send">
-                                        <button id="send_comment" class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
-                                    </span>
-                                    <!-- /.btn-send -->
-
+                                                </div>
+                                                <!-- /.message-form-chat -->
+                                                <div class="clearfix"></div>
+                                            </form>
+                                            <!-- /form -->
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- /.message-form-chat -->
-                                <div class="clearfix"></div>
-                            </form>
-                            <!-- /form -->
-                        </div>
 
-                        <div class="project-description mt-10">
-                            <h4>Project Description</h4>
-                            <div id="comment-box" class="comment-box">
+                                <div class="project-description mt-10">
+                                    <h4>Project Description</h4>
+                                    <div id="comment-box" class="comment-box">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

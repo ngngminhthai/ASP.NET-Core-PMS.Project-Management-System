@@ -1,8 +1,13 @@
 ﻿@page
+@using PMS.Data.Entities;
 @model PMS.Pages.Projects.IndexModel
 
 @{
     ViewData["Title"] = "Index";
+
+    int[] tag = ViewData["tags"] as int[];
+    bool? mine = ViewData["mine"] as bool?;
+    string search = ViewData["search"] as string;
 }
 
 
@@ -19,31 +24,66 @@
 
         </div>
         <div class="row">
-            <div class="col-12">
-                <div class="box">
-                    <div class="box-body d-flex justify-content-between pt-0 pb-0">
 
-                        <div class="list-action">
-
-                           
-                            <input type="text" placeholder="name" class="form-control">
-                            <a href="#" class="list-board active" onclick="listboard()"><i class='bx bxs-dashboard'></i></a>
-                            <a href="#" class="btn btn-light me-0 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false"> Tag<i style="margin-left : 10px" class='bx bxs-dashboard'></i> </a>
-                            <ul class="dropdown-menu dropdown-menu-end" role="menu">
-                               @foreach( var item in Model.Tags ){
-                                    <li><input style="padding-left:10px" type="checkbox" name="tags" value="@item.Id"> <span>@item.TagName</span></li>
+            <form method="post">
+                <div class="col-12">
+                    <div class="box">
+                        <div class="box-body d-flex pt-0 pb-0 row">
+                            <div class="col-12 search-form d-flex justify-content-between align-items-center">
+                                @if(search != null){
+                                <input type="text" name="search" value="@search" placeholder="Client Name" class="form-control">
                                 }
-                            </ul>
+                                else
+                                {
+                                <input type="text" name="search"  placeholder="Client Name" class="form-control">
+                                }
+                                <select class="form-control" name="Mine" id="inputState">
+                                    <option value="false">All</option>
+                                    @if (mine == true)
+                                    {
+                                        <option value="true" selected>Mine</option>
+                                    }
 
-                           
+                                    else
+                                    {
+                                        <option value="true">Mine</option>
+                                    }
+                                </select>
+                                <a href="#" class="btn btn-light me-0 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false"> Tag<i style="margin-left : 10px" class='bx bxs-dashboard'></i> </a>
+                                <ul class="dropdown-menu dropdown-menu-end" role="menu">
+                                    @foreach (var item in Model.Tags)
+                                    {
+                                        bool flag = false;
+                                        if (tag.Length > 0)
+                                        {
+                                            @foreach (var std in tag)
+                                            {
+                                                if (std == item.Id)
+                                                {
+                                                    flag = true;
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                        if (flag)
+                                        {
+                                            <li class="d-flex align-items-center"><input style="margin-left:10px" checked type="checkbox" name="tags" value="@item.Id"> <span>@item.TagName</span></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="d-flex align-items-center"><input style="margin-left:10px" type="checkbox" name="tags" value="@item.Id"> <span>@item.TagName</span></li>
+                                        }
+
+                                    }
+                                </ul>
+                                <button type="submit" class="search d-flex"><i class="fas fa-search"></i>Search</button>
+                            </div>
+
                         </div>
-                        <div>
-                            <button type="submit" class="search d-flex"><i class="fas fa-search"></i>Search</button>
-                        </div>
+
                     </div>
-
                 </div>
-            </div>
+            </form>
         </div>
         <div class="row">
             @foreach (var item in Model.Project)
@@ -91,12 +131,11 @@
     </div>
 </div>
 <div class="col-sm-7">
-    <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
+  @*  <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
         <ul id="paginationUL"></ul>
-    </div>
+    </div>*@
 </div>
-</div>
-
-<script src="~/js/project/comment/site.js"></script>
+<paging class="pagination" total-records="@Model.paginationParams.Total" show-total-pages="false" show-total-records="false" page-size="@Model.paginationParams.PageSize" page-no="@Model.paginationParams.PageNumber"></paging>
+<script src="~/js/project/site.js"></script>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
