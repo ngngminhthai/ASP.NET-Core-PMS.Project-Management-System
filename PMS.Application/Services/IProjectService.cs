@@ -9,10 +9,10 @@ namespace PMS.Application.Services
     public interface IProjectService
     {
         void Add(Project project);
-        PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string email);
+        PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string emai);
         List<ProjectViewModel> GetAll();
         void Update(Project project);
-       /* void Delete(int id)*/
+        /* void Delete(int id)*/
         ProjectViewModel GetById(int id);
         void Save();
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PMS.Data.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace WebApplication1.Models
 {
@@ -8,6 +10,8 @@ namespace WebApplication1.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Email { get; set; }
+        public Tag Tag { get; set; }
+        public DateTime StartDate { get; set; }
         public List<ProjectCommentViewModel>? ListComment { get; set; }
 
     }

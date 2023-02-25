@@ -38,7 +38,7 @@
                         <div class="pd-1r">
                             <div class="divider"></div>
                         </div>
-                       
+
                         <div class="box-body">
                             <ul class="list">
                                 <li class="d-flex no-seen">
@@ -97,7 +97,7 @@
                     <div class="box-right d-flex">
                         <a class="btn" href="project-details.html">Project Details</a>
                         <div class="icon-ratting">
-                            <i class='bx bxs-star'></i>
+                            <span> @Model.Project.Tag.TagName </span>
                         </div>
                         <div class="dropdown ml-14">
                             <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
@@ -138,18 +138,18 @@
 
                         <div class="form-chat">
                             <form id="comment_to_project" action="/Projects/CreateComment" method="post" accept-charset="utf-8">
-                                <input type="hidden" name="comment.ProjectId" value="@Model.Project.Id"/>
-                                <input type="hidden" name="comment.Level" value="0"/>
-                                <input type="hidden" name="comment.NumberOfLike" value="0"/>
+                                <input type="hidden" name="comment.ProjectId" value="@Model.Project.Id" />
+                                <input type="hidden" name="comment.Level" value="0" />
+                                <input type="hidden" name="comment.NumberOfLike" value="0" />
 
 
                                 <div class="message-form-chat">
                                     <!-- /.pin -->
                                     <span class="message-text">
-                                        <textarea placeholder="Type comment here" required="required" name="comment.Content" ></textarea>
+                                        <textarea placeholder="Type comment here" required="required" name="comment.Content"></textarea>
                                     </span>
-                                   
-                                   
+
+
                                     <span class="btn-send">
                                         <button id="send_comment" class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
                                     </span>
@@ -262,17 +262,17 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 @section Scripts{
-        
-        <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
-        <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
-        <script src="~/js/project/comment/site.js" type="text/javascript"></script>
-        <script>
-            setId(@Model.Project.Id);
-            setAuthor( "@Model.Email");
-        </script>
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/project/comment/site.js" type="text/javascript"></script>
+    <script>
+        setId(@Model.Project.Id);
+        setAuthor("@Model.Email");
+    </script>
 }
 <!-- END MAIN CONTENT -->
 @*<div>

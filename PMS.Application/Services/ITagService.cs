@@ -12,6 +12,7 @@ namespace PMS.Application.Services
         void Update(TagViewModel tag);
         //void Delete(int id);
         TagViewModel GetById(int id);
+        TagViewModel GetByProjectId(int id);
         void Save();
     }
 }

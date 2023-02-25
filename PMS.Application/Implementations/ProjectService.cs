@@ -40,7 +40,7 @@ namespace PMS.Application.Implementations
 
         public ProjectViewModel GetById(int id)
         {
-            return Mapper.Map<ProjectViewModel>(projectRepository.FindById(id, p => p.Creator));
+            return Mapper.Map<ProjectViewModel>(projectRepository.FindById(id, p => p.Creator, p => p.Tag)); ;
         }
 
         public void Save()
@@ -60,6 +60,9 @@ namespace PMS.Application.Implementations
             return PagedList<ProjectViewModel>.ToPagedList(query.ProjectTo<ProjectViewModel>(), page, pageSize);
         }
 
-
+        public PagedList<ProjectViewModel> GetAllWithPagination2(string keyword, int page, int pageSize, string email)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

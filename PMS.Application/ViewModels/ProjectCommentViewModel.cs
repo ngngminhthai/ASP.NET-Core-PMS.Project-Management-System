@@ -10,7 +10,7 @@ namespace WebApplication1.Models
         public int? ProjectID { get; set; }
         public string Author { get; set; }
         public string Content { get; set; }
-        public Tag Tag { get; set; }
+        public Tag? Tag { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
         public int Level { get; set; }

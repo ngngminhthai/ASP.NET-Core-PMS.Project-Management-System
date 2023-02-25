@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
 using PMS.Application.ViewModels;
 using PMS.Data.Entities;
@@ -27,7 +28,7 @@ namespace PMS.Application.Implementations
             var tag = new Tag
             {
                 Id = tagVM.Id,
-                TagName = tagVM.Name,
+                TagName = tagVM.TagName,
             };
 
             tagRepository.Add(tag);
@@ -45,6 +46,11 @@ namespace PMS.Application.Implementations
         }
 
         public TagViewModel GetById(int id)
+        {
+            return Mapper.Map<TagViewModel>(tagRepository.FindById(id));
+        }
+
+        public TagViewModel GetByProjectId(int id)
         {
             throw new NotImplementedException();
         }
