@@ -12,4 +12,8 @@
     <ProjectReference Include="..\PMS.Infrastructure\PMS.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="IRepositories\Projects\" />
+  </ItemGroup>
+
 </Project>

@@ -53,6 +53,7 @@ namespace PMS.DataEF.Repositories
                     items = items.Include(includeProperty);
                 }
             }
+            var b = items.Where(predicate);
             return items.Where(predicate);
         }
 

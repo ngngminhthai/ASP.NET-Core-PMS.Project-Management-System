@@ -21,5 +21,6 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public ICollection<ProjectComment> ProjectComments { get; set; }
+        public ICollection<ProjectRole> ProjectRoles { get; set; }
     }
 }

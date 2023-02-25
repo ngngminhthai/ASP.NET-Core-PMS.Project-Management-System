@@ -177,6 +177,122 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("ConversationUploadedFiles");
                 });
 
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectFunction", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProjectFunctions");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectPermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("CanCreate")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanRead")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanUpdate")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FunctionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FunctionId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("ProjectPermissions");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectRoles");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectRole_User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectRole_Users");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectTask_User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProjectTaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectTaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("projectTask_Users");
+                });
+
             modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectUploadedFile", b =>
                 {
                     b.Property<int>("Id")
@@ -556,15 +672,22 @@ namespace PMS.DataEF.Data.Migrations
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectUser", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "ProjectId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ProjectUsers");
                 });
@@ -732,6 +855,68 @@ namespace PMS.DataEF.Data.Migrations
                     b.Navigation("Conversation");
                 });
 
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectPermission", b =>
+                {
+                    b.HasOne("PMS.Data.Entities.ProjectAggregate.ProjectFunction", "ProjectFunction")
+                        .WithMany()
+                        .HasForeignKey("FunctionId");
+
+                    b.HasOne("PMS.Data.Entities.ProjectAggregate.ProjectRole", "ProjectRole")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProjectFunction");
+
+                    b.Navigation("ProjectRole");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectRole", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
+                        .WithMany("ProjectRoles")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectRole_User", b =>
+                {
+                    b.HasOne("PMS.Data.Entities.ProjectAggregate.ProjectRole", "ProjectRole")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Data.Entities.ManageUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ProjectRole");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectTask_User", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", "ProjectTask")
+                        .WithMany("ProjectTask_Users")
+                        .HasForeignKey("ProjectTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Data.Entities.ManageUser", "User")
+                        .WithMany("ProjectTask_Users")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ProjectTask");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectUploadedFile", b =>
                 {
                     b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
@@ -846,9 +1031,7 @@ namespace PMS.DataEF.Data.Migrations
 
                     b.HasOne("WebApplication1.Data.Entities.ManageUser", "User")
                         .WithMany("ProjectUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Project");
 
@@ -890,6 +1073,8 @@ namespace PMS.DataEF.Data.Migrations
                 {
                     b.Navigation("ConversationUser");
 
+                    b.Navigation("ProjectTask_Users");
+
                     b.Navigation("ProjectUsers");
                 });
 
@@ -897,11 +1082,18 @@ namespace PMS.DataEF.Data.Migrations
                 {
                     b.Navigation("ProjectComments");
 
+                    b.Navigation("ProjectRoles");
+
                     b.Navigation("ProjectTasks");
 
                     b.Navigation("ProjectUploadedFiles");
 
                     b.Navigation("ProjectUsers");
+                });
+
+            modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", b =>
+                {
+                    b.Navigation("ProjectTask_Users");
                 });
 #pragma warning restore 612, 618
         }

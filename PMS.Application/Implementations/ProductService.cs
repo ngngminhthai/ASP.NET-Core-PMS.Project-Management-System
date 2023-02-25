@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using PMS.Application.Services;
-using PMS.Data.IRepositories;
+using PMS.Data.IRepositories.SystemRoles;
 using PMS.Infrastructure.SharedKernel;
 using System.Collections.Generic;
 using System.Linq;
