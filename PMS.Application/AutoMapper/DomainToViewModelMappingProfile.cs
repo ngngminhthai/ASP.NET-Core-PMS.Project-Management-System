@@ -21,6 +21,8 @@ namespace WebApplication1.AutoMapper
             CreateMap<ProjectComment, ProjectCommentViewModel>().ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.UserName)).ForMember(dest => dest.ProjectID, opt => opt.MapFrom(src => src.Project.Id));
 
             CreateMap<Tag, TagViewModel>();
+
+            CreateMap<ProjectUser, ProjectUserViewModel>();
         }
     }
 }

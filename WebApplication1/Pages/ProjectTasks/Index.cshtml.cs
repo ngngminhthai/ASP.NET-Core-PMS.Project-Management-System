@@ -17,7 +17,7 @@ namespace PMS.Pages.ProjectTasks
 
         public PagedList<ProjectTaskViewModel> ProjectTask { get; set; }
 
-        public void OnGetAsync(int id, string? search, int p = 1, int s = 3)
+        public void OnGetAsync(int id, string search, int p = 1, int s = 3)
         {
             ProjectTask = projectTaskService.GetAllWithPagination(id, "", p, s);
 

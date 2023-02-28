@@ -23,6 +23,7 @@ using PMS.Data.IRepositories;
 using PMS.Data.IRepositories.ProjectRoles;
 using PMS.Data.IRepositories.ProjectTasks;
 using PMS.Data.IRepositories.SystemRoles;
+using PMS.DataEF;
 using PMS.DataEF.Repositories;
 using PMS.DataEF.Repositories.ProjectRoles;
 using PMS.Infrastructure.SharedKernel;
@@ -188,7 +189,8 @@ namespace WebApplication1
 
             services.AddTransient<IAuthorizationHandler, BaseResourceAuthorizationHandler>();
 
-
+            services.AddTransient<IProjectUserRepository, ProjectUserRepository>();
+            services.AddTransient<IProjectUserService, ProjectUserService>();
             #endregion
             services.AddMvc()
              .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts =>
