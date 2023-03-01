@@ -13,6 +13,7 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public string Name { get; set; }
         public string Description { get; set; }
         public ManageUser Creator { get; set; }
+        public int TagId { get; set; }
         [ForeignKey("TagId")]
         public Tag Tag { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }

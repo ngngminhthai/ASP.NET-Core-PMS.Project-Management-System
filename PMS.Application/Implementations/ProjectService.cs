@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using PMS.Application.Services;
 using PMS.Data.IRepositories;
 using PMS.Infrastructure.SharedKernel;
 using System.Collections.Generic;
 using System.Linq;
+using WebApplication1.Data;
 using WebApplication1.Data.Entities.ProjectAggregate;
 using WebApplication1.Models;
 using WebApplication1.RequestHelpers;
@@ -14,19 +16,31 @@ namespace PMS.Application.Implementations
     public class ProjectService : IProjectService
     {
         private readonly IProjectRepository projectRepository;
+        private readonly ManageAppDbContext context;
         private readonly IUnitOfWork unitOfWork;
 
-        public ProjectService(IProjectRepository projectRepository, IUnitOfWork unitOfWork)
+        public ProjectService(IProjectRepository projectRepository, IUnitOfWork unitOfWork, ManageAppDbContext context)
         {
             this.projectRepository = projectRepository;
             this.unitOfWork = unitOfWork;
+            this.context = context;
 
         }
 
-        public void Add(Project Project)
+        public void Add(Project project, string userName)
         {
+            var author = context.Users.Where(u => u.Email == userName).FirstOrDefault();
+            var newProject = new Project
+            {
+                Name = project.Name,
+                Description = project.Description,
+                StartDate = project.StartDate,
+                EndDate= project.EndDate,
+                Creator = author,
+                TagId = project.TagId,
+            };
 
-            projectRepository.Add(Project);
+            projectRepository.Add(newProject);
             Save();
         }
 
@@ -54,6 +68,7 @@ namespace PMS.Application.Implementations
         {
             //Loại bỏ thuộc tính DateCreated khỏi hành động update
             projectRepository.Update(Project);
+            Save();
         }
 
         public PagedList<ProjectViewModel> GetAllWithPagination(string keyword, int page, int pageSize, string email, int[] tag, bool mine)
@@ -82,6 +97,10 @@ namespace PMS.Application.Implementations
             return PagedList<ProjectViewModel>.ToPagedList(query.ProjectTo<ProjectViewModel>(), page, pageSize);
         }
 
-
+        public void Delete(int id)
+        {
+            projectRepository.Remove(id);
+            Save();
+        }
     }
 }

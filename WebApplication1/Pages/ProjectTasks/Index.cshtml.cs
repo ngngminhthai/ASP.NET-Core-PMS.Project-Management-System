@@ -1,6 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis;
+using PMS.Application.Implementations;
 using PMS.Application.Services;
 using PMS.Application.ViewModels;
+using PMS.Data.Entities;
+using System;
+using System.Threading.Tasks;
+using WebApplication1.Data.Entities.ProjectAggregate;
 using WebApplication1.RequestHelpers;
 
 namespace PMS.Pages.ProjectTasks
@@ -16,14 +23,35 @@ namespace PMS.Pages.ProjectTasks
         }
 
         public PagedList<ProjectTaskViewModel> ProjectTask { get; set; }
+       
 
-        public void OnGetAsync(int id, string search, int p = 1, int s = 3)
+        public int Id { get; set; }
+
+        public async void OnGetAsync(int id, string search, int p = 1, int s = 3)
         {
             ProjectTask = projectTaskService.GetAllWithPagination(id, "", p, s);
-
+            Id = id;
             paginationParams.PageSize = s;
             paginationParams.PageNumber = p;
             paginationParams.Total = ProjectTask.MetaData.TotalCount;
+        }
+        public async Task<IActionResult> OnPostAsync(string name, int ProjectId, DateTime StartDate, DateTime EndDate, int PriorityValue, int WorkingStatusValue, string Description)
+    {
+            var newTask = new ProjectTask
+            {
+                Name = name,
+                ProjectId = ProjectId,
+                StartDate = StartDate,
+                EndDate = EndDate,
+                Description = Description,
+                PriorityValue = PriorityValue,
+                WorkingStatusValue = WorkingStatusValue
+            };
+            projectTaskService.Add(newTask);
+
+            return Redirect("../ProjectTasks?id=" + ProjectId);
+   
+            // return Page();
         }
     }
 }

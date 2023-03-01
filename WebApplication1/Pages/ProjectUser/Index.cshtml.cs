@@ -45,7 +45,7 @@ namespace PMS.Pages.ProjectUser
             paginationParams.Total = ListProjectUser.MetaData.TotalCount;
 
         }
-        public async Task OnPostAsync(int projectId)
+        public async Task<IActionResult> OnPostAsync(int projectId)
         {
             var result = projectUserService.Add(projectId, UserName);
             if (result == 1)
@@ -62,14 +62,7 @@ namespace PMS.Pages.ProjectUser
             {
                 Flag = true;
             }
-            ListProjectUser = await Mediator.Send(new ListProjectUser.Query()
-            {
-                ProjectId = projectId,
-                PageIndex = 1,
-                PageSize = 9,
-                SearchTerm = null
-
-            });
+            return Redirect("projectUser");
 
         }
     }

@@ -12,6 +12,7 @@ namespace WebApplication1.Models
         public string Email { get; set; }
         public Tag Tag { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public List<ProjectCommentViewModel>? ListComment { get; set; }
 
     }
