@@ -103,17 +103,16 @@
                                         <i class="bx bx-dots-horizontal-rounded"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="">
-
-                                        <a class="dropdown-item" href="#" data-toggle="modal" onclick="myFunction(@item.Id)" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client" onclick="myFunction(@item.Id)"><i class="bx bx-trash"></i> Delete</a>
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#d">
-                                            <form id="myFormDelete_@item.Id" method="post" asp-page-handler="Delete" >
-                                                <input type="hidden" name="projectTaskId" value="@item.Id" />
-                                                <input type="submit" value="click"/>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="d">
+                                            <form id='myFormDelete+@item.Id' asp-page-handler="Delete">
+                                                <input type="hidden" name="projectTaskId" value="@item.Id">
+                                                <input type="hidden" name="id" value="@Model.Id"/>
+                                                <input type="submit" value="delete" >
                                             </form>
                                         </a>
                                     </div>
-
                                 </div>
                             </td>
                         </tr>
@@ -312,7 +311,9 @@
                     <i class="bx bx-dots-horizontal-rounded"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                    </div>
                     </div>
                     </td>
                     </tr>*@
@@ -320,7 +321,7 @@
                 </tbody>
             </table>
         </div>
-     
+        <paging class="pagination" total-records="@Model.paginationParams.Total" show-total-pages="false" show-total-records="false" page-size="@Model.paginationParams.PageSize" page-no="@Model.paginationParams.PageNumber"></paging>
 
     </div>
 
@@ -334,13 +335,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post">
-                        <input type="hidden" name="projectId" value="@Model.Id" />
+                    <form method="post" asp-page-handler="Create">
+                        <input type="hidden" name="projectId" value="@Model.Id"/>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Task Name</label>
-                                    <input class="form-control" name="Name" type="text" required>
+                                    <input class="form-control" name="Name" type="text" >
                                 </div>
                             </div>
 
@@ -359,7 +360,7 @@
                                 <div class="form-group">
                                     <label>End Date</label>
                                     <div class="cal-icon">
-                                        <input name="EndDate" type="date" required>
+                                        <input name="EndDate" type="date">
                                     </div>
                                 </div>
                             </div>
@@ -383,7 +384,7 @@
                                     <select class="select" name="WorkingStatusValue">
                                         <option value="1">Done</option>
                                         <option value="2">In Progress</option>
-                                        <option value="3">Working Status</option>
+                                        <option value="3"></option>
                                     </select>
                                 </div>
                             </div>
@@ -398,7 +399,7 @@
                             </div>
                         </div>
                         <div class="submit-section">
-                            <input type="submit" value="create" class="btn btn-primary" />
+                            <input type="submit" value="create" class="btn btn-primary"/>
                         </div>
                     </form>
                 </div>
@@ -406,12 +407,11 @@
         </div>
     </div>
 </div>
-<paging class="pagination" total-records="@Model.paginationParams.Total" show-total-pages="false" show-total-records="false" page-size="@Model.paginationParams.PageSize" page-no="@Model.paginationParams.PageNumber"></paging>
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
     <script>
         function myFunction(id) {
-            console.log(id);
+            console.log('myFormDelete+'+id);
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -426,11 +426,11 @@
                     console.log("b");
                     fetch('/ProjectTasks?handler=Delete', {
                         method: 'POST',
-                        body: new FormData(document.querySelector('#myFormDelete_' + id))
+                        body: new FormData(document.getElementById('myFormDelete+'+id))
                     }).then(function (response) {
                         if (response.ok) {
                             // redirect to a different page if the form submission was successful
-                            window.location.href = '/Projects'
+                            window.location.href = "ProjectTasks?id="+@Model.Id
                         } else {
                             // handle any errors that occurred during the form submission
                             console.error('Form submission failed:', response);
@@ -443,5 +443,6 @@
             })
         }
     </script>
+
 
     }

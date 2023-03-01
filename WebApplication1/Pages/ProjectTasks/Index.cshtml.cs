@@ -35,7 +35,7 @@ namespace PMS.Pages.ProjectTasks
             paginationParams.PageNumber = p;
             paginationParams.Total = ProjectTask.MetaData.TotalCount;
         }
-        public async Task<IActionResult> OnPostAsync(string name, int ProjectId, DateTime StartDate, DateTime EndDate, int PriorityValue, int WorkingStatusValue, string Description)
+        public async Task<IActionResult> OnPostCreateAsync(string name, int ProjectId, DateTime StartDate, DateTime EndDate, int PriorityValue, int WorkingStatusValue, string Description)
         {
             var newTask = new ProjectTask
             {
@@ -53,12 +53,15 @@ namespace PMS.Pages.ProjectTasks
 
             // return Page();
         }
-        public async Task<IActionResult> OnPostDeleteAsync(int projectTaskId)
+        public async Task<IActionResult> OnPostDeleteAsync(int projectTaskId, int id)
         {
+           
             projectTaskService.Delete(projectTaskId);
 
-            return Redirect("../Projects");
-            // return Page();
+            return Redirect("../ProjectTasks?id=" + id);
+
+            
         }
+
     }
 }

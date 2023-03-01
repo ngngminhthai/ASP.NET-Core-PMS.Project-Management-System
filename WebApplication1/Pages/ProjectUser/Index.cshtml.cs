@@ -62,7 +62,7 @@ namespace PMS.Pages.ProjectUser
             {
                 Flag = true;
             }
-            return Redirect("projectUser");
+            return Redirect("projectUser?projectid="+projectId);
 
         }
     }

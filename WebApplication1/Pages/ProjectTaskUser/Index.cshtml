@@ -1,11 +1,9 @@
 ﻿@page
-@model PMS.Pages.ProjectUser.IndexModel
+@model PMS.Pages.ProjectTaskUser.IndexModel
 
 @{
-    ViewData["Title"] = "Project";
+    ViewData["Title"] = "Index";
 }
-
-<!-- MAIN CONTENT -->
 
 <div class="main-content client">
     <div class="row">
@@ -105,11 +103,11 @@
 
             </div>
         </div>
-        @if (Model.ListProjectUser != null)
+        @if (Model.ProjectTaskUser != null)
         {
-            @foreach (var item in Model.ListProjectUser)
+            @foreach (var item in Model.ProjectTaskUser)
             {
-                <div class="col-3 col-md-6 col-sm-12 mb-25">
+                <div class="col-4 col-md-6 col-sm-12 mb-25">
                     <div class="box client">
 
                         <div class="dropdown">
@@ -125,10 +123,13 @@
 
                             <a href="client-details.html"><h5 class="mt-17">@item.User.UserName</h5></a>
 
-                            <p class="fs-14 font-w400 font-main">Founder at <span class="text-clo-primary font-w500 pl-4">Company Name</span></p>
+                         
                             <ul class="info">
-                                <li class="fs-14"><i class='bx bxs-phone'></i>@if (item.User.PhoneNumber != null)
+                                <li class="fs-14">
+                                    @if (item.User.PhoneNumber != null)
                                     {
+                                        <i class='bx bxs-phone'></i>
+
                                         @item.User.PhoneNumber
                                     }</li>
                                 <li class="fs-14"><i class='bx bxs-envelope'></i>@item.User.Email </li>
@@ -143,6 +144,7 @@
                 </div>
             }
         }
+        <paging class="pagination" total-records="@Model.paginationParams.Total" show-total-pages="false" show-total-records="false" page-size="@Model.paginationParams.PageSize" page-no="@Model.paginationParams.PageNumber"></paging>
 
     </div>
 
@@ -244,7 +246,7 @@
                 </div>
                 <div class="modal-body">
                     <form method="post">
-
+                        <input type="hidden" name="projectTaskId" value="@Model.Id" />
                         <div class="form-group">
                             <label>Client Name</label>
                             <input type="text" name="UserName" class="form-control" value="">
@@ -259,28 +261,8 @@
             </div>
         </div>
     </div>
-
-    <div id="edit_client" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Client</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" />
-                    <form>
-                        <div class="form-group">
-                            <label>Client Name</label>
-                            <input type="text" class="form-control" value="Tom Schneider">
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
 
 @if (Model.Flag == true)
