@@ -31,7 +31,8 @@ namespace PMS.Application.Implementations
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            projectTaskRepository.Remove(id);
+            Save();
         }
 
         public List<ProjectTaskViewModel> GetAll()

@@ -23,7 +23,7 @@ namespace PMS.Pages.ProjectTasks
         }
 
         public PagedList<ProjectTaskViewModel> ProjectTask { get; set; }
-       
+
 
         public int Id { get; set; }
 
@@ -36,7 +36,7 @@ namespace PMS.Pages.ProjectTasks
             paginationParams.Total = ProjectTask.MetaData.TotalCount;
         }
         public async Task<IActionResult> OnPostAsync(string name, int ProjectId, DateTime StartDate, DateTime EndDate, int PriorityValue, int WorkingStatusValue, string Description)
-    {
+        {
             var newTask = new ProjectTask
             {
                 Name = name,
@@ -50,7 +50,14 @@ namespace PMS.Pages.ProjectTasks
             projectTaskService.Add(newTask);
 
             return Redirect("../ProjectTasks?id=" + ProjectId);
-   
+
+            // return Page();
+        }
+        public async Task<IActionResult> OnPostDeleteAsync(int projectTaskId)
+        {
+            projectTaskService.Delete(projectTaskId);
+
+            return Redirect("../Projects");
             // return Page();
         }
     }
