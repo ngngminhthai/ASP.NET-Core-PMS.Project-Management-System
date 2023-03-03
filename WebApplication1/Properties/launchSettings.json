@@ -16,14 +16,14 @@
       }
     },
     "WebApplication1": {
-      "commandName": "Project",
-      "dotnetRunMessages": "true",
-      "launchUrl": "",
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:5000",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "commandName": "Project",
+        "dotnetRunMessages": "true",
+        "launchUrl": "Dashboard",
+        "launchBrowser": true,
+        "applicationUrl": "https://localhost:5000",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        }
     }
   }
 }

@@ -14,11 +14,15 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using PMS.Application.CQRS.Projects;
 using PMS.Application.Implementations;
+using PMS.Application.Implementations.Conversations;
 using PMS.Application.Implementations.ProjectRoles;
 using PMS.Application.Implementations.ProjectTasks;
+using PMS.Application.Implementations.Roles;
 using PMS.Application.Products;
 using PMS.Application.Services;
+using PMS.Application.Services.Conversations;
 using PMS.Application.Services.ProjectTasks;
+using PMS.Application.Services.Roles;
 using PMS.Data.IRepositories;
 using PMS.Data.IRepositories.ProjectRoles;
 using PMS.Data.IRepositories.ProjectTasks;
@@ -174,6 +178,8 @@ namespace WebApplication1
             services.AddTransient<IFunctionRepository, FunctionRepository>();
             services.AddTransient<IPermissionRepository, PermissionRepository>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IFunctionService, FunctionService>();
+
 
 
             services.AddTransient<IProjectTask_UserService, ProjectTask_UserService>();
@@ -187,6 +193,8 @@ namespace WebApplication1
 
             services.AddTransient<IAuthorizationHandler, BaseResourceAuthorizationHandler>();
 
+
+            services.AddTransient<IConversationService, ConversationService>();
 
             #endregion
             services.AddMvc()

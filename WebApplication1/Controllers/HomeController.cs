@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class HomeController : Controller
     {
         public IActionResult Index()

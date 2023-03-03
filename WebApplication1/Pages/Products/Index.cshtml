@@ -12,7 +12,7 @@
     <p>
         <a asp-page="Create">Create New</a>
     </p>
-    <table class="table">
+    <table id="product-table" class="table">
         <thead>
             <tr>
                 <th>
@@ -55,9 +55,21 @@
     </table>
     <a href="/DownloadFile/DownloadFile?fileName=20230207135547660godocker.jpg">Download file docker</a>
 
-    <paging class="pagination" total-records="@Model.paginationParams.Total" show-total-pages="false" show-total-records="false" page-size="@Model.paginationParams.PageSize" page-no="@Model.paginationParams.PageNumber"></paging>
+   @* <paging class="pagination" total-records="@Model.paginationParams.Total" show-total-pages="false" show-total-records="false" page-size="@Model.paginationParams.PageSize" page-no="@Model.paginationParams.PageNumber"></paging>*@
+
+
+    <div class="col-sm-7">
+        <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
+            <ul id="paginationUL"></ul>
+        </div>
+    </div>
 
 </div>
+
+@section Scripts{
+    <script src="~/js/product/site.js"></script>
+
+}
 
 
 

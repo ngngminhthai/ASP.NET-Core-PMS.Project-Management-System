@@ -1,0 +1,56 @@
+﻿@page
+@model PMS.Pages.Admin.Roles.IndexModel
+@{
+    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<main>
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Roles</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Roles</li>
+        </ol>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Roles[0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Roles[0].NormalizedName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Roles[0].ConcurrencyStamp)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model.Roles)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => role.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => role.NormalizedName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => role.ConcurrencyStamp)
+                        </td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@role.Id">Edit</a> |
+                            <a asp-page="./Details" asp-route-id="@role.Id">Details</a> |
+                            <a asp-page="./Delete" asp-route-id="@role.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    </div>
+</main>
+
+

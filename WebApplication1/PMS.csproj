@@ -34,6 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Admin\Accounts\" />
+    <Folder Include="Pages\Admin\Conversations\" />
+    <Folder Include="Pages\Admin\Functions\" />
+    <Folder Include="Pages\Admin\Tickets\" />
     <Folder Include="Resources\Models\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />

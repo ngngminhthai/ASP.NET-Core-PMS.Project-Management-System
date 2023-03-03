@@ -93,6 +93,7 @@ namespace WebApplication1.Data
         public DbSet<ManageUser> ManageUsers { get; set; }
         public DbSet<ConversationUser> ConversationUsers { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<ConversationUploadedFile> ConversationUploadedFiles { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Project> Projects { get; set; }

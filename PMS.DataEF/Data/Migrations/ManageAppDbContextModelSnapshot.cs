@@ -366,6 +366,15 @@ namespace PMS.DataEF.Data.Migrations
                     b.Property<string>("AdminId")
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Type")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdminId");
@@ -395,8 +404,14 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ConversationId")
+                    b.Property<int>("ConversationId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SenderId")
                         .HasColumnType("nvarchar(50)");
@@ -410,7 +425,7 @@ namespace PMS.DataEF.Data.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("WebApplication1.Data.Entities.Function", b =>
@@ -949,7 +964,9 @@ namespace PMS.DataEF.Data.Migrations
                 {
                     b.HasOne("WebApplication1.Data.Entities.ConversationAggregate.Conversation", "Conversation")
                         .WithMany("Messages")
-                        .HasForeignKey("ConversationId");
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebApplication1.Data.Entities.ManageUser", "User")
                         .WithMany()

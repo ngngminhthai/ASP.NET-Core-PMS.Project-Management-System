@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Products;
-using PMS.Authorization;
 using PMS.Pages.Shared;
-using RBAC.Application.Authorization;
 using System.Threading.Tasks;
-using TeduCoreApp.Authorization;
 using WebApplication1.Models;
 using WebApplication1.RequestHelpers;
 
@@ -24,9 +21,9 @@ namespace PMS.Pages
         public PaginationParams paginationParams { get; set; } = new PaginationParams();
         public async Task<IActionResult> OnGetAsync(string? search, int p = 1, int s = 3)
         {
-            var result = await authorizationService.AuthorizeAsync(User, new Payload { Resource = "PROJECT", ProjectRequirement = new ProjectRequirement() { ProjectId = 3, Action = "UPDATE", Resource = "TASK" } }, Operations.Update);
-            if (result.Succeeded == false)
-                return Unauthorized();
+            /*  var result = await authorizationService.AuthorizeAsync(User, new Payload { Resource = "PROJECT", ProjectRequirement = new ProjectRequirement() { ProjectId = 3, Action = "UPDATE", Resource = "TASK" } }, Operations.Update);
+              if (result.Succeeded == false)
+                  return Unauthorized();*/
 
             Product = await GetProducts(search, p, s);
 
