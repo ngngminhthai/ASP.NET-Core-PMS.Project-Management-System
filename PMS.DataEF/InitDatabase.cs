@@ -1,4 +1,17 @@
-﻿namespace PMS.DataEF.Repositories
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using PMS.Data.Entities;
+using PMS.Data.Entities.ProjectAggregate;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using WebApplication1.Data;
+using WebApplication1.Data.Entities;
+using WebApplication1.Data.Entities.ConversationAggregate;
+using WebApplication1.Data.Entities.ProjectAggregate;
+using WebApplication1.Data.Entities.UserAggregate;
+
+namespace PMS.DataEF.Repositories
 {
     public class InitDatabase
     {
@@ -233,6 +246,12 @@
                    , level=0  },
 
                 };
+                List<ProjectComment> repChild = new List<ProjectComment>
+                {
+                    new ProjectComment{ ParentID = 5, Content ="rep child thuan 0" , Author = user1, level = 2, NumberOfLike = 0},
+                    //new ProjectComment{ ParentID = 5, Content ="rep child aaaaaaaa thuan 0 " , Author = user2 , level = 2, NumberOfLike = 0},
+                    new ProjectComment{ ParentID = 6, Content ="rep child vipro1" , Author = user1 , level = 2, NumberOfLike = 0}
+                };
                 await _context.ProjectComments.AddRangeAsync(projectComment);
             }
 
@@ -270,20 +289,23 @@
                 {
                     new ProjectRole_User(){User = await _userManager.FindByNameAsync("emlasieunhan118@gmail.com"), ProjectRole = adminRole},
                 };
-                List<ProjectComment> repChild = new List<ProjectComment>
-                {
-                     new ProjectComment{ ParentID = 5, Content ="rep child thuan 0" , Author = user1, level = 2, NumberOfLike = 0},
-                    new ProjectComment{ ParentID = 5, Content ="rep child aaaaaaaa thuan 0 " , Author = user2 , level = 2, NumberOfLike = 0},
-                    new ProjectComment{ ParentID = 6, Content ="rep child vipro1" , Author = user1 , level = 2, NumberOfLike = 0}
-                };
-                _context.ProjectComments.AddRange(projectComments);
-                _context.ProjectComments.AddRange(repComments);
-                _context.ProjectComments.AddRange(repChild);
-                _context.Tags.AddRange(tags);
-                _context.Projects.AddRange(projects);
 
-                await _context.ProjectPermissions.AddRangeAsync(ProjectPermissions);
-                await _context.SaveChangesAsync();
+
+            }
+
+            if (_context.ProjectComments.Count() == 0)
+            {
+                var user1 = await _userManager.FindByNameAsync("emlasieunhan118@gmail.com");
+                var project1 = _context.Projects.Where(p => p.Name.Equals("Singleton")).FirstOrDefault();
+                List<ProjectComment> projectComment = new List<ProjectComment>()
+
+                {
+                   new ProjectComment{Project= project1, Author = user1 ,NumberOfLike =1
+                   ,Content = "Singleton is a creational design pattern that lets you ensure that a class has only one instance, while providing a global access point to this instance."
+                   , level=0  },
+
+                };
+                _context.ProjectComments.AddRange(projectComment);
             }
 
 
