@@ -1,48 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Serialization;
-using PMS.Application.CQRS.Projects;
-using PMS.Application.Implementations;
-using PMS.Application.Implementations.Conversations;
-using PMS.Application.Implementations.ProjectRoles;
-using PMS.Application.Implementations.ProjectTasks;
-using PMS.Application.Implementations.Roles;
-using PMS.Application.Products;
-using PMS.Application.Services;
-using PMS.Application.Services.Conversations;
-using PMS.Application.Services.ProjectTasks;
-using PMS.Application.Services.Roles;
-using PMS.Data.IRepositories;
-using PMS.Data.IRepositories.ProjectRoles;
-using PMS.Data.IRepositories.ProjectTasks;
-using PMS.Data.IRepositories.SystemRoles;
-using PMS.DataEF.Repositories;
-using PMS.DataEF.Repositories.ProjectRoles;
-using PMS.Infrastructure.SharedKernel;
-using PMS.Services;
-using PMS.Services.Implementations;
-using RBAC.Authorization;
-using System.Collections.Generic;
-using System.Globalization;
-using WebApplication1.AutoMapper;
-using WebApplication1.Data;
-using WebApplication1.Data.Entities;
-using WebApplication1.Hubs;
-using WebApplication1.IdentityServer;
-using WebApplication1.Services;
-
-namespace WebApplication1
+﻿namespace WebApplication1
 {
     public class Startup
     {
@@ -188,16 +144,19 @@ namespace WebApplication1
             services.AddTransient<IProjectTask_UserRepository, ProjectTask_UserRepository>();
 
 
-
             services.AddTransient<IProjectCommentRepository, ProjectCommentRepository>();
             services.AddTransient<IProjectCommentService, ProjectCommentService>();
 
+            services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<ITagService, TagService>();
 
             services.AddTransient<IAuthorizationHandler, BaseResourceAuthorizationHandler>();
 
 
             services.AddTransient<IConversationService, ConversationService>();
 
+            services.AddTransient<IProjectUserRepository, ProjectUserRepository>();
+            services.AddTransient<IProjectUserService, ProjectUserService>();
             #endregion
             services.AddMvc()
              .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts =>

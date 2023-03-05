@@ -11,5 +11,6 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public int ProjectId { get; set; }
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
+
     }
 }

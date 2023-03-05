@@ -15,13 +15,13 @@
                     <option>Company 2</option>
                 </select>
                 <button type="submit" class="search d-flex"><i class="fas fa-search"></i>Search</button>
-                <a href="#" class="add search d-flex me-2" data-toggle="modal" data-target="#add_client"><i class="fas fa-plus-circle mr-2"></i> New Task</a>
+                <a href="#" class="add search d-flex me-2" data-toggle="modal" data-target="#add_task"><i class="fas fa-plus-circle mr-2"></i> New Task</a>
 
             </div>
-         @*   <div class="list-action">
-                <a class="list active" href="#" onclick="liststyle()"><i class="bx bx-menu"></i></a>
-                <a href="#" class="list-board" onclick="listboard()"><i class="bx bxs-dashboard"></i></a>
-                <a href="#" class="add" data-toggle="modal" data-target="#add_client">Add Client<i class="fas fa-plus-circle"></i></a>
+            @*   <div class="list-action">
+            <a class="list active" href="#" onclick="liststyle()"><i class="bx bx-menu"></i></a>
+            <a href="#" class="list-board" onclick="listboard()"><i class="bx bxs-dashboard"></i></a>
+            <a href="#" class="add" data-toggle="modal" data-target="#add_client">Add Client<i class="fas fa-plus-circle"></i></a>
             </div>*@
         </div>
 
@@ -33,7 +33,8 @@
 
             </div>
             <div class="card-options pr-3">
-                <div class="dropdown"> <a href="#" class="btn ripple btn-outline-light dropdown-toggle fs-14" data-bs-toggle="dropdown" aria-expanded="false"> See All <i class="feather feather-chevron-down"></i> </a>
+                <div class="dropdown">
+                    <a href="#" class="btn ripple btn-outline-light dropdown-toggle fs-14" data-bs-toggle="dropdown" aria-expanded="false"> See All <i class="feather feather-chevron-down"></i> </a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu" style="">
                         <li><a href="#">Monthly</a></li>
                         <li><a href="#">Yearly</a></li>
@@ -58,7 +59,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model.ProjectTask)
-                   {
+                    {
                         <tr class="odd">
                             <td>
                                 <a href="#" class="d-flex "> <span>@item.Name</span> </a>
@@ -74,10 +75,9 @@
                             <td>@item.EndDate.ToString("d-M-yyyy")</td>
                             <td>
                                 <div class="dropdown">
-                                    <span data-bs-toggle="dropdown" aria-expanded="false" 
-                                    
-                                    class="@(item.Priority == Priority.High ?
-                                    "work-status badge badge-success" : 
+                                    <span data-bs-toggle="dropdown" aria-expanded="false"
+                                      class="@(item.Priority == Priority.High ?
+                                    "work-status badge badge-success" :
                                     (item.Priority == Priority.Medium ? "work-status badge badge-warning" : "work-status badge badge-danger"))">@item.Priority.Name</span>
 
                                     <div class="dropdown-menu dropdown-menu-right">
@@ -103,219 +103,346 @@
                                         <i class="bx bx-dots-horizontal-rounded"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="">
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client" onclick="myFunction(@item.Id)"><i class="bx bx-trash"></i> Delete</a>
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="d">
+                                            <form id='myFormDelete+@item.Id' asp-page-handler="Delete">
+                                                <input type="hidden" name="projectTaskId" value="@item.Id">
+                                                <input type="hidden" name="id" value="@Model.Id"/>
+                                                <input type="submit" value="delete" >
+                                            </form>
+                                        </a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                     }
-                   
-                                   @* <tr class="even">
-                                        <td>
-                                            <a href="#" class="d-flex "> <span>Website Develop</span> </a>
-                                        </td>
-                                        <td>
-                                            <ul class="user-list mb-0">
-                                                <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                                            </ul>
-                                        </td>
-                                        <td>01-01-2021</td>
-                                        <td>22-04-2021</td>
-                                        <td>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-yellow w-50"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex"> <span class="badge badge-danger">Dealy</span>
-                                                <div class="mt-1 ms-1"> <span class="feather feather-info text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Dealy by 99 days"></span> </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bx bx-dots-horizontal-rounded"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="odd">
 
-                                        <td>
-                                            <a href="#" class="d-flex "><span>Digital Marketing</span> </a>
-                                        </td>
-                                        <td>
-                                            <ul class="user-list mb-0">
-                                                <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                                            </ul>
-                                        </td>
-                                        <td>11-04-2021</td>
-                                        <td>16-06-2021</td>
-                                        <td>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-primary w-100"></div>
-                                            </div>
-                                        </td>
-                                        <td> <span class="badge badge-success">Complete</span> </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bx bx-dots-horizontal-rounded"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="even">
+                    @* <tr class="even">
+                    <td>
+                    <a href="#" class="d-flex "> <span>Website Develop</span> </a>
+                    </td>
+                    <td>
+                    <ul class="user-list mb-0">
+                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                    </ul>
+                    </td>
+                    <td>01-01-2021</td>
+                    <td>22-04-2021</td>
+                    <td>
+                    <div class="progress progress-sm">
+                    <div class="progress-bar bg-yellow w-50"></div>
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex"> <span class="badge badge-danger">Dealy</span>
+                    <div class="mt-1 ms-1"> <span class="feather feather-info text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Dealy by 99 days"></span> </div>
+                    </div>
+                    </td>
+                    <td>
+                    <div class="dropdown">
+                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-horizontal-rounded"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                    </div>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr class="odd">
 
-                                        <td>
-                                            <a href="#" class="d-flex "><span>Ad Analysis</span> </a>
-                                        </td>
-                                        <td>
-                                            <ul class="user-list mb-0">
-                                                <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                                            </ul>
-                                        </td>
-                                        <td>11-03-2021</td>
-                                        <td>19-05-2021</td>
-                                        <td>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-primary w-80"></div>
-                                            </div>
-                                        </td>
-                                        <td> <span class="badge badge-success">Complete</span> </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bx bx-dots-horizontal-rounded"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="odd">
+                    <td>
+                    <a href="#" class="d-flex "><span>Digital Marketing</span> </a>
+                    </td>
+                    <td>
+                    <ul class="user-list mb-0">
+                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                    </ul>
+                    </td>
+                    <td>11-04-2021</td>
+                    <td>16-06-2021</td>
+                    <td>
+                    <div class="progress progress-sm">
+                    <div class="progress-bar bg-primary w-100"></div>
+                    </div>
+                    </td>
+                    <td> <span class="badge badge-success">Complete</span> </td>
+                    <td>
+                    <div class="dropdown">
+                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-horizontal-rounded"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                    </div>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr class="even">
 
-                                        <td>
-                                            <a href="#" class="d-flex "><span>Design update</span> </a>
-                                        </td>
-                                        <td>
-                                            <ul class="user-list mb-0">
-                                                <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                                            </ul>
-                                        </td>
-                                        <td>05-02-2021</td>
-                                        <td>21-04-2021</td>
-                                        <td>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-primary w-70"></div>
-                                            </div>
-                                        </td>
-                                        <td> <span class="badge badge-success">Complete</span> </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bx bx-dots-horizontal-rounded"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="even">
+                    <td>
+                    <a href="#" class="d-flex "><span>Ad Analysis</span> </a>
+                    </td>
+                    <td>
+                    <ul class="user-list mb-0">
+                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                    </ul>
+                    </td>
+                    <td>11-03-2021</td>
+                    <td>19-05-2021</td>
+                    <td>
+                    <div class="progress progress-sm">
+                    <div class="progress-bar bg-primary w-80"></div>
+                    </div>
+                    </td>
+                    <td> <span class="badge badge-success">Complete</span> </td>
+                    <td>
+                    <div class="dropdown">
+                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-horizontal-rounded"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                    </div>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr class="odd">
 
-                                        <td>
-                                            <a href="#" class="d-flex "><span>Design update</span> </a>
-                                        </td>
-                                        <td>
-                                            <ul class="user-list mb-0">
-                                                <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                                            </ul>
-                                        </td>
-                                        <td>21-01-2021</td>
-                                        <td>15-03-2021</td>
-                                        <td>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-primary w-40"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex"> <span class="badge badge-success">Complete</span>
-                                                <div class="mt-1 ms-1"> <span class="feather feather-info text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Dealy by 30 days"></span> </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bx bx-dots-horizontal-rounded"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="odd">
+                    <td>
+                    <a href="#" class="d-flex "><span>Design update</span> </a>
+                    </td>
+                    <td>
+                    <ul class="user-list mb-0">
+                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                    </ul>
+                    </td>
+                    <td>05-02-2021</td>
+                    <td>21-04-2021</td>
+                    <td>
+                    <div class="progress progress-sm">
+                    <div class="progress-bar bg-primary w-70"></div>
+                    </div>
+                    </td>
+                    <td> <span class="badge badge-success">Complete</span> </td>
+                    <td>
+                    <div class="dropdown">
+                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-horizontal-rounded"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                    </div>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr class="even">
 
-                                        <td>
-                                            <a href="#" class="d-flex "><span>Design update</span> </a>
-                                        </td>
-                                        <td>
-                                            <ul class="user-list mb-0">
-                                                <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                                                <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                                            </ul>
-                                        </td>
-                                        <td>23-01-2021</td>
-                                        <td>25-02-2021</td>
-                                        <td>
-                                            <div class="progress progress-sm">
-                                                <div class="progress-bar bg-yellow w-40"></div>
-                                            </div>
-                                        </td>
-                                        <td> <span class="badge badge-success">Complete</span> </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bx bx-dots-horizontal-rounded"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>*@
+                    <td>
+                    <a href="#" class="d-flex "><span>Design update</span> </a>
+                    </td>
+                    <td>
+                    <ul class="user-list mb-0">
+                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                    </ul>
+                    </td>
+                    <td>21-01-2021</td>
+                    <td>15-03-2021</td>
+                    <td>
+                    <div class="progress progress-sm">
+                    <div class="progress-bar bg-primary w-40"></div>
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex"> <span class="badge badge-success">Complete</span>
+                    <div class="mt-1 ms-1"> <span class="feather feather-info text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Dealy by 30 days"></span> </div>
+                    </div>
+                    </td>
+                    <td>
+                    <div class="dropdown">
+                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-horizontal-rounded"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                    </div>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr class="odd">
 
-                                </tbody>
-                            </table>
-                        </div>
+                    <td>
+                    <a href="#" class="d-flex "><span>Design update</span> </a>
+                    </td>
+                    <td>
+                    <ul class="user-list mb-0">
+                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
+                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
+                    </ul>
+                    </td>
+                    <td>23-01-2021</td>
+                    <td>25-02-2021</td>
+                    <td>
+                    <div class="progress progress-sm">
+                    <div class="progress-bar bg-yellow w-40"></div>
+                    </div>
+                    </td>
+                    <td> <span class="badge badge-success">Complete</span> </td>
+                    <td>
+                    <div class="dropdown">
+                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-horizontal-rounded"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                    </div>
+                    </div>
+                    </td>
+                    </tr>*@
+
+                </tbody>
+            </table>
+        </div>
         <paging class="pagination" total-records="@Model.paginationParams.Total" show-total-pages="false" show-total-records="false" page-size="@Model.paginationParams.PageSize" page-no="@Model.paginationParams.PageNumber"></paging>
 
-                    </div>
+    </div>
 
+    <div id="add_task" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" asp-page-handler="Create">
+                        <input type="hidden" name="projectId" value="@Model.Id"/>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Task Name</label>
+                                    <input class="form-control" name="Name" type="text" >
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <div class="cal-icon">
+                                        <input name="StartDate" type="date" required>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <div class="cal-icon">
+                                        <input name="EndDate" type="date">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Priority</label>
+                                    <select class="select" name="PriorityValue">
+                                        <option value="1">Low</option>
+                                        <option value="2">Medium</option>
+                                        <option value="3">High</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>WorkingStatus</label>
+                                    <select class="select" name="WorkingStatusValue">
+                                        <option value="1">Done</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea rows="4" name="Description" class="form-control" placeholder="Enter your message here"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit-section">
+                            <input type="submit" value="create" class="btn btn-primary"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
+    <script>
+        function myFunction(id) {
+            console.log('myFormDelete+'+id);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                console.log("b");
+                if (result.isConfirmed) {
+                    console.log("b");
+                    fetch('/ProjectTasks?handler=Delete', {
+                        method: 'POST',
+                        body: new FormData(document.getElementById('myFormDelete+'+id))
+                    }).then(function (response) {
+                        if (response.ok) {
+                            // redirect to a different page if the form submission was successful
+                            window.location.href = "ProjectTasks?id="+@Model.Id
+                        } else {
+                            // handle any errors that occurred during the form submission
+                            console.error('Form submission failed:', response);
+                        }
+                    }).catch(function (error) {
+                        // handle any network or server errors that occurred during the form submission
+                        console.error('Form submission failed:', error);
+                    });
+                }
+            })
+        }
+    </script>
+
+
+    }

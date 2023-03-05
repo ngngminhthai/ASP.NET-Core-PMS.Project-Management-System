@@ -1,21 +1,26 @@
-﻿using PMS.Application.CQRS.Projects;
+﻿using Microsoft.AspNetCore.Mvc;
+using PMS.Application.CQRS.Projects;
 using PMS.Application.CQRS.Projects.Comments;
+using PMS.Application.CQRS.Tags;
+using PMS.Application.Services;
+using PMS.Application.ViewModels;
 using PMS.Pages.Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApplication1.Data.Entities.ProjectAggregate;
 using WebApplication1.Models;
 
 namespace PMS.Pages.Projects
 {
     public class DetailsModel : BasePageModel
     {
-        private readonly WebApplication1.Data.ManageAppDbContext _context;
-        // private readonly IHubContext<SignalSever> _signalrHub;
-        public DetailsModel(WebApplication1.Data.ManageAppDbContext context)
+        private readonly IProjectService projectService;
+
+        public DetailsModel(IProjectService projectService)
         {
-            _context = context;
-            //_signalrHub = signalrHub;
+            this.projectService = projectService;
         }
+        public List<TagViewModel> Tags { get; set; }
         public ProjectViewModel Project { get; set; }
         public List<ProjectCommentViewModel> ListComment { get; set; }
         public string Email { get; set; }
@@ -24,8 +29,15 @@ namespace PMS.Pages.Projects
             Email = HttpContext.User.Identity.Name.ToString();
             Project = await Mediator.Send(new GetProjectDetail.Query { ProjectId = id });
             ListComment = await getListComment(id, search, p, s);
+            Tags = await GetTags();
 
-
+        }
+        public async Task<List<TagViewModel>> GetTags()
+        {
+            var result = await Mediator.Send(
+            new ListTag.Query() { }
+            );
+            return result;
         }
         public async Task<List<ProjectCommentViewModel>> NestedComment(List<ProjectCommentViewModel> listChildComment)
         {
@@ -50,6 +62,21 @@ namespace PMS.Pages.Projects
             await NestedComment(listCmt);
 
             return listCmt;
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int projectId)
+        {
+            projectService.Delete(projectId);
+
+            return Redirect("../Projects");
+           // return Page();
+        }
+        public async Task<IActionResult> OnPostEditAsync(Project project)
+        {
+            projectService.Update(project);
+
+            return Redirect("../Projects/Details?id="+project.Id);
+            // return Page();
         }
     }
 }
