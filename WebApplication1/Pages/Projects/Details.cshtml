@@ -10,85 +10,7 @@
 
 
 <div class="main-content">
-    <div class="row">
-        <div class="col-12">
-            <div class="box card-box">
-                <div class="icon-box bg-color-1">
-                    <div class="icon bg-icon-1">
-                        <i class="bx bxs-bell bx-tada"></i>
-                    </div>
-                    <div class="content">
-                        <h5 class="title-box">Notification</h5>
-                        <p class="color-1 mb-0 pt-4">5 Unread notification</p>
-                    </div>
-                </div>
-                <div class="icon-box bg-color-2">
-                    <div class="icon bg-icon-2">
-                        <i class='bx bxs-message-rounded'></i>
-                    </div>
-                    <div class="content click-c">
-                        <h5 class="title-box">  </h5>
-                        <p class="color-2 mb-0 pt-4">5 Unread notification</p>
-                    </div>
-                    <div class="notification-list card">
-                        <div class="top box-header">
-                            <h5>Notification</h5>
 
-                        </div>
-                        <div class="pd-1r">
-                            <div class="divider"></div>
-                        </div>
-                       
-                        <div class="box-body">
-                            <ul class="list">
-                                <li class="d-flex no-seen">
-                                    <div class="img-mess"><img class="mr-14" src="/images/avatar/avt-1.png" alt="avt"></div>
-                                    <div class="info">
-                                        <a href="#" class="font-w600 mb-0 color-primary">Elizabeth Holland</a>
-                                        <p class="pb-0 mb-0 line-h14 mt-6">Proin ac quam et lectus vestibulum</p>
-                                    </div>
-                                </li>
-
-                                <li class="d-flex">
-                                    <div class="img-mess"><img class="mr-14" src="/images/avatar/avt-1.png" alt="avt"></div>
-                                    <div class="info">
-                                        <a href="#" class="font-w600 mb-0 color-primary">Elizabeth Holland</a>
-                                        <p class="pb-0 mb-0 line-h14 mt-6">Proin ac quam et lectus vestibulum</p>
-                                    </div>
-                                </li>
-
-                            </ul>
-                            <div class="btn-view">
-                                <a class="font-w600 h5" href="message.html">View All</a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="icon-box bg-color-3">
-                    <a class="create d-flex" href="calendar.html">
-                        <div class="icon bg-icon-3">
-                            <i class="bx bx-calendar"></i>
-                        </div>
-                        <div class="content">
-                            <h5 class="title-box">Calendar</h5>
-                            <p class="color-3 mb-0 pt-4">5 Unread notification</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="icon-box bg-color-4">
-                    <a class="create d-flex" href="#" data-toggle="modal" data-target="#add_project">
-                        <div class="icon bg-white">
-                            <i class="bx bx-plus"></i>
-                        </div>
-                        <div class="content d-flex align-items-center">
-                            <h5 class="color-white">Create New Project</h5>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col-12">
             <div class="box project">
@@ -97,15 +19,15 @@
                     <div class="box-right d-flex">
                         <a class="btn" href="project-details.html">Project Details</a>
                         <div class="icon-ratting">
-                            <i class='bx bxs-star'></i>
+                            <span> @Model.Project.Tag.TagName </span>
                         </div>
                         <div class="dropdown ml-14">
                             <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class='bx bx-dots-vertical-rounded fs-22'></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="bx bx-trash"></i> Delete</a>
-                                <a class="dropdown-item" href="#"><i class="bx bx-edit mr-5"></i>Edit</a>
+                                <a class="dropdown-item" onclick="myFunction()"> Delete</a>
+                                <a class="create d-flex" href="#" data-toggle="modal" data-target="#add_project">Edit</a>
                             </div>
                         </div>
                     </div>
@@ -129,42 +51,50 @@
                     </div>
 
                     <div class="divider"></div>
-                    <div class="box-body content">
-                        <h4 class="title">Project Description</h4>
-                        <p class="fs-18 font-w400 font-main mt-27 mb-29">
-                            @Html.DisplayFor(model => model.Project.Description)
-                        </p>
+                    <div class="row" style="width:100%">
+                        <div class="col-12">
+                            <div class="box-body content" style="width: 100%">
+                                <h4 class="title">Project Description</h4>
+                                <p class="fs-18 font-w400 font-main mt-27 mb-29">
+                                    @Html.DisplayFor(model => model.Project.Description)
+                                </p>
+
+                                <div class="row">
+                                    <div class="col-12" style="width: 100%">
+
+                                        <div class="form-chat" style="width: 100%">
+                                            <form id="comment_to_project" action="/Projects/CreateComment" method="post" accept-charset="utf-8">
+                                                <input type="hidden" name="comment.ProjectId" value="@Model.Project.Id" />
+                                                <input type="hidden" name="comment.Level" value="0" />
+                                                <input type="hidden" name="comment.NumberOfLike" value="0" />
 
 
-                        <div class="form-chat">
-                            <form id="comment_to_project" action="/Projects/CreateComment" method="post" accept-charset="utf-8">
-                                <input type="hidden" name="comment.ProjectId" value="@Model.Project.Id"/>
-                                <input type="hidden" name="comment.Level" value="0"/>
-                                <input type="hidden" name="comment.NumberOfLike" value="0"/>
+                                                <div class="message-form-chat">
+                                                    <!-- /.pin -->
+                                                    <span class="message-text">
+                                                        <textarea placeholder="Type comment here" required="required" name="comment.Content"></textarea>
+                                                    </span>
 
 
-                                <div class="message-form-chat">
-                                    <!-- /.pin -->
-                                    <span class="message-text">
-                                        <textarea placeholder="Type comment here" required="required" name="comment.Content" ></textarea>
-                                    </span>
-                                   
-                                   
-                                    <span class="btn-send">
-                                        <button id="send_comment" class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
-                                    </span>
-                                    <!-- /.btn-send -->
+                                                    <span class="btn-send">
+                                                        <button id="send_comment" class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
+                                                    </span>
+                                                    <!-- /.btn-send -->
 
+                                                </div>
+                                                <!-- /.message-form-chat -->
+                                                <div class="clearfix"></div>
+                                            </form>
+                                            <!-- /form -->
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- /.message-form-chat -->
-                                <div class="clearfix"></div>
-                            </form>
-                            <!-- /form -->
-                        </div>
 
-                        <div class="project-description mt-10">
-                            <h4>Project Description</h4>
-                            <div id="comment-box" class="comment-box">
+                                <div class="project-description mt-10">
+                                    <h4>Project Description</h4>
+                                    <div id="comment-box" class="comment-box">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -176,104 +106,129 @@
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create Project</h5>
+                        <h5 class="modal-title">Edit Project</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form method="post">
+                            <input type="hidden" name="Id" value="@Model.Project.Id" />
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Project Name</label>
-                                        <input class="form-control" value="" type="text">
+                                        <input class="form-control" name="Name" type="text" value="@Model.Project.Name">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Client</label>
-                                        <select class="select">
-                                            <option>Client 1</option>
-                                            <option>Client 2</option>
-                                        </select>
-                                    </div>
-                                </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Start Date</label>
+                                        <label>Start Date @Model.Project.StartDate</label>
                                         <div class="cal-icon">
-                                            <input class="form-control " type="date">
+                                            <input name"="StartDate" type="date" value="@Model.Project.StartDate">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>End Date</label>
+                                        <label>End Date @Model.Project.EndDate</label>
                                         <div class="cal-icon">
-                                            <input class="form-control " type="date">
+                                            <input name="EndDate" type="date" value="@Model.Project.EndDate">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <label>Rate</label>
-                                        <input placeholder="$50" class="form-control" value="" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <label>&nbsp;</label>
-                                        <select class="select">
-                                            <option>Hourly</option>
-                                            <option selected>Fixed</option>
-                                        </select>
-                                    </div>
-                                </div>
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Priority</label>
-                                        <select class="select">
-                                            <option selected>High</option>
-                                            <option>Medium</option>
-                                            <option>Low</option>
+                                        <label>Tag</label>
+                                        <select class="select" name="TagId">
+                                            @foreach (var item in Model.Tags)
+                                            {
+                                                if (Model.Project.Tag.Id == item.Id)
+                                                {
+                                                    <option selected value="@item.Id">@item.TagName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.Id">@item.TagName</option>
+                                                }
+                                            }
                                         </select>
                                     </div>
                                 </div>
+
                             </div>
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea rows="4" class="form-control" placeholder="Enter your message here"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Upload Files</label>
-                                <input class="form-control" type="file">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea rows="4" name="Description" class="form-control" placeholder="Enter your message here">@Model.Project.Description</textarea>
+                                    </div>
+                                </div>
                             </div>
                             <div class="submit-section">
-                                <button class="btn btn-primary submit-btn">Save</button>
+                                <input type="submit" value="SAVE" class="btn btn-primary" asp-page-handler="Edit" />
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <form id="myFormDelete" method="post" asp-page-handler="Delete">
+            <input type="hidden" name="projectId" value="@Model.Project.Id" />
+        </form>
     </div>
-    
 </div>
 @section Scripts{
-        
-        <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
-        <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
-        <script src="~/js/project/comment/site.js" type="text/javascript"></script>
-        <script>
-            setId(@Model.Project.Id);
-            setAuthor( "@Model.Email");
-        </script>
-}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
+    <script>
+        function myFunction() {
+            console.log("a");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                console.log("b");
+                if (result.isConfirmed) {
+                    console.log("b");
+                    fetch('/Projects/Details?handler=Delete', {
+                        method: 'POST',
+                        body: new FormData(document.querySelector('#myFormDelete'))
+                    }).then(function (response) {
+                        if (response.ok) {
+                            // redirect to a different page if the form submission was successful
+                            window.location.href = '/Projects'
+                        } else {
+                            // handle any errors that occurred during the form submission
+                            console.error('Form submission failed:', response);
+                        }
+                    }).catch(function (error) {
+                        // handle any network or server errors that occurred during the form submission
+                        console.error('Form submission failed:', error);
+                    });
+                }
+            })
+        }
+    </script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/project/comment/site.js" type="text/javascript"></script>
+
+    <script>
+        setId(@Model.Project.Id);
+        setAuthor("@Model.Email");
+    </script>
+    }
 <!-- END MAIN CONTENT -->
 @*<div>
     <a asp-page="./Edit" asp-route-id="@Model.Project.Id">Edit</a> |

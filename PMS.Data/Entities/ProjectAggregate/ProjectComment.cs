@@ -19,7 +19,7 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public DateTime? DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
 
-        // public ICollection<ProjectComment>? ChildComments { get; set; }
+
 
 
     }

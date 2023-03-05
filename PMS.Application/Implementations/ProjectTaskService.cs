@@ -7,6 +7,7 @@ using PMS.Infrastructure.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApplication1.Data.Entities.ProjectAggregate;
 using WebApplication1.RequestHelpers;
 
 namespace PMS.Application.Implementations
@@ -22,14 +23,16 @@ namespace PMS.Application.Implementations
             this.unitOfWork = unitOfWork;
         }
 
-        public void Add(ProjectTaskViewModel project)
+        public void Add(ProjectTask projectTask)
         {
-            throw new NotImplementedException();
+            projectTaskRepository.Add(projectTask);
+            Save();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            projectTaskRepository.Remove(id);
+            Save();
         }
 
         public List<ProjectTaskViewModel> GetAll()

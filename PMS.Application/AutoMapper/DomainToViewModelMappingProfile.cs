@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PMS.Application.ViewModels;
+using PMS.Data.Entities;
 using PMS.Data.Entities.ProjectAggregate;
 using WebApplication1.Data.Entities;
 using WebApplication1.Data.Entities.ProjectAggregate;
@@ -18,6 +19,10 @@ namespace WebApplication1.AutoMapper
 
             CreateMap<ProjectTask, ProjectTaskViewModel>();
             CreateMap<ProjectComment, ProjectCommentViewModel>().ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.UserName)).ForMember(dest => dest.ProjectID, opt => opt.MapFrom(src => src.Project.Id));
+
+            CreateMap<Tag, TagViewModel>();
+
+            CreateMap<ProjectUser, ProjectUserViewModel>();
         }
     }
 }

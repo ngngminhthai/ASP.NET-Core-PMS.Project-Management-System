@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using PMS.Application.CQRS.Projects;
 using PMS.Application.CQRS.Projects.Comments;
+using PMS.Application.Services;
 using PMS.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,15 @@ namespace PMS.Controllers
         private readonly IHubContext<SignalSever> _signalrHub;
         private readonly IFileUploadService _fileUploadService;
         private readonly IMemoryCache cache;
-
+        private readonly IProjectService projectService;
         public ProjectsController(ManageAppDbContext context, IHubContext<SignalSever> signalrHub,
-           IFileUploadService fileUploadService, IMemoryCache cache)
+           IFileUploadService fileUploadService, IMemoryCache cache, IProjectService projectService)
         {
             _context = context;
             _signalrHub = signalrHub;
             this._fileUploadService = fileUploadService;
             this.cache = cache;
+            this.projectService = projectService;
         }
 
         // GET: Projects
@@ -82,7 +84,7 @@ namespace PMS.Controllers
 
             await NestedComment(listCmt);
 
-            return listCmt.OrderByDescending(p => p.DateModified ).ThenByDescending(p => p.DateCreated ).ToList();
+            return listCmt.OrderByDescending(p => p.DateModified).ThenByDescending(p => p.DateCreated).ToList();
         }
         public async Task<List<ProjectCommentViewModel>> NestedComment(List<ProjectCommentViewModel> listChildComment)
         {
@@ -108,7 +110,7 @@ namespace PMS.Controllers
             var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
 
             var projectComent = _context.Projects.Where(p => p.Id == comment.ProjectID).FirstOrDefault();
-            
+
             var newComment = new ProjectComment
             {
                 Author = author,
@@ -120,7 +122,7 @@ namespace PMS.Controllers
             };
             await Mediator.Send(new CreateProjectComment.Command { ProjectComment = newComment });
             await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
-            
+
         }
         [HttpPost]
         public async void DeleteComment(int id)
@@ -131,7 +133,7 @@ namespace PMS.Controllers
             var cmt = await Mediator.Send(new GetProjectCommentById.Query { Id = id });
             if (author.Id == cmt.Author.Id)
             {
-              //  NestedDeleteComment(id);
+                //  NestedDeleteComment(id);
                 await Mediator.Send(new DeleteProjectComment.Command { Id = id });
             }
             await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
@@ -160,7 +162,7 @@ namespace PMS.Controllers
 
 
         [HttpPost]
-        public async void UpdateComment(int id , string content)
+        public async void UpdateComment(int id, string content)
         {
             string email = HttpContext.User.Identity.Name;
             var author = _context.Users.Where(u => u.Email == email).FirstOrDefault();
@@ -169,7 +171,7 @@ namespace PMS.Controllers
             {
                 await Mediator.Send(new UpdateProjectComment.Command { Id = id, Content = content });
             }
-         
+
             await _signalrHub.Clients.All.SendAsync("LoadProjectComment");
 
         }
@@ -188,13 +190,12 @@ namespace PMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Id")] Project project)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(project);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(project);
+            //var email = HttpContext.User.Identity.Name;
+
+            //projectService.Add(ProjectInput, email);
+
+            return View();
+
         }
 
         // GET: Projects/Edit/5

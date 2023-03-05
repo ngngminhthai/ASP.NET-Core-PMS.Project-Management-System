@@ -319,6 +319,21 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("ProjectUploadedFiles");
                 });
 
+            modelBuilder.Entity("PMS.Data.Entities.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("TagName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("PMS.Data.Entities.UserAggregate.UploadedFiles", b =>
                 {
                     b.Property<int>("Id")
@@ -568,9 +583,14 @@ namespace PMS.DataEF.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("TagId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("TagId");
 
                     b.ToTable("Projects");
                 });
@@ -966,7 +986,13 @@ namespace PMS.DataEF.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CreatorId");
 
+                    b.HasOne("PMS.Data.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId");
+
                     b.Navigation("Creator");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectComment", b =>

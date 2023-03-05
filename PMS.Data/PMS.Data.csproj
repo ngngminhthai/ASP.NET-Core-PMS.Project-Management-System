@@ -5,15 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IRepositories\Projects\**" />
+    <EmbeddedResource Remove="IRepositories\Projects\**" />
+    <None Remove="IRepositories\Projects\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PMS.Infrastructure\PMS.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="IRepositories\Projects\" />
   </ItemGroup>
 
 </Project>
