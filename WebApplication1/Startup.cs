@@ -107,6 +107,8 @@ namespace WebApplication1
 
             services.AddAuthorization(options =>
             {
+
+
                 options.AddPolicy("Bearer", policy =>  // thêm một cái chính sách
                 {
                     policy.AddAuthenticationSchemes("Bearer");

@@ -38,7 +38,7 @@ $(document).ready(function () {
     connection.on("ReceiveMessage", async function (message) {
         console.log("Received message: " + message);
         await addMessage(groupId, message, currentUserId)
-        renderMessage(groupId); // Call the renderMessage function
+        //renderMessage(groupId); // Call the renderMessage function
     });
 
     async function addMessage(conversationId, textareaValue, currentUserId) {
@@ -52,8 +52,62 @@ $(document).ready(function () {
                     senderId: currentUserId
                 },
                 success: function (data, textStatus, jqXHR) {
+                    var messageBox = $('.message-box'); // select the element with class "message-box"
+                    console.log(data);
+
+                    var message = ''; // variable to hold the message box
+
+                    if (data && data.SenderId != currentUserId) {
+                        // create incoming message box
+                        message = `
+            <div class="message-in">
+                <div class="message-pic">
+                    <img src="./images/avatar/message-1.png" alt="">
+                    <div class="pulse-css-1"></div>
+                </div>
+                <div class="message-body">
+                    <div class="message-text">
+                        <p>${data.Text}</p>
+                    </div>
+                    <div class="message-meta">
+                        <p class="mt-10">Sunday, march 17, 2021 at 2:39 PM</p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        `
+                    }
+                    else {
+                        // create outgoing message box
+                        message = `
+            <div class="message-out">
+                <div class="message-pic">
+                    <img src="./images/profile/profile.png" alt="">
+                    <div class="pulse-css-1"></div>
+                </div>
+                <div class="message-body">
+                    <div class="message-text">
+                        <p>${data.Text}</p>
+                    </div>
+                    <div class="message-meta">
+                        <p class="mt-10">Sunday, march 17, 2021 at 2:45 PM</p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        `
+                    }
+
+                    messageBox.append(message); // append the message box to the element with class "message-box"
+                    var scrollHeight = messageBox[0].scrollHeight;
+                    if (scrollHeight > 0) {
+                        messageBox[0].scrollTop = scrollHeight;
+                    }
                     resolve(data);
                 },
+
                 error: function (jqXHR, textStatus, errorThrown) {
                     reject(errorThrown);
                 }
@@ -61,6 +115,139 @@ $(document).ready(function () {
         });
     }
 
+
+
+    const $messageBox = $('.message-box');
+   
+
+    $messageBox.on('scroll', function () {
+
+        // Check if the scrollbar is at the top of the message box
+        if ($messageBox.scrollTop() === 0) {
+            console.log('Scrollbar is at the top');
+            loadMessage(groupId);
+           
+            
+        }
+    });
+
+    function loadMessage(conversationId) {
+        const messageOutCount = $('.message-out').length;
+        const messageInCount = $('.message-in').length;
+        const total = messageOutCount + messageInCount;
+
+        $.ajax({
+            type: 'GET',
+            url: '/Conversation/GetMessageOfConversation',
+            data: {
+                id: conversationId,
+                skipCount: total
+            },
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+                var tableContent = "";
+                $.each(data, function (index, msg) {
+                    if (msg && msg.SenderId != currentUserId) {
+                        tableContent += `
+            <div class="message-in">
+              <div class="message-pic">
+                <img src="./images/avatar/message-1.png" alt="">
+                <div class="pulse-css-1"></div>
+              </div>
+              <div class="message-body">
+                <div class="message-text">
+                  <p>${msg.Text}</p>
+                </div>
+                <div class="message-meta">
+                  <p class="mt-10">Sunday, march 17, 2021 at 2:39 PM</p>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+          `;
+                    } else {
+                        tableContent += `
+            <div class="message-out">
+              <div class="message-pic">
+                <img src="./images/profile/profile.png" alt="">
+                <div class="pulse-css-1"></div>
+              </div>
+              <div class="message-body">
+                <div class="message-text">
+                  <p>${msg.Text}</p>
+                </div>
+                <div class="message-meta">
+                  <p class="mt-10">Sunday, march 17, 2021 at 2:45 PM</p>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+          `;
+                    }
+                });
+                // Prepend the new messages to the top of the existing messages
+                $('.message-box').prepend(tableContent);
+
+                setTimeout(function () {
+                    var messageBox = $('.message-box')[0];
+                    messageBox.scrollTop = 20;
+                }, 500);
+
+            }
+        });
+    }
+
+   /* function addMessage(groupId) {
+        $.ajax({
+            type: 'GET',
+            url: '/Conversation/ConversationsOfUser',
+            data: {
+                id: currentUserId,
+            },
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+                var tableContent = "";
+                $.each(data, function (index, c) {
+                    tableContent += `
+                    
+                                   <li class="waves-effect waves-teal ${groupId == c.Id ? "active" : ""}"  data-id="${c.Id}">
+                                        <div class="left d-flex">
+                                            <div class="avatar">
+                                                <img src="/images/avatar/message-2.png" alt="">
+                                                <div class="pulse-css-1"></div>
+                                            </div>
+                                            <div class="content">
+                                                <div class="username">
+                                                    <div class="name h6">
+                                                        ${c.Name}
+                                                    </div>
+                                                </div>
+                                                <div class="text">
+                                                    <p>${c.Description}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- /.left -->
+
+                                        <div class="clearfix"></div>
+                                    </li>
+                                   
+                    `
+                });
+                $('.message-list').html(tableContent);
+                var liElements = document.querySelectorAll("li.waves-effect");
+                for (var i = 0; i < liElements.length; i++) {
+                    liElements[i].addEventListener("click", function () {
+                        var conversationId = this.getAttribute("data-id");
+                        renderPage(conversationId);
+                    });
+                }
+            }
+        });
+    }*/
 
     function renderConversation(groupId) {
         $.ajax({
@@ -74,9 +261,7 @@ $(document).ready(function () {
                 var tableContent = "";
                 $.each(data, function (index, c) {
                     tableContent += `
-                        
-
-
+                    
                                    <li class="waves-effect waves-teal ${groupId == c.Id ? "active" : ""}"  data-id="${c.Id}">
                                         <div class="left d-flex">
                                             <div class="avatar">
@@ -169,6 +354,11 @@ $(document).ready(function () {
                     }
                 });
                 $('.message-box').html(tableContent);
+                var messageBox = $('.message-box')[0];
+                var scrollHeight = messageBox.scrollHeight;
+                if (scrollHeight > 0) {
+                    messageBox.scrollTop = scrollHeight;
+                }
             }
         });
     }

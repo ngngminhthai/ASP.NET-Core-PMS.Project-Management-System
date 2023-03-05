@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PMS.Application.Services.Conversations;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities;
 using WebApplication1.Data.Entities.ConversationAggregate;
@@ -14,12 +16,14 @@ namespace PMS.Pages.Conversations
     {
         private readonly IConversationService conversationService;
         private readonly ManageAppDbContext context;
+        private readonly IAuthorizationService authorizationService;
         private readonly UserManager<ManageUser> userManager;
 
-        public IndexModel(IConversationService conversationService, ManageAppDbContext context)
+        public IndexModel(IConversationService conversationService, ManageAppDbContext context, IAuthorizationService authorizationService)
         {
             this.conversationService = conversationService;
             this.context = context;
+            this.authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -27,12 +31,15 @@ namespace PMS.Pages.Conversations
 
         [BindProperty]
         public Conversation currentConversation { get; set; }
-
         [BindProperty]
         public string currentUserId { get; set; }
 
-        public void OnGet(int? id)
+        public async Task<IActionResult> OnGet(int? id)
         {
+            /* var result = await authorizationService.AuthorizeAsync(User, new Payload { Resource = "conversation", ConversationRequirement = new ConversationRequirement { ConversationId = (int)id, Action = "View" } }, Operations.Update);
+             if (result.Succeeded == false)
+                 return Unauthorized();*/
+
             var username = User.Identity.Name;
             var user = context.Users.FirstOrDefault(u => u.UserName == username);
             currentUserId = user.Id;
@@ -52,6 +59,7 @@ namespace PMS.Pages.Conversations
                     currentConversation.Messages = GetMessages(currentConversation.Id);
                 }
             }
+            return Page();
         }
 
         public List<Message> GetMessages(int id)

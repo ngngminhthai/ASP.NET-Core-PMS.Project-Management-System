@@ -202,7 +202,7 @@ namespace WebApplication1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-         //   await Mediator.Send(new DeleteProduct.Command { ProductId = id });
+            //   await Mediator.Send(new DeleteProduct.Command { ProductId = id });
             return RedirectToAction(nameof(Index));
         }
 
