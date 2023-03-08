@@ -47,7 +47,7 @@ namespace PMS.Application.Implementations
 
         public PagedList<ProjectTaskViewModel> GetAllWithPagination(int id, string keyword, int page, int pageSize)
         {
-            var query = projectTaskRepository.FindAll(p => p.ProjectId == id, p => p.Project);
+            var query = projectTaskRepository.FindAll().Where(p => p.Id == id);
             return PagedList<ProjectTaskViewModel>.ToPagedList(query.ProjectTo<ProjectTaskViewModel>(), page, pageSize);
         }
 

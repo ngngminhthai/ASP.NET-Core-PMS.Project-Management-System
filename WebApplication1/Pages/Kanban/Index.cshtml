@@ -15,7 +15,7 @@
         <div class="col-12">
             <div class="box">
                 <div class="box-header">
-                    <h4 class="box-title">Here will be full project name</h4>
+                    <h4 class="box-title">@Model.Project.Name</h4>
                     <div class="box-right d-flex">
                         <a class="btn" href="project-details.html">Project Details</a>
                         <div class="icon-ratting">
@@ -32,6 +32,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="divider"></div>
+                <div class="box-body d-flex justify-content-between pb-0">
+                    <div class="team-name">
+                        <a href="#" class="team" href="#" data-toggle="modal" data-target="#add_column">
+                            <div class="icon"><i class="fas fa-tags"></i></div>
+                            <h5>add more column</h5>
+                        </a>
+                    </div>
+                 
+                </div>
             </div>
         </div>
         <div class="col-12">
@@ -47,18 +57,18 @@
                                         <h6 class="card-title">@item.NameColume</h6>
                                     </div>
 
-                                    <div class="kanban-wrap">
-                                        
-                                              <input class="ColumeId" type="hidden" value="@item.Id" />
-                                            @if (item.projectTasks != null)
+                                    <div class="kanban-wrap" style="background-color:white">
+
+                                        <input class="ColumeId" type="hidden" value="@item.Id" />
+                                        @if (item.projectTasks != null)
+                                        {
+                                            foreach (var i in item.projectTasks)
                                             {
-                                                foreach (var i in item.projectTasks)
-                                                {
                                                 <div class="panel">
 
                                                     <div class="kanban-box item-box">
                                                         <input type="hidden" value="@i.Id" />
-                                                      
+
                                                         <div class="dropdown edit">
                                                             <a href="#" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <i class="fas fa-pencil-alt"></i>
@@ -73,16 +83,16 @@
                                                             <div class="d-flex justify-content-between">
                                                                 <div class="link">Priority @i.PriorityValue</div>
                                                                 <div class="time">
-                                                                    <p class="font-main mb-0"><i class="far fa-clock"></i>@i.RemainDate</p>
+                                                                    <p class="font-main mb-0"><i class="far fa-clock"></i>@i.RemainDate days</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    </div>
-                                                }
+                                                </div>
                                             }
+                                        }
 
-                                        
+
 
                                     </div>
 
@@ -91,6 +101,35 @@
                         }
 
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="add_column" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Project</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Column name</label>
+                                    <input class="form-control" name="columnName"  type="text">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <input type="hidden" name="projectId" value="@Model.Project.Id"/>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Save</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -75,11 +75,7 @@
                             <td>@item.EndDate.ToString("d-M-yyyy")</td>
                             <td>
                                 <div class="dropdown">
-                                    <span data-bs-toggle="dropdown" aria-expanded="false"
-                                      class="@(item.Priority == Priority.High ?
-                                    "work-status badge badge-success" :
-                                    (item.Priority == Priority.Medium ? "work-status badge badge-warning" : "work-status badge badge-danger"))">@item.Priority.Name</span>
-
+                                    
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item badge-danger" href="/ProjectTasks/Edit?handler=UpdatePriority&id=@item.Id&priority=1&pid=@item.ProjectId">Low</a>
                                         <a class="dropdown-item badge-warning" href="/ProjectTasks/Edit?handler=UpdatePriority&id=@item.Id&priority=2&pid=@item.ProjectId">Medium</a>
@@ -89,7 +85,7 @@
                             </td>
                             <td>
                                 <div class="dropdown">
-                                    <span data-bs-toggle="dropdown" aria-expanded="false" class="@(item.WorkingStatus.Name == "Done" ? "work-status badge badge-success" : "work-status badge badge-warning")">@item.WorkingStatus.Name</span>
+                                    <span data-bs-toggle="dropdown" aria-expanded="false" class="@(item.KanbanColume.NameColume == "Done" ? "work-status badge badge-success" : "work-status badge badge-warning")">@item.KanbanColume.NameColume </span>
 
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item badge-success" href="/ProjectTasks/Edit?handler=UpdateStatus&id=@item.Id&workStatus=1&pid=@item.ProjectId">Done</a>
@@ -109,7 +105,7 @@
                                             <form id='myFormDelete+@item.Id' asp-page-handler="Delete">
                                                 <input type="hidden" name="projectTaskId" value="@item.Id">
                                                 <input type="hidden" name="id" value="@Model.Id"/>
-                                                <input type="submit" value="delete" >
+                                           
                                             </form>
                                         </a>
                                     </div>
@@ -118,205 +114,7 @@
                         </tr>
                     }
 
-                    @* <tr class="even">
-                    <td>
-                    <a href="#" class="d-flex "> <span>Website Develop</span> </a>
-                    </td>
-                    <td>
-                    <ul class="user-list mb-0">
-                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                    </ul>
-                    </td>
-                    <td>01-01-2021</td>
-                    <td>22-04-2021</td>
-                    <td>
-                    <div class="progress progress-sm">
-                    <div class="progress-bar bg-yellow w-50"></div>
-                    </div>
-                    </td>
-                    <td>
-                    <div class="d-flex"> <span class="badge badge-danger">Dealy</span>
-                    <div class="mt-1 ms-1"> <span class="feather feather-info text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Dealy by 99 days"></span> </div>
-                    </div>
-                    </td>
-                    <td>
-                    <div class="dropdown">
-                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bx bx-dots-horizontal-rounded"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                    </div>
-                    </div>
-                    </td>
-                    </tr>
-                    <tr class="odd">
-
-                    <td>
-                    <a href="#" class="d-flex "><span>Digital Marketing</span> </a>
-                    </td>
-                    <td>
-                    <ul class="user-list mb-0">
-                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                    </ul>
-                    </td>
-                    <td>11-04-2021</td>
-                    <td>16-06-2021</td>
-                    <td>
-                    <div class="progress progress-sm">
-                    <div class="progress-bar bg-primary w-100"></div>
-                    </div>
-                    </td>
-                    <td> <span class="badge badge-success">Complete</span> </td>
-                    <td>
-                    <div class="dropdown">
-                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bx bx-dots-horizontal-rounded"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                    </div>
-                    </div>
-                    </td>
-                    </tr>
-                    <tr class="even">
-
-                    <td>
-                    <a href="#" class="d-flex "><span>Ad Analysis</span> </a>
-                    </td>
-                    <td>
-                    <ul class="user-list mb-0">
-                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                    </ul>
-                    </td>
-                    <td>11-03-2021</td>
-                    <td>19-05-2021</td>
-                    <td>
-                    <div class="progress progress-sm">
-                    <div class="progress-bar bg-primary w-80"></div>
-                    </div>
-                    </td>
-                    <td> <span class="badge badge-success">Complete</span> </td>
-                    <td>
-                    <div class="dropdown">
-                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bx bx-dots-horizontal-rounded"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                    </div>
-                    </div>
-                    </td>
-                    </tr>
-                    <tr class="odd">
-
-                    <td>
-                    <a href="#" class="d-flex "><span>Design update</span> </a>
-                    </td>
-                    <td>
-                    <ul class="user-list mb-0">
-                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                    </ul>
-                    </td>
-                    <td>05-02-2021</td>
-                    <td>21-04-2021</td>
-                    <td>
-                    <div class="progress progress-sm">
-                    <div class="progress-bar bg-primary w-70"></div>
-                    </div>
-                    </td>
-                    <td> <span class="badge badge-success">Complete</span> </td>
-                    <td>
-                    <div class="dropdown">
-                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bx bx-dots-horizontal-rounded"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                    </div>
-                    </div>
-                    </td>
-                    </tr>
-                    <tr class="even">
-
-                    <td>
-                    <a href="#" class="d-flex "><span>Design update</span> </a>
-                    </td>
-                    <td>
-                    <ul class="user-list mb-0">
-                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                    </ul>
-                    </td>
-                    <td>21-01-2021</td>
-                    <td>15-03-2021</td>
-                    <td>
-                    <div class="progress progress-sm">
-                    <div class="progress-bar bg-primary w-40"></div>
-                    </div>
-                    </td>
-                    <td>
-                    <div class="d-flex"> <span class="badge badge-success">Complete</span>
-                    <div class="mt-1 ms-1"> <span class="feather feather-info text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Dealy by 30 days"></span> </div>
-                    </div>
-                    </td>
-                    <td>
-                    <div class="dropdown">
-                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bx bx-dots-horizontal-rounded"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                    </div>
-                    </div>
-                    </td>
-                    </tr>
-                    <tr class="odd">
-
-                    <td>
-                    <a href="#" class="d-flex "><span>Design update</span> </a>
-                    </td>
-                    <td>
-                    <ul class="user-list mb-0">
-                    <li><img src="./images/avatar/user-1.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-2.png" alt="user"></li>
-                    <li><img src="./images/avatar/user-3.png" alt="user"></li>
-                    </ul>
-                    </td>
-                    <td>23-01-2021</td>
-                    <td>25-02-2021</td>
-                    <td>
-                    <div class="progress progress-sm">
-                    <div class="progress-bar bg-yellow w-40"></div>
-                    </div>
-                    </td>
-                    <td> <span class="badge badge-success">Complete</span> </td>
-                    <td>
-                    <div class="dropdown">
-                    <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bx bx-dots-horizontal-rounded"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
-                    </div>
-                    </div>
-                    </td>
-                    </tr>*@
+                  
 
                 </tbody>
             </table>
@@ -381,10 +179,15 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>WorkingStatus</label>
-                                    <select class="select" name="WorkingStatusValue">
-                                        <option value="1">Done</option>
-                                        <option value="2">In Progress</option>
-                                        <option value="3"></option>
+                                    <select class="select" name="KanbanId">
+                                    @if(Model.Kanbans != null)
+                                    {
+                                        foreach(var item in Model.Kanbans)
+                                        {
+                                                <option value="@item.Id">@item.NameColume</option>
+                                                
+                                        }
+                                    }
                                     </select>
                                 </div>
                             </div>

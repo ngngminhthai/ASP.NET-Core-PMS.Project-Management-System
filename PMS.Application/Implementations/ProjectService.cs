@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using PMS.Application.Services;
+using PMS.Data.Entities;
 using PMS.Data.IRepositories;
 using PMS.Infrastructure.SharedKernel;
 using System.Collections.Generic;
@@ -42,6 +43,25 @@ namespace PMS.Application.Implementations
 
             projectRepository.Add(newProject);
             Save();
+            var id = newProject.Id;
+            List<KanbanColume> kanbanColumes= new List<KanbanColume>
+            {
+                new KanbanColume { 
+                    NameColume= "To do",
+                    ProjectId = id,
+                },
+                new KanbanColume {
+                    NameColume= "Doing",
+                    ProjectId = id,
+                },
+                new KanbanColume {
+                    NameColume= "Done",
+                    ProjectId = id,
+                }
+            };
+            context.kanbanColumes.AddRange(kanbanColumes);
+            context.SaveChanges();
+
         }
 
         //public void Delete(int id)

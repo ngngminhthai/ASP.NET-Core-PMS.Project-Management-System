@@ -1,4 +1,5 @@
-﻿using PMS.Data.Entities.ValueObjects;
+﻿using PMS.Data.Entities;
+using PMS.Data.Entities.ValueObjects;
 using System;
 using WebApplication1.Data.Entities.ProjectAggregate;
 
@@ -15,5 +16,6 @@ namespace PMS.Application.ViewModels
         public WorkingStatus WorkingStatus { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public KanbanColume KanbanColume { get; set; }
     }
 }

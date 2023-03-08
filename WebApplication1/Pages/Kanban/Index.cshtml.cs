@@ -25,13 +25,14 @@ namespace PMS.Pages.Kanban
 
 
         public IList<KanbanColume> KanbanColumes { get;set; }
-
+        public Project Project { get; set; }
 
         public async Task OnGetAsync(int projectId)
         {
             var value = await _context.kanbanColumes
                 .Include(k => k.project).Where(p => p.ProjectId == projectId).ToListAsync();
-            
+
+            Project = _context.Projects.Where(p => projectId == p.Id).FirstOrDefault();
             
             KanbanColumes = await SetProjectTaskForKanban(value);
         }
@@ -50,6 +51,18 @@ namespace PMS.Pages.Kanban
             }
             return null;
 
+        }
+        public IActionResult OnPost(int projectId, string columnName)
+        {
+            KanbanColume kbc = new KanbanColume
+            {
+                ProjectId = projectId,
+                NameColume = columnName
+            };
+            _context.kanbanColumes.Add(kbc);
+            _context.SaveChanges();
+
+            return Redirect("../Kanban?projectId=" + projectId);
         }
     }
 }

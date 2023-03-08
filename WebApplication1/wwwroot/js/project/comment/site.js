@@ -57,9 +57,9 @@ $(document).ready(function () {
     function nestedComment(listComment) {
         if (listComment !== null) {
             for (var i = 0; i < listComment.length; i++) {
-                var className = "comment d-flex";
-                if (listComment[i].Level === 1) { className = "comment rep d-flex" }
-                else if (listComment[i].Level >= 2) { className = "comment rep2 d-flex" };
+                var className = "comment d-flex justify-content-between";
+                if (listComment[i].Level === 1) { className = "comment rep d-flex justify-content-between" }
+                else if (listComment[i].Level >= 2) { className = "comment rep2 d-flex justify-content-between" };
 
 
                 const value = (listComment[i].level == 2) ? listComment[i].parentID + "," + (listComment[i].Level - 1) : listComment[i].Id + "," + listComment[i].Level;
@@ -68,19 +68,19 @@ $(document).ready(function () {
                     "<form id='delete_comment" + listComment[i].Id + "' action='/Projects/DeleteComment'"
                     + "method = 'post' accept - charset='utf-8' > "
                     + " <input type='hidden' name='id' value='" + listComment[i].Id + "' />"
-                    + " <a  onclick=' deleteComment(  " + listComment[i].Id + ")' class='reply'>Delete</a>"
+                    + " <a style='margin-left: 20px;' onclick=' deleteComment(  " + listComment[i].Id + ")' class='reply'><i class='fa fa-trash-o' aria-hidden='true'></i></a>"
                     + "</form> " :
                     "";
                 let canUpdate = (authorEmail === listComment[i].Author) ?
 
-                    " <a  onclick='clickUpdate(  " + listComment[i].Id + ")' class='reply'>Update</a>" :
+                    " <a style='margin-left: 20px;' onclick='clickUpdate(  " + listComment[i].Id + ")' class='reply'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></a>" :
                     "";
                 tableContent +=
                     "<div class='comment-container'>"
                     + "<div class='" + className + "'>"
-                    + "                     <div class='left d-flex'>"
+                    + "                     <div class=' d-flex'>"
                     + "           <div class='comment-pic'>"
-                    + "                <img src='./images/avatar/cmt-02.png' alt=''>"
+                    + "                <img src='/images/avatar/cmt-02.png' alt=''>"
                     + "            </div>"
                     + "            <div class='comment-body'>"
                     + "                <div class='name'>"
@@ -91,12 +91,12 @@ $(document).ready(function () {
                     + "                                                 </div>"
                     + "                                             </div>"
                     + "                                         </div>"
-                    + "                                         <div class='right'>"
-                    + "                                             <div class='group-action mt-10'>"
+                    + "                                         <div class=''>"
+                + "                                             <div class='group-action d-flex'>"
                     + canDelete
                     + canUpdate
-                    + "                                                 <a id='repId_" + listComment[i].Id + "' onclick='clickReply(  "
-                    + value + ")' class='reply'><i class='fas fa-reply-all'></i>Reply</a>"
+                    + "                                                 <a style='margin-left: 20px;' id='repId_" + listComment[i].Id + "' onclick='clickReply(  "
+                    + value + ")' class='reply' ><i class='fa fa-reply' aria-hidden='true'></i></a>"
                     + "                                             </div>"
                     + "                                         </div>"
                     + "                                     </div>"
@@ -287,7 +287,7 @@ function createInputUpdateBox(id, content) {
 
 
         + " <span class='btn-send'>"
-        + "    <button onclick=' updateComment(  " + id + ")' >Send <i class='fas fa-paper-plane'></i></button>"
+        + "    <button onclick=' updateComment(  " + id + ")' >Update <i class='fas fa-paper-plane'></i></button>"
         + " </span>"
 
 
