@@ -1,4 +1,4 @@
-/*
+﻿/*
 Author       : Dreamguys
 Template Name: SmartHR - Bootstrap Admin Template
 Version      : 3.6
@@ -38,12 +38,41 @@ $(document).ready(function () {
         drop: function (event, ui) {
             // Get the dragged element
             var draggedElement = ui.draggable;
-            console.log(draggedElement);
+            const formInput = draggedElement[0].querySelectorAll('input[value]');
+            console.log(draggedElement)
+            const idKanban = formInput[0].value;
+
+            console.log(idKanban);
             var wrapper = $('<div>').addClass('panel').append(draggedElement)
             console.log(wrapper);
+
+
+            const formInputChild = this.querySelectorAll('input[value]');
+
+
             // Do something with the dragged element here, such as appending it to the droppable element
-            
+
+
+
+            const cid = formInputChild[0].value;
             $(this).append(wrapper);
+            // Construct the data to be sent to the server
+            const data = {
+                id: idKanban,
+                columeId: formInputChild[0].value
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/ProjectTasks/Update',
+                data: {
+                    id: idKanban,
+                    columeId: cid,
+                },
+                success: function (data, textStatus, jqXHR) {
+
+                }
+            });
 
         }
     });

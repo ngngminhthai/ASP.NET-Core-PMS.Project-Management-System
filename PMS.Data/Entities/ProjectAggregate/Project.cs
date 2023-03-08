@@ -13,9 +13,9 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public string Name { get; set; }
         public string Description { get; set; }
         public ManageUser Creator { get; set; }
-        public int TagId { get; set; }
+        public int? TagId { get; set; }
         [ForeignKey("TagId")]
-        public Tag Tag { get; set; }
+        public Tag? Tag { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
         public ICollection<ProjectUploadedFile> ProjectUploadedFiles { get; set; }
         public ICollection<ProjectTask> ProjectTasks { get; set; }
@@ -23,5 +23,6 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public DateTime EndDate { get; set; }
         public ICollection<ProjectComment> ProjectComments { get; set; }
         public ICollection<ProjectRole> ProjectRoles { get; set; }
+        public ICollection<KanbanColume> kanbanColumes { get; set; }
     }
 }

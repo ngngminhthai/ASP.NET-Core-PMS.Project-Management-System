@@ -45,7 +45,7 @@ $(document).ready(function () {
         console.log("Load pagination")
 
         $('#paginationUL').twbsPagination({
-            totalPages: pagination.totalCount, 
+            totalPages: pagination.totalCount,
             startPage: pagination.currentPage,
             onPageClick: function (event, page) {
                 LoadProdData(page, 3);
@@ -53,7 +53,7 @@ $(document).ready(function () {
             }
         });
     }
-    
+
 
 })
 

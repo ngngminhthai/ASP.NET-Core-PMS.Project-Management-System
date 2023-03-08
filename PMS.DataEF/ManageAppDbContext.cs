@@ -115,6 +115,7 @@ namespace WebApplication1.Data
         public DbSet<TicketResponse> TicketResponses { get; set; }
         public DbSet<UploadedFiles> UploadedFiles { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<KanbanColume> kanbanColumes { get; set; }
 
 
         public override int SaveChanges()
