@@ -263,6 +263,7 @@ function clickUpdate(id) {
     const delElementUpddate = document.getElementById("update_comment_box" + id);
     if (delElementUpddate !== null) {
         delElementUpddate.remove();
+        return;
     }
     const content = document.getElementById("content_" + id).textContent;
  

@@ -22,13 +22,10 @@ namespace PMS.Pages.ProjectUser
         public PagedList<ProjectUserViewModel> ListProjectUser { get; set; }
         [BindProperty]
         public string UserName { get; set; }
-        public bool? Flag { get; set; } = null;
+     
         public string Error { get; set; }
         public int ProjectId { get; set; }
-        public void SetFlagNull()
-        {
-            Flag = null;
-        }
+       
         public async Task OnGetAsync(int projectId, string search, int p = 1, int s = 9)
         {
             ListProjectUser = await Mediator.Send(new ListProjectUser.Query()
@@ -50,18 +47,19 @@ namespace PMS.Pages.ProjectUser
             var result = projectUserService.Add(projectId, UserName);
             if (result == 1)
             {
-                Flag = false;
-                Error = "Can not find User";
+          
+                TempData["Error"] = "Can not find User";
             }
             else if (result == 2)
             {
-                Flag = false;
-                Error = "User is exist";
+               
+                TempData["Error"] = "User is exist";
             }
             else
             {
-                Flag = true;
+                TempData["Error"] = "ok";
             }
+
             ListProjectUser = await Mediator.Send(new ListProjectUser.Query()
             {
                 ProjectId = projectId,
@@ -71,10 +69,9 @@ namespace PMS.Pages.ProjectUser
 
             });
             ProjectId = projectId;
-            paginationParams.PageSize = 9;
-            paginationParams.PageNumber = 1;
+            paginationParams.PageSize = 1;
+            paginationParams.PageNumber = 9;
             paginationParams.Total = ListProjectUser.MetaData.TotalCount;
-
         }
     }
 }

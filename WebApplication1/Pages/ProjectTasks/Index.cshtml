@@ -33,14 +33,21 @@
 
             </div>
             <div class="card-options pr-3">
-                <div class="dropdown">
-                    <a href="#" class="btn ripple btn-outline-light dropdown-toggle fs-14" data-bs-toggle="dropdown" aria-expanded="false"> See All <i class="feather feather-chevron-down"></i> </a>
-                    <ul class="dropdown-menu dropdown-menu-end" role="menu" style="">
-                        <li><a href="#">Monthly</a></li>
-                        <li><a href="#">Yearly</a></li>
-                        <li><a href="#">Weekly</a></li>
-                    </ul>
-                </div>
+               <div class="row">
+                   <div class="col-2">
+                        
+                            <a class="add search d-flex me-2" href="/kanban?projectId=@Model.Id"> See Board </a>
+
+                       
+                   </div>
+                   <div class="col-2">
+
+                        <a class="add search d-flex me-2" href="/ProjectTaskUser?projectTaskId=@Model.Id"> User </a>
+
+                        
+                   </div>
+
+               </div>
             </div>
         </div>
         <div class="box-body pb-0 table-responsive activity mt-18">

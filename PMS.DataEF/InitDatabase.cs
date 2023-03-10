@@ -195,12 +195,7 @@ namespace PMS.DataEF.Repositories
                 };
                 var user1 = await _userManager.FindByNameAsync("emlasieunhan118@gmail.com");
                 var user2 = await _userManager.FindByNameAsync("emlasieunhan117@gmail.com");
-                List<ProjectTask> projects1Tasks = new List<ProjectTask>
-                {
-                    new ProjectTask{Name = "Project Task 1", Description = "Project Task 1", PriorityValue = 1, WorkingStatusValue = 1},
-                    new ProjectTask{Name = "Project Task 2", Description = "Project Task 2", PriorityValue = 2, WorkingStatusValue = 2},
-                    new ProjectTask{Name = "Project Task 3", Description = "Project Task 3", PriorityValue = 3, WorkingStatusValue = 1}
-                };
+
 
                 List<Project> projects = new List<Project>()
 
@@ -211,26 +206,55 @@ namespace PMS.DataEF.Repositories
                        new ProjectUploadedFile{File = "20230207135547660godocker.jpg"},
                        new ProjectUploadedFile{File = "20230207182543323dienthoai.jpg"},
                    },
-
+                    Tag = tags[0]
                    },
-                   new Project { Name = "vip", Description = "asdad asdasd adadsd adasdasd adasd asdasdas", Creator = user2, ProjectTasks = projects1Tasks },
-                   new Project { Name = "adu", Description = "adu adu adu adu adu adu adu adu adu adu", Creator = user2 },
-                   new Project { Name = "promax", Description = "aa aaa aaa aaa aaa aaa aaa aaaaa aaaaa  aaaaa a aa aaaa aa aaa", Creator = user2 },
-                   new Project { Name = "Lmao", Description = "queeaaaaa", Creator = user2 }
+                   new Project { Name = "vip", Description = "asdad asdasd adadsd adasdasd adasd asdasdas", Creator = user2 , Tag = tags[0]},
+                   new Project { Name = "adu", Description = "adu adu adu adu adu adu adu adu adu adu", Creator = user2,Tag = tags[1] },
+                   new Project { Name = "promax", Description = "aa aaa aaa aaa aaa aaa aaa aaaaa aaaaa  aaaaa a aa aaaa aa aaa", Creator = user2 , Tag = tags[0]},
+                   new Project { Name = "Lmao", Description = "queeaaaaa", Creator = user2, Tag = tags[0] }
                 };
-
-                var project1 = _context.Projects.FirstOrDefault(p => p.Name.Equals("Project 1"));
-                var project2 = _context.Projects.FirstOrDefault(p => p.Name.Equals("Project 2"));
+                List<KanbanColume> kanbanColumes = new List<KanbanColume>
+                {
+                    new KanbanColume{NameColume = "To do", project = projects[0]},
+                         new KanbanColume { NameColume = "Doing", project = projects[0] },
+                        new KanbanColume { NameColume = "Done", project = projects[0] },
+                     new KanbanColume { NameColume = "Test", project = projects[0] },
+                     new KanbanColume { NameColume = "To do", project = projects[1] },
+                     new KanbanColume { NameColume = "Doing", project = projects[1] },
+                new KanbanColume { NameColume = "Done", project = projects[1] },
+                new KanbanColume { NameColume = "Bug", project = projects[1] },
+                     };
+                List<ProjectTask> projects1Tasks = new List<ProjectTask>
+                {
+                    new ProjectTask{Name = "Project Task 1", Description = "Project Task 1", PriorityValue = 1, WorkingStatusValue = 1,Project = projects[0],KanbanColume= kanbanColumes[0] },
+                    new ProjectTask{Name = "Project Task 2", Description = "Project Task 2", PriorityValue = 2, WorkingStatusValue = 2, Project = projects[0],KanbanColume= kanbanColumes[0] },
+                    new ProjectTask{Name = "Project Task 3", Description = "Project Task 3", PriorityValue = 3, WorkingStatusValue = 1, Project = projects[0],KanbanColume= kanbanColumes[0] },
+                    new ProjectTask{Name = "Project Task 4", Description = "Project Task 4", PriorityValue = 3, WorkingStatusValue = 1, Project = projects[0],KanbanColume= kanbanColumes[0] },
+                    new ProjectTask{Name = "Project Task 5", Description = "Project Task 5", PriorityValue = 3, WorkingStatusValue = 1,Project = projects[0],KanbanColume= kanbanColumes[0] },
+                };
 
                 List<ProjectUser> projectsUsers = new List<ProjectUser>()
                 {
-                    new ProjectUser{User = user1, Project = project1},
-                    new ProjectUser{User = user1, Project = project2},
+                    new ProjectUser{User = user1, Project = projects[0]},
+                    new ProjectUser{User = user1, Project = projects[0]},
+                };
+                List<ProjectTask_User> projectTask_Users = new List<ProjectTask_User>
+                {
+                    new ProjectTask_User{ProjectTask = projects1Tasks[0], User= user1},
+
                 };
 
 
+
+                await _context.Tags.AddRangeAsync(tags);
+                await _context.Projects.AddRangeAsync(projects);
+                await _context.kanbanColumes.AddRangeAsync(kanbanColumes);
+                await _context.ProjectTasks.AddRangeAsync(projects1Tasks);
+                await _context.projectTask_Users.AddRangeAsync(projectTask_Users);
                 await _context.ProjectUsers.AddRangeAsync(projectsUsers);
+          
             }
+
 
 
 
