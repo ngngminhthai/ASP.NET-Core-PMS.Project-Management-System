@@ -10,7 +10,7 @@ using WebApplication1.Data;
 namespace PMS.DataEF.Data.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
-    [Migration("20230310163008_InitDB")]
+    [Migration("20230311171643_InitDB")]
     partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -690,6 +690,9 @@ namespace PMS.DataEF.Data.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<int>("PriorityValue")
                         .HasColumnType("int");

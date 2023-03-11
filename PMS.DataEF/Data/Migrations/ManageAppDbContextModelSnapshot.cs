@@ -689,6 +689,9 @@ namespace PMS.DataEF.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<int>("PriorityValue")
                         .HasColumnType("int");
 

@@ -26,8 +26,9 @@ namespace PMS.Pages.Kanban
 
         public IList<KanbanColume> KanbanColumes { get;set; }
         public Project Project { get; set; }
-
-        public async Task OnGetAsync(int projectId)
+        [BindProperty(SupportsGet =true)]
+        public int projectId { get; set; }
+        public async Task OnGetAsync()
         {
             var value = await _context.kanbanColumes
                 .Include(k => k.project).Where(p => p.ProjectId == projectId).ToListAsync();
@@ -44,7 +45,9 @@ namespace PMS.Pages.Kanban
 
                 foreach (KanbanColume item in  kanbanColumes)
                 {
-                    item.projectTasks = await _context.ProjectTasks.Include(p => p.KanbanColume).Where(p => p.KanbanColumeID == item.Id).ToListAsync();
+                    item.projectTasks = await _context.ProjectTasks.Include(p => p.KanbanColume)
+                        .Where(p => p.KanbanColumeID == item.Id)
+                        .OrderBy(p=> p.Order).ToListAsync();
                      
                 }
                 return kanbanColumes;

@@ -74,18 +74,85 @@ namespace PMS.Controllers
 
        
         [HttpPost]
-        public string Update(int id, int columeId)
+        public async Task<string> Update(int id, int columeId, int order)
         {
-
+            
             try
             {
+                // update task 
                 var task = _context.ProjectTasks.Where(p => p.Id == id).FirstOrDefault();
+
+                var listOld = _context.ProjectTasks.Where(p => p.KanbanColumeID == task.KanbanColumeID).ToList();
+
+                foreach (var item in listOld)
+                {
+                    if (task.Order < item.Order)
+                    {
+                        item.Order -= 1;
+                    }
+                }
+
                 task.KanbanColumeID = columeId;
+                task.Order = order;
+
+             
+                // update orther task
+                var listTask = _context.ProjectTasks.Where(p=> p.KanbanColumeID == task.KanbanColumeID ).ToList();
+                foreach (var item in listTask)
+                {
+                    if(task.Order <= item.Order)
+                    {
+                        item.Order += 1;
+                    }
+                }
+
                 _context.Update(task);
+
                 _context.SaveChanges();
                 return "ok";
             }catch(Exception ex) { return "false"; };
     
+        }
+        [HttpPost]
+        public async Task<string> ChangeOrder(int id, int order)
+        {
+
+            try
+            {
+                // update task 
+                var task = _context.ProjectTasks.Where(p => p.Id == id).FirstOrDefault();
+                
+                
+
+                // update orther task
+                var listTask = _context.ProjectTasks.Where(p => p.KanbanColumeID == task.KanbanColumeID).ToList();
+                
+                
+                foreach (var item in listTask)
+                {
+                    if (task.Order < order ) {
+                        if( item.Order <= order && item.Order > task.Order)
+                        {
+                            item.Order -= 1;
+                        }
+                    }
+                    else if(task.Order > order)
+                    {
+                        if(item.Order >= order && item.Order < task.Order)
+                        {
+                            item.Order += 1;
+                        }
+                    }
+                    
+                }
+                task.Order = order;
+                _context.Update(task);
+
+                _context.SaveChanges();
+                return "ok";
+            }
+            catch (Exception ex) { return "false"; };
+
         }
 
         // GET: ProjectTasks/Delete/5

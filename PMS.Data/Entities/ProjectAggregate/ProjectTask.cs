@@ -33,6 +33,8 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
+        
+        public int Order { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
@@ -55,4 +57,6 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
 
             } }
     }
+
+
 }

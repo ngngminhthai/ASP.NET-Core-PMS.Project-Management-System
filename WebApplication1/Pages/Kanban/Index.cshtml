@@ -17,7 +17,7 @@
                 <div class="box-header">
                     <h4 class="box-title">@Model.Project.Name</h4>
                     <div class="box-right d-flex">
-                        <a class="btn" href="project-details.html">Project Details</a>
+                        <a class="btn" href="/Projects/Details?id=@Model.projectId">Project Details</a>
                         <div class="icon-ratting">
                             <i class='bx bxs-star'></i>
                         </div>
@@ -57,7 +57,7 @@
                                         <h6 class="card-title">@item.NameColume</h6>
                                     </div>
 
-                                    <div class="kanban-wrap" style="background-color:white">
+                                    <div class="kanban-wrap" id="@item.Id" style="background-color:white">
 
                                         <input class="ColumeId" type="hidden" value="@item.Id" />
                                         @if (item.projectTasks != null)

@@ -19,5 +19,6 @@ namespace PMS.Application.Services
         void Save();
         void UpdateStatus(int id, int workStatus);
         void UpdatePriority(int id, int priorityValue);
+        public int Count(int projectId);
     }
 }

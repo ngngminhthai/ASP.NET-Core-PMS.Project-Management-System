@@ -56,6 +56,7 @@ namespace PMS.Pages.ProjectTasks
         public IActionResult OnPostCreate(string name, int ProjectId, DateTime StartDate, DateTime EndDate, int KanbanId ,int PriorityValue, int WorkingStatusValue, string Description)
         {
 
+            int length = projectTaskService.Count(ProjectId) +1;
             var newTask = new ProjectTask
             {
                 Name = name,
@@ -65,7 +66,8 @@ namespace PMS.Pages.ProjectTasks
                 KanbanColumeID = KanbanId,
                 Description = Description,
                 PriorityValue = PriorityValue,
-                WorkingStatusValue = WorkingStatusValue
+                WorkingStatusValue = WorkingStatusValue,
+                Order = length,
             };
             projectTaskService.Add(newTask);
 

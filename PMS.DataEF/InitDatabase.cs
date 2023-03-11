@@ -226,11 +226,11 @@ namespace PMS.DataEF.Repositories
                      };
                 List<ProjectTask> projects1Tasks = new List<ProjectTask>
                 {
-                    new ProjectTask{Name = "Project Task 1", Description = "Project Task 1", PriorityValue = 1, WorkingStatusValue = 1,Project = projects[0],KanbanColume= kanbanColumes[0] },
-                    new ProjectTask{Name = "Project Task 2", Description = "Project Task 2", PriorityValue = 2, WorkingStatusValue = 2, Project = projects[0],KanbanColume= kanbanColumes[0] },
-                    new ProjectTask{Name = "Project Task 3", Description = "Project Task 3", PriorityValue = 3, WorkingStatusValue = 1, Project = projects[0],KanbanColume= kanbanColumes[0] },
-                    new ProjectTask{Name = "Project Task 4", Description = "Project Task 4", PriorityValue = 3, WorkingStatusValue = 1, Project = projects[0],KanbanColume= kanbanColumes[0] },
-                    new ProjectTask{Name = "Project Task 5", Description = "Project Task 5", PriorityValue = 3, WorkingStatusValue = 1,Project = projects[0],KanbanColume= kanbanColumes[0] },
+                    new ProjectTask{Name = "Project Task 1", Description = "Project Task 1", PriorityValue = 1, WorkingStatusValue = 1,Project = projects[0],KanbanColume= kanbanColumes[0], Order = 1 },
+                    new ProjectTask{Name = "Project Task 2", Description = "Project Task 2", PriorityValue = 2, WorkingStatusValue = 2, Project = projects[0],KanbanColume= kanbanColumes[0], Order = 2 },
+                    new ProjectTask{Name = "Project Task 3", Description = "Project Task 3", PriorityValue = 3, WorkingStatusValue = 1, Project = projects[0],KanbanColume= kanbanColumes[0],Order=3 },
+                    new ProjectTask{Name = "Project Task 4", Description = "Project Task 4", PriorityValue = 3, WorkingStatusValue = 1, Project = projects[0],KanbanColume= kanbanColumes[0], Order=4 },
+                    new ProjectTask{Name = "Project Task 5", Description = "Project Task 5", PriorityValue = 3, WorkingStatusValue = 1,Project = projects[0],KanbanColume= kanbanColumes[0] ,Order =5},
                 };
 
                 List<ProjectUser> projectsUsers = new List<ProjectUser>()

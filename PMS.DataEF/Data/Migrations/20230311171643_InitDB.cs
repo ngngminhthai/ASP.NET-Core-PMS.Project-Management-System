@@ -592,6 +592,7 @@ namespace PMS.DataEF.Data.Migrations
                     KanbanColumeID = table.Column<int>(type: "int", nullable: true),
                     PriorityValue = table.Column<int>(type: "int", nullable: false),
                     WorkingStatusValue = table.Column<int>(type: "int", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

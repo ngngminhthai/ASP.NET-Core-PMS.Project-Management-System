@@ -29,7 +29,7 @@ namespace PMS.Pages.ProjectTasks
             }
 
             ProjectTask = await _context.ProjectTasks
-                .Include(p => p.Project).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Project).Include(p=>p.ProjectTask_Users).FirstOrDefaultAsync(m => m.Id == id);
 
             if (ProjectTask == null)
             {
