@@ -1,4 +1,13 @@
-﻿namespace WebApplication1.Data.Entities.ProjectAggregate
+﻿using PMS.Data.Entities;
+using PMS.Data.Entities.ProjectAggregate;
+using PMS.Infrastructure.Interfaces;
+using PMS.Infrastructure.SharedKernel;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+
+namespace WebApplication1.Data.Entities.ProjectAggregate
 {
     public class Project : DomainEntity<int>, IDateTimeStamp
     {
