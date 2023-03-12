@@ -5,6 +5,7 @@ using PMS.Infrastructure.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace WebApplication1.Data.Entities.ProjectAggregate
 {
@@ -23,15 +24,24 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
             set => PriorityValue = value.Level;
         }
 
+
         public int PriorityValue { get; set; }
 
         [NotMapped]
         public WorkingStatus WorkingStatus
         {
-            get => WorkingStatusValue == 1 ? WorkingStatus.Done :
-                   WorkingStatusValue == 2 ? WorkingStatus.InProgress : WorkingStatus;
-            set => WorkingStatus = value;
+            get
+            {
+                return WorkingStatusValue switch
+                {
+                    1 => WorkingStatus.Done,
+                    2 => WorkingStatus.InProgress,
+                    _ => WorkingStatus.NotStarted
+                };
+            }
+            set => WorkingStatusValue = (int)value;
         }
+
         public int WorkingStatusValue { get; set; }
 
         [ForeignKey("ProjectId")]
@@ -39,6 +49,48 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
+
+        [NotMapped]
+        public int Duration
+        {
+            get
+            {
+                TimeSpan span = EndDate - StartDate;
+                return (int)span.TotalDays;
+            }
+        }
+        [NotMapped]
+        public int EarliestStart { get; set; }
+        [NotMapped]
+        public int EarliestFinish { get; set; }
+        [NotMapped]
+        public int LatestStart { get; set; }
+        [NotMapped]
+        public int LatestFinish { get; set; }
+
+        public String Dependencies { get; set; }
+        public String Successors { get; set; }
+
+        public List<ProjectTask> DependentTasks { get; set; } = new List<ProjectTask>();
+        public List<ProjectTask> SuccessorTaks { get; set; } = new List<ProjectTask>();
+
         public ICollection<ProjectTask_User> ProjectTask_Users { get; set; }
+
+        public void UpdateDependencies()
+        {
+            Dependencies = string.Join(",", DependentTasks.Select(t => t.Id));
+        }
+        public void UpdateSuccessors()
+        {
+            Successors = string.Join(",", SuccessorTaks.Select(t => t.Id));
+        }
+
+        /*       public ProjectTask(string name, DateTime startDate, DateTime endDate)
+               {
+                   Name = name;
+                   StartDate = startDate;
+                   EndDate = endDate;
+               }
+       */
     }
 }

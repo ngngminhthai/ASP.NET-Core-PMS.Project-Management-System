@@ -371,6 +371,21 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("Priority");
                 });
 
+            modelBuilder.Entity("ProjectTaskProjectTask", b =>
+                {
+                    b.Property<int>("DependentTasksId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SuccessorTaksId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DependentTasksId", "SuccessorTaksId");
+
+                    b.HasIndex("SuccessorTaksId");
+
+                    b.ToTable("ProjectTaskProjectTask");
+                });
+
             modelBuilder.Entity("WebApplication1.Data.Entities.ConversationAggregate.Conversation", b =>
                 {
                     b.Property<int>("Id")
@@ -495,6 +510,9 @@ namespace PMS.DataEF.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ImageProfile")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -657,6 +675,9 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Dependencies")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -674,6 +695,9 @@ namespace PMS.DataEF.Data.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Successors")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("WorkingStatusValue")
                         .HasColumnType("int");
@@ -950,6 +974,21 @@ namespace PMS.DataEF.Data.Migrations
                         .HasForeignKey("UserUploadedId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProjectTaskProjectTask", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", null)
+                        .WithMany()
+                        .HasForeignKey("DependentTasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", null)
+                        .WithMany()
+                        .HasForeignKey("SuccessorTaksId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ConversationAggregate.Conversation", b =>

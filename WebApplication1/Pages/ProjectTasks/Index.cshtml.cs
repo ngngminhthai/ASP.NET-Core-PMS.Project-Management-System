@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis;
-using PMS.Application.Implementations;
 using PMS.Application.Services;
 using PMS.Application.ViewModels;
-using PMS.Data.Entities;
 using System;
 using System.Threading.Tasks;
 using WebApplication1.Data.Entities.ProjectAggregate;
@@ -34,6 +31,9 @@ namespace PMS.Pages.ProjectTasks
             paginationParams.PageSize = s;
             paginationParams.PageNumber = p;
             paginationParams.Total = ProjectTask.MetaData.TotalCount;
+
+
+
         }
         public async Task<IActionResult> OnPostCreateAsync(string name, int ProjectId, DateTime StartDate, DateTime EndDate, int PriorityValue, int WorkingStatusValue, string Description)
         {
@@ -55,12 +55,12 @@ namespace PMS.Pages.ProjectTasks
         }
         public async Task<IActionResult> OnPostDeleteAsync(int projectTaskId, int id)
         {
-           
+
             projectTaskService.Delete(projectTaskId);
 
             return Redirect("../ProjectTasks?id=" + id);
 
-            
+
         }
 
     }

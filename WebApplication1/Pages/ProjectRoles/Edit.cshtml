@@ -1,0 +1,93 @@
+﻿@page
+@model PMS.Pages.ProjectRoles.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="main-content">
+<div class="box">
+    <h1>Edit</h1>
+
+<h4>ProjectRole</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProjectRole.ProjectId" class="control-label"></label>
+                <select asp-for="ProjectRole.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                <span asp-validation-for="ProjectRole.ProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectRole.Name" class="control-label"></label>
+                <input asp-for="ProjectRole.Name" class="form-control" />
+                <span asp-validation-for="ProjectRole.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectRole.Description" class="control-label"></label>
+                <input asp-for="ProjectRole.Description" class="form-control" />
+                <span asp-validation-for="ProjectRole.Description" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="ProjectRole.Id" />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Function</th>
+                                <th scope="col">Create</th>
+                                <th scope="col">Read</th>
+                                <th scope="col">Update</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Functions.Count; i++)
+                            {
+                                var permission = Model.Permissions.FirstOrDefault(p => p.ProjectFunction.Id == Model.Functions[i].Id);
+
+                                <input type="text" hidden name="Permissions[@i].FunctionId" value="@Model.Functions[i].Id">
+                                <input type="text" hidden name="Permissions[@i].RoleId" value="@Model.ProjectRole.Id">
+                                <input type="text" hidden name="Permissions[@i].Id" value="@(permission != null ? permission.Id : 0)">
+                                <tr>
+                                    <td>
+                                        @Model.Functions[i].Name
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="Permissions[@i].CanCreate" value="true" checked="@(permission != null ? permission.CanCreate : false)">
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="Permissions[@i].CanRead" value="true" checked="@(permission != null ? permission.CanRead : false)">
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="Permissions[@i].CanUpdate" value="true" checked="@(permission != null ? permission.CanUpdate : false)">
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="Permissions[@i].CanDelete" value="true" checked="@(permission != null ? permission.CanDelete : false)">
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+</div>
+</div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

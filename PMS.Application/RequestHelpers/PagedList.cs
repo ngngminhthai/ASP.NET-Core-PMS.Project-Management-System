@@ -6,6 +6,10 @@ namespace WebApplication1.RequestHelpers
 {
     public class PagedList<T> : List<T>
     {
+        public PagedList()
+        {
+        }
+
         public PagedList(List<T> items, int count, int pageNumber, int pageSize)
         {
             MetaData = new MetaData

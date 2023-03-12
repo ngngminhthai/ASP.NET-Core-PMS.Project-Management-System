@@ -16,6 +16,8 @@ namespace WebApplication1.Data.Entities
 
         public DateTime BirthDay { get; set; }
 
+        public string ImageProfile { get; set; }
+
         public virtual ICollection<ConversationUser> ConversationUser { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
         public ICollection<ProjectTask_User> ProjectTask_Users { get; set; }
