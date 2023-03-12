@@ -43,8 +43,8 @@
                     </div>
                     <div class="action">
                         <a href="#" class="comment">32 Comments</a>
-                        <a href="#" class="edit">Edit</a>
-                        <a href="#" class="invite"><i class="fas fa-user-plus mr-5"></i>Invite People</a>
+                        <a href="../projecttasks?id=@Model.Project.Id" class="edit">List Task</a>
+                        <a href="../projectUser?projectId=@Model.Project.Id" class="invite"><i class="fas fa-user-plus mr-5"></i>Invite People</a>
                         @*<a href="#" class="add">New<i class="fas fa-caret-down pl-12"></i></a>*@
                         <a href="/ProjectUploadedFiles/Index?id=@Model.Project.Id">Files Attachments</a>
 

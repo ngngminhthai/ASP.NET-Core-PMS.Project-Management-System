@@ -26,7 +26,7 @@ namespace PMS.Pages.Projects
         public PaginationParams paginationParams { get; set; } = new PaginationParams();
         [BindProperty]
         public Project ProjectInput { get; set; }
-        public async Task OnGetAsync(string? search, int p = 1, int[] tags = null, int s = 6, bool mine = false)
+        public async Task OnGetAsync(string? search, int p = 1, int[] tags = null, int s = 3, bool mine = false)
         {
 
             Project = await GetProjects(search, p, s, tags, false);
@@ -62,7 +62,7 @@ namespace PMS.Pages.Projects
             );
             return result;
         }
-        public async Task OnPostAsync(string search, int p = 1, int s = 6, int[] tags = null, bool mine = false)
+        public async Task OnPostAsync(string search, int p = 1, int s = 3, int[] tags = null, bool mine = false)
         {
 
 

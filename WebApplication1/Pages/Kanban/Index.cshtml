@@ -1,0 +1,154 @@
+﻿@page
+@model PMS.Pages.Kanban.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+
+<div class="main-content board">
+    <div class="row">
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="box">
+                <div class="box-header">
+                    <h4 class="box-title">@Model.Project.Name</h4>
+                    <div class="box-right d-flex">
+                        <a class="btn" href="/Projects/Details?id=@Model.projectId">Project Details</a>
+                        <div class="icon-ratting">
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <div class="dropdown ml-14">
+                            <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class='bx bx-dots-vertical-rounded fs-22'></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="bx bx-trash"></i> Delete</a>
+                                <a class="dropdown-item" href="#"><i class="bx bx-edit mr-5"></i>Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="box-body d-flex justify-content-between pb-0">
+                    <div class="team-name">
+                        <a href="#" class="team" href="#" data-toggle="modal" data-target="#add_column">
+                            <div class="icon"><i class="fas fa-tags"></i></div>
+                            <h5>add more column</h5>
+                        </a>
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="kanban-board card mb-0 pd-0">
+                <div class="box-body pd-0">
+                    <div class="kanban-cont">
+                        @if (Model.KanbanColumes != null)
+                        {
+                            foreach (var item in Model.KanbanColumes)
+                            {
+                                <div class="kanban-list kanban-list-to-do">
+                                    <div class="kanban-header">
+                                        <h6 class="card-title">@item.NameColume</h6>
+                                    </div>
+
+                                    <div class="kanban-wrap" id="@item.Id" style="background-color:white">
+
+                                        <input class="ColumeId" type="hidden" value="@item.Id" />
+                                        @if (item.projectTasks != null)
+                                        {
+                                            foreach (var i in item.projectTasks)
+                                            {
+                                                <div class="panel">
+
+                                                    <div class="kanban-box item-box">
+                                                        <input type="hidden" value="@i.Id" />
+
+                                                        <div class="dropdown edit">
+                                                            <a href="#" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fas fa-pencil-alt"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="bx bx-trash"></i> Delete</a>
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_card_modal"><i class="bx bx-edit mr-5"></i>Edit</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="content-box">
+                                                            <h6 class="title fs-16">@i.Name</h6>
+                                                            <div class="d-flex justify-content-between">
+                                                                <div class="link">Priority @i.PriorityValue</div>
+                                                                <div class="time">
+                                                                    <p class="font-main mb-0"><i class="far fa-clock"></i>@i.RemainDate days</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+
+
+
+                                    </div>
+
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="add_column" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Project</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Column name</label>
+                                    <input class="form-control" name="columnName"  type="text">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <input type="hidden" name="projectId" value="@Model.Project.Id"/>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/lib/jquery/jquery-ui.min.js"></script>
+<script src="~/lib/moment/min/moment.min.js"></script>
+<script src="~/lib/apexcharts/apexcharts.js"></script>
+<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/peity/jquery.peity.min.js"></script>
+<script src="~/lib/chart.js/Chart.bundle.min.js"></script>
+<script src="~/lib/owl.carousel/owl.carousel.min.js"></script>
+<script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/lib/simplebar/simplebar.min.js"></script>
+
+<!-- APP JS -->
+<script src="~/js/main.js"></script>
+<script src="~/js/shortcode.js"></script>
+<script src="~/js/script.js"></script>
+<!-- END MAIN CONTENT -->

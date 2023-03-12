@@ -162,6 +162,7 @@ namespace WebApplication1
 
             services.AddTransient<IProjectTaskRepository, ProjectTaskRepository>();
             services.AddTransient<IProjectTaskService, ProjectTaskService>();
+
             services.AddTransient<IProjectRole_UserService, ProjectRole_UserService>();
 
 

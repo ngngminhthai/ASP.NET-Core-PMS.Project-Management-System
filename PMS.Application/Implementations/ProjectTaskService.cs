@@ -34,7 +34,11 @@ namespace PMS.Application.Implementations
             projectTaskRepository.Remove(id);
             Save();
         }
-
+        public int Count(int projectId)
+        {
+            int length = projectTaskRepository.FindAll().Where(p=> p.ProjectId == projectId ).Count();
+            return length;
+        }
         public List<ProjectTaskViewModel> GetAll()
         {
             throw new NotImplementedException();
@@ -47,7 +51,7 @@ namespace PMS.Application.Implementations
 
         public PagedList<ProjectTaskViewModel> GetAllWithPagination(int id, string keyword, int page, int pageSize)
         {
-            var query = projectTaskRepository.FindAll(p => p.ProjectId == id, p => p.Project);
+            var query = projectTaskRepository.FindAll().Where(p => p.Id == id);
             return PagedList<ProjectTaskViewModel>.ToPagedList(query.ProjectTo<ProjectTaskViewModel>(), page, pageSize);
         }
 

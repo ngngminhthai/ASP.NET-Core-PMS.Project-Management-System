@@ -24,6 +24,7 @@ namespace PMS.Pages.Projects
         public ProjectViewModel Project { get; set; }
         public List<ProjectCommentViewModel> ListComment { get; set; }
         public string Email { get; set; }
+       
         public async Task OnGetAsync(int id, string? search, int p = 1, int s = 3)
         {
             Email = HttpContext.User.Identity.Name.ToString();

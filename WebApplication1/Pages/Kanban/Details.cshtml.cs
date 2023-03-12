@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using PMS.Data.Entities;
 using WebApplication1.Data;
-using WebApplication1.Data.Entities.ProjectAggregate;
 
-namespace PMS.Pages.ProjectTasks
+namespace PMS.Pages.Kanban
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace PMS.Pages.ProjectTasks
             _context = context;
         }
 
-        public ProjectTask ProjectTask { get; set; }
+        public KanbanColume KanbanColume { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,10 +28,10 @@ namespace PMS.Pages.ProjectTasks
                 return NotFound();
             }
 
-            ProjectTask = await _context.ProjectTasks
-                .Include(p => p.Project).Include(p=>p.ProjectTask_Users).FirstOrDefaultAsync(m => m.Id == id);
+            KanbanColume = await _context.kanbanColumes
+                .Include(k => k.project).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (ProjectTask == null)
+            if (KanbanColume == null)
             {
                 return NotFound();
             }

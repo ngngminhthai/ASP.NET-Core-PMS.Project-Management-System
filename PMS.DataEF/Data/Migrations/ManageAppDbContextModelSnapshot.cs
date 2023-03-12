@@ -177,6 +177,26 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("ConversationUploadedFiles");
                 });
 
+            modelBuilder.Entity("PMS.Data.Entities.KanbanColume", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("NameColume")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("kanbanColumes");
+                });
+
             modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectFunction", b =>
                 {
                     b.Property<string>("Id")
@@ -663,8 +683,14 @@ namespace PMS.DataEF.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("KanbanColumeID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<int>("PriorityValue")
                         .HasColumnType("int");
@@ -679,6 +705,8 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("KanbanColumeID");
 
                     b.HasIndex("ProjectId");
 
@@ -870,6 +898,17 @@ namespace PMS.DataEF.Data.Migrations
                     b.Navigation("Conversation");
                 });
 
+            modelBuilder.Entity("PMS.Data.Entities.KanbanColume", b =>
+                {
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "project")
+                        .WithMany("kanbanColumes")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("project");
+                });
+
             modelBuilder.Entity("PMS.Data.Entities.ProjectAggregate.ProjectPermission", b =>
                 {
                     b.HasOne("PMS.Data.Entities.ProjectAggregate.ProjectFunction", "ProjectFunction")
@@ -1029,11 +1068,17 @@ namespace PMS.DataEF.Data.Migrations
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", b =>
                 {
+                    b.HasOne("PMS.Data.Entities.KanbanColume", "KanbanColume")
+                        .WithMany("projectTasks")
+                        .HasForeignKey("KanbanColumeID");
+
                     b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.Project", "Project")
                         .WithMany("ProjectTasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("KanbanColume");
 
                     b.Navigation("Project");
                 });
@@ -1079,6 +1124,11 @@ namespace PMS.DataEF.Data.Migrations
                     b.Navigation("Function");
                 });
 
+            modelBuilder.Entity("PMS.Data.Entities.KanbanColume", b =>
+                {
+                    b.Navigation("projectTasks");
+                });
+
             modelBuilder.Entity("WebApplication1.Data.Entities.ConversationAggregate.Conversation", b =>
                 {
                     b.Navigation("ConversationUser");
@@ -1097,6 +1147,8 @@ namespace PMS.DataEF.Data.Migrations
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.Project", b =>
                 {
+                    b.Navigation("kanbanColumes");
+
                     b.Navigation("ProjectComments");
 
                     b.Navigation("ProjectRoles");

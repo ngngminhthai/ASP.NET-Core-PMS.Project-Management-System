@@ -27,17 +27,14 @@ namespace PMS.Pages.ProjectTaskUser
         public PaginationParams paginationParams { get; set; } = new PaginationParams();
         public PagedList<ProjectTask_User> ProjectTaskUser { get; set; }
         public int Id { get; set; }
-        public bool? Flag { get; set; } = null;
-        public string Error { get; set; }
+
+
         [BindProperty]
         public string UserName { get; set; }
-        public void SetFlagNull()
-        {
-            Flag = null;
-        }
+       
         public async void OnGetAsync(int id, string search, int p = 1, int s = 3)
         {
-            ProjectTaskUser = projectTask_User_Service.GetAllUserInTask(id, search,p,s);
+            ProjectTaskUser = projectTask_User_Service.GetAllUserInTask(id, search, p, s);
             Id = id;
             paginationParams.PageSize = s;
             paginationParams.PageNumber = p;
@@ -48,19 +45,18 @@ namespace PMS.Pages.ProjectTaskUser
             var result = projectTask_User_Service.Add(projectTaskId, UserName);
             if (result == 1)
             {
-                Flag = false;
-                Error = "Can not find User";
+                TempData["StatusMessage"] = "cannot find User";
             }
             else if (result == 2)
             {
-                Flag = false;
-                Error = "User is exist";
+
+                TempData["StatusMessage"] = "User is exist";
             }
             else
             {
-                Flag = true;
+                TempData["StatusMessage"] = "Ok";
             }
-            return Redirect("projectTaskUser?id="+projectTaskId);
+            return Redirect("projectTaskUser?id=" + projectTaskId);
 
         }
     }

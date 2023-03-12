@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    string message = TempData["StatusMessage"] as string;
 }
 
 <div class="main-content client">
@@ -265,28 +266,32 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
 
-@if (Model.Flag == true)
+@if (message != null)
 {
-    <script>
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Your work has been saved',
-            showConfirmButton: false,
-            timer: 2000
-        })
-    </script>
-}
-else if (Model.Flag == false)
-{
-    <script>
-        Swal.fire({
-            position: 'top-end',
-            icon: 'error',
-            title: '@Model.Error',
-            showConfirmButton: false,
-            timer: 2000
-        })
-    </script>
+    if (message.Equals("Ok"))
+    {
+        <script>
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 2000
+            })
+        </script>
+    }
+    else
+    {
+        <script>
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: '@message',
+                showConfirmButton: false,
+                timer: 2000
+            })
+        </script>
+    }
 
+   
 }

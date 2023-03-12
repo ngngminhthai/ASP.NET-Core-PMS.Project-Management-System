@@ -1,4 +1,5 @@
-﻿using PMS.Data.Entities.ProjectAggregate;
+﻿using PMS.Data.Entities;
+using PMS.Data.Entities.ProjectAggregate;
 using PMS.Data.Entities.ValueObjects;
 using PMS.Infrastructure.Interfaces;
 using PMS.Infrastructure.SharedKernel;
@@ -15,13 +16,9 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
 
         public int ProjectId { get; set; }
 
-        [NotMapped]
-        public Priority Priority
-        {
-            get => PriorityValue == 1 ? Priority.Low :
-                   PriorityValue == 2 ? Priority.Medium : Priority.High;
-            set => PriorityValue = value.Level;
-        }
+        public int? KanbanColumeID { get; set; }
+        [ForeignKey("KanbanColumeID")]
+        public KanbanColume? KanbanColume { get; set; }
 
         public int PriorityValue { get; set; }
 
@@ -36,9 +33,30 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
+        
+        public int Order { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
         public ICollection<ProjectTask_User> ProjectTask_Users { get; set; }
+
+        [NotMapped]
+        public int RemainDate { 
+            get {
+                
+
+                // Lấy thời gian hiện tại
+                DateTime now = DateTime.Now;
+
+                // Tính số ngày còn lại đến ngày kết thúc
+                TimeSpan remainingTime = EndDate - now;
+
+                // Lấy số ngày còn lại dưới dạng số nguyên
+                int remainingDays = (int)Math.Ceiling(remainingTime.TotalDays);
+                return remainingDays;
+
+            } }
     }
+
+
 }
