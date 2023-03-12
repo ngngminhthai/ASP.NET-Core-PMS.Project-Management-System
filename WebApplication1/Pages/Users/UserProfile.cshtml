@@ -1,0 +1,41 @@
+﻿@page
+@model PMS.Pages.Users.UserProfileModel
+@{
+}
+<div class="main-content">
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                        <h5 class="card-title">User Profile</h5>
+                        <div class="form-group" style="
+                                    display: flex;
+                                    flex-direction: column;">
+                            <label for="profile-image">Profile Image</label>
+                                <input type="file" class="form-control-file" id="profile-image" name="file">
+                            <img style="height: 150px; width: 150px;" src="~/uploads/@Model.User.ImageProfile" class="img-fluid mt-3" alt="User Image">
+                        </div>
+                        <input hidden asp-for="@Model.User.Id" value="@Model.User.Id"/>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" asp-for="@Model.User.UserName" value="@Model.User.UserName">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" asp-for="@Model.User.Email" value="@Model.User.Email">
+                        </div>
+
+                        <div class="d-grid mt-20 w-20">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

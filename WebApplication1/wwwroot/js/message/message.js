@@ -4,28 +4,29 @@ $(document).ready(function () {
     var connection = new signalR.HubConnectionBuilder().withUrl("/signalrServer").build();
     connection.start();
 
+
     //render chat module components
 
-    function renderPage(conversationId) {
+    async function renderPage(conversationId) {
         if (conversationId != undefined) {
-            renderConversation(conversationId);
+            await renderConversation(conversationId);
             renderMessage(conversationId);
             groupId = conversationId;
         }
         else {
-            renderConversation(groupId);
+            await renderConversation(groupId);
             renderMessage(groupId);
         }
-       
+
     }
 
 
 
     renderPage();
 
-  
 
-    
+
+
 
     $('.btn-send').click(async function () {
         const textareaValue = $('#message').val();
@@ -118,7 +119,7 @@ $(document).ready(function () {
 
 
     const $messageBox = $('.message-box');
-   
+
 
     $messageBox.on('scroll', function () {
 
@@ -126,8 +127,8 @@ $(document).ready(function () {
         if ($messageBox.scrollTop() === 0) {
             console.log('Scrollbar is at the top');
             loadMessage(groupId);
-           
-            
+
+
         }
     });
 
@@ -199,18 +200,71 @@ $(document).ready(function () {
         });
     }
 
-   /* function addMessage(groupId) {
-        $.ajax({
-            type: 'GET',
-            url: '/Conversation/ConversationsOfUser',
-            data: {
-                id: currentUserId,
-            },
-            success: function (data, textStatus, jqXHR) {
-                console.log(data);
-                var tableContent = "";
-                $.each(data, function (index, c) {
-                    tableContent += `
+    /* function addMessage(groupId) {
+         $.ajax({
+             type: 'GET',
+             url: '/Conversation/ConversationsOfUser',
+             data: {
+                 id: currentUserId,
+             },
+             success: function (data, textStatus, jqXHR) {
+                 console.log(data);
+                 var tableContent = "";
+                 $.each(data, function (index, c) {
+                     tableContent += `
+                     
+                                    <li class="waves-effect waves-teal ${groupId == c.Id ? "active" : ""}"  data-id="${c.Id}">
+                                         <div class="left d-flex">
+                                             <div class="avatar">
+                                                 <img src="/images/avatar/message-2.png" alt="">
+                                                 <div class="pulse-css-1"></div>
+                                             </div>
+                                             <div class="content">
+                                                 <div class="username">
+                                                     <div class="name h6">
+                                                         ${c.Name}
+                                                     </div>
+                                                 </div>
+                                                 <div class="text">
+                                                     <p>${c.Description}</p>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                         
+                                         <!-- /.left -->
+ 
+                                         <div class="clearfix"></div>
+                                     </li>
+                                    
+                     `
+                 });
+                 $('.message-list').html(tableContent);
+                 var liElements = document.querySelectorAll("li.waves-effect");
+                 for (var i = 0; i < liElements.length; i++) {
+                     liElements[i].addEventListener("click", function () {
+                         var conversationId = this.getAttribute("data-id");
+                         renderPage(conversationId);
+                     });
+                 }
+             }
+         });
+     }*/
+
+
+    var conversationsResponse;
+    async function renderConversation(groupId) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: '/Conversation/ConversationsOfUser',
+                data: {
+                    id: currentUserId,
+                },
+                success: function (data, textStatus, jqXHR) {
+                    conversationsResponse = data;
+                    var tableContent = "";
+                    $.each(data, function (index, c) {
+                        tableContent += `
                     
                                    <li class="waves-effect waves-teal ${groupId == c.Id ? "active" : ""}"  data-id="${c.Id}">
                                         <div class="left d-flex">
@@ -236,68 +290,20 @@ $(document).ready(function () {
                                     </li>
                                    
                     `
-                });
-                $('.message-list').html(tableContent);
-                var liElements = document.querySelectorAll("li.waves-effect");
-                for (var i = 0; i < liElements.length; i++) {
-                    liElements[i].addEventListener("click", function () {
-                        var conversationId = this.getAttribute("data-id");
-                        renderPage(conversationId);
                     });
+                    $('.message-list').html(tableContent);
+                    var liElements = document.querySelectorAll("li.waves-effect");
+                    for (var i = 0; i < liElements.length; i++) {
+                        liElements[i].addEventListener("click", function () {
+                            var conversationId = this.getAttribute("data-id");
+                            renderPage(conversationId);
+                        });
+                    }
+                    resolve(data);
                 }
-            }
-        });
-    }*/
-
-    function renderConversation(groupId) {
-        $.ajax({
-            type: 'GET',
-            url: '/Conversation/ConversationsOfUser',
-            data: {
-                id: currentUserId,
-            },
-            success: function (data, textStatus, jqXHR) {
-                console.log(data);
-                var tableContent = "";
-                $.each(data, function (index, c) {
-                    tableContent += `
-                    
-                                   <li class="waves-effect waves-teal ${groupId == c.Id ? "active" : ""}"  data-id="${c.Id}">
-                                        <div class="left d-flex">
-                                            <div class="avatar">
-                                                <img src="/images/avatar/message-2.png" alt="">
-                                                <div class="pulse-css-1"></div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="username">
-                                                    <div class="name h6">
-                                                        ${c.Name}
-                                                    </div>
-                                                </div>
-                                                <div class="text">
-                                                    <p>${c.Description}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- /.left -->
-
-                                        <div class="clearfix"></div>
-                                    </li>
-                                   
-                    `
-                });
-                $('.message-list').html(tableContent);
-                var liElements = document.querySelectorAll("li.waves-effect");
-                for (var i = 0; i < liElements.length; i++) {
-                    liElements[i].addEventListener("click", function () {
-                        var conversationId = this.getAttribute("data-id");
-                        renderPage(conversationId);
-                    });
-                }
-            }
-        });
-    }
+            });
+        }
+    )};
 
     function renderMessage(conversationId) {
 
@@ -359,6 +365,12 @@ $(document).ready(function () {
                 if (scrollHeight > 0) {
                     messageBox.scrollTop = scrollHeight;
                 }
+                
+                let conversation = conversationsResponse.find(conversation => conversation.Id == conversationId);
+                $(".group-name").html(conversation.Name)
+                $(".group-description").html(conversation.Description)
+                $('a#CurrentConversation').attr('href', `/Conversations/Member?id=${conversation.Id}`);
+
             }
         });
     }

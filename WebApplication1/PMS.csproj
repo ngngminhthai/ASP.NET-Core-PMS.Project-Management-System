@@ -40,6 +40,7 @@
     <Folder Include="Pages\Admin\Functions\" />
     <Folder Include="Pages\Admin\Tickets\" />
     <Folder Include="Resources\Models\" />
+    <Folder Include="Views\Home\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\lib\bootstrap\" />

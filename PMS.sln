@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.DataEF", "PMS.DataEF\PM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Infrastructure", "PMS.Infrastructure\PMS.Infrastructure.csproj", "{E210EEB2-3FD2-45BB-8C5D-16AFF6D474F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{B6B5A1D3-9B66-4487-8356-8EBC2E14D101}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{B6B5A1D3-9B66-4487-8356-8EBC2E14D101}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

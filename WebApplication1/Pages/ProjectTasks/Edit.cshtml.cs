@@ -56,7 +56,7 @@ namespace PMS.Pages.ProjectTasks
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int[] dependenciesId)
         {
             if (!ModelState.IsValid)
             {

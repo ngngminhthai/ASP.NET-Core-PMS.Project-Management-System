@@ -1,0 +1,64 @@
+﻿@page
+@using WebApplication1.Data.Entities.ProjectAggregate
+@model PMS.Pages.ProjectRoles.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Project project = (Project)ViewData["Project"];
+}
+
+<div class="main-content">
+    <div class="box card-box" style="flex-direction: column">
+          @if(project != null){
+            <h2>Project's Roles</h2>
+            <p>
+                <a class="btn btn-primary" asp-page="Create">Create New</a>
+            </p>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProjectRole[0].Project)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProjectRole[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProjectRole[0].Description)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ProjectRole)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Project.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+          }else{
+              <h1>Project has no roles</h1>
+            <p>
+                <a asp-page="Create">Create New</a>
+            </p>
+          }
+
+    </div>
+  
+
+</div>

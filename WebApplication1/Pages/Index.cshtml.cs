@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using PMS.Application.Services.ProjectTasks;
+using PMS.Pages.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using WebApplication1.Data.Entities.ProjectAggregate;
 
 namespace PMS.Pages
 {
-    public class DashboardModel : PageModel
+    public class DashboardModel : BasePageModel
     {
         private readonly IProjectTask_UserService projectTask_UserService;
 

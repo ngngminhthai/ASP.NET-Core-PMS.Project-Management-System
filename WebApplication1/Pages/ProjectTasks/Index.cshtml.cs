@@ -1,25 +1,4 @@
-﻿using AutoMapper.QueryableExtensions;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
-using PMS.Application.CQRS.ProjectTasks;
-using PMS.Application.Implementations;
-using PMS.Application.Services;
-using PMS.Application.ViewModels;
-using PMS.Data.Entities;
-using PMS.DataEF.Repositories;
-using PMS.Pages.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApplication1.Data;
-using WebApplication1.Data.Entities.ProjectAggregate;
-using WebApplication1.RequestHelpers;
-
-namespace PMS.Pages.ProjectTasks
+﻿namespace PMS.Pages.ProjectTasks
 {
     public class IndexModel : BasePageModel
     {
@@ -34,7 +13,7 @@ namespace PMS.Pages.ProjectTasks
 
         public PaginationParams paginationParams { get; set; } = new PaginationParams();
 
-        
+
 
         public PagedList<ProjectTask> ProjectTask { get; set; }
 
@@ -50,13 +29,16 @@ namespace PMS.Pages.ProjectTasks
             paginationParams.PageSize = s;
             paginationParams.PageNumber = p;
             paginationParams.Total = ProjectTask.MetaData.TotalCount;
+
+
+
         }
 
 
-        public IActionResult OnPostCreate(string name, int ProjectId, DateTime StartDate, DateTime EndDate, int KanbanId ,int PriorityValue, int WorkingStatusValue, string Description)
+        public IActionResult OnPostCreate(string name, int ProjectId, DateTime StartDate, DateTime EndDate, int KanbanId, int PriorityValue, int WorkingStatusValue, string Description)
         {
 
-            int length = projectTaskService.Count(ProjectId) +1;
+            int length = projectTaskService.Count(ProjectId) + 1;
             var newTask = new ProjectTask
             {
                 Name = name,
@@ -77,17 +59,17 @@ namespace PMS.Pages.ProjectTasks
         }
         public IActionResult OnPostDelete(int projectTaskId, int id)
         {
-           
+
             projectTaskService.Delete(projectTaskId);
 
             return Redirect("../ProjectTasks?id=" + id);
 
-            
+
         }
         public PagedList<ProjectTask> GetAllWithPagination(int id, string keyword, int page, int pageSize)
         {
-            var query = _context.ProjectTasks.Include(p => p.KanbanColume ).Include(p => p.Project).Where(p => p.ProjectId == id);
-            return PagedList<ProjectTask>.ToPagedList(query , page, pageSize);
+            var query = _context.ProjectTasks.Include(p => p.KanbanColume).Include(p => p.Project).Where(p => p.ProjectId == id);
+            return PagedList<ProjectTask>.ToPagedList(query, page, pageSize);
         }
 
     }
