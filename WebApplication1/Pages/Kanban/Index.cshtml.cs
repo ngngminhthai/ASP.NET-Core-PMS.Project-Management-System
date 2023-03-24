@@ -67,5 +67,21 @@ namespace PMS.Pages.Kanban
 
             return Redirect("../Kanban?projectId=" + projectId);
         }
+        public IActionResult OnPostDelete(int columnId, int projectId)
+        {
+
+            var kanban = _context.kanbanColumes.Where(k => k.Id == columnId).FirstOrDefault();
+            var  projectTask = _context.ProjectTasks.Where(p => p.KanbanColumeID == columnId ).FirstOrDefault();
+            if(projectTask != null)
+            {
+                TempData["error"] = "cannot delete because it contain task";
+                return Redirect("../Kanban?projectId=" + projectId);
+            }
+            TempData["error"] = "ok";
+            _context.kanbanColumes.Remove(kanban);
+            _context.SaveChanges();
+
+            return Redirect("../Kanban?projectId=" + projectId);
+        }
     }
 }
