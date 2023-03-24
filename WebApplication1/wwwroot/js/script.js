@@ -89,7 +89,13 @@ $(window).on('load', function () {
     $('#loader-wrapper').delay(500).fadeOut('slow');
 });
 
+function myFunctionDelete(id) {
+    console.log(id)
+    const form = document.getElementById('delete_' + id);
 
+    console.log(form);
+    form.submit();
+}
 //$(document).ready(function () {
 
 
