@@ -1,0 +1,48 @@
+﻿@page
+@model PMS.Pages.Gantt.IndexModel
+
+@{
+    ViewData["Title"] = "Calendar";
+}
+@section Styles{
+    <link href="~/lib/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar/css/main.min.css" rel="stylesheet" />
+
+}
+    <div class="main-content">
+        <div class="row">
+            <div class="col-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div id="calendar" style="height: 300px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@section Scripts {
+
+    <script>
+        var tasks = [];
+
+        @foreach (var item in Model.ProjectTask)
+        {
+            var startDate = item.StartDate.ToString("yyyy-MM-dd");
+            var endDate = item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+
+            @:tasks.push({
+            @:title: '@item.Name',
+            @:start: '@startDate',
+            @:end: '@endDate'
+            @:});
+        }
+    </script>
+
+    <script src="~/lib/fullcalendar/js/main.min.js"></script>
+    <script src="~/js/pages/fullcalendar.js"></script>
+
+
+}
