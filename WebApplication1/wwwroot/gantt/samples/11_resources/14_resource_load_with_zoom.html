@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Resource load diagram with different zoom levels</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+
+	<script src="../common/resource_project_single_resource_diagram.js?v=8.0.0"></script>
+
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+
+	<style>
+		html, body {
+			padding: 0px;
+			margin: 0px;
+			height: 100%;
+		}
+
+		#gantt_here {
+				width:100%;
+				height: 800px;
+				height:calc(100vh - 52px);
+			}
+
+		.gantt_grid_scale .gantt_grid_head_cell,
+		.gantt_task .gantt_task_scale .gantt_scale_cell {
+			font-weight: bold;
+			font-size: 14px;
+			color: rgba(0, 0, 0, 0.7);
+		}
+
+		.resource_marker{
+			text-align: center;
+		}
+		.resource_marker div{
+			width: 28px;
+			height: 28px;
+			line-height: 29px;
+			display: inline-block;
+			border-radius: 15px;
+			color: #FFF;
+			margin: 3px;
+		}
+		.resource_marker.workday_ok div {
+			background: #51c185;
+		}
+
+		.resource_marker.workday_over div{
+			background: #ff8686;
+		}
+
+		.owner-label{
+			width: 20px;
+			height: 20px;
+			line-height: 20px;
+			font-size: 12px;
+			display: inline-block;
+			border: 1px solid #cccccc;
+			border-radius: 25px;
+			background: #e6e6e6;
+			color: #6f6f6f;
+			margin: 0 3px;
+			font-weight: bold;
+		}
+
+
+	</style>
+</head>
+<body>
+
+	<div class="gantt_control" >
+		<input type='button' id='default' onclick="toggleChart()" value="Toggle main Timeline">
+		<input type=button value="Zoom In" onclick="gantt.ext.zoom.zoomIn();">
+		<input type=button value="Zoom Out" onclick="gantt.ext.zoom.zoomOut();">		
+	</div>
+
+	<div id="gantt_here"></div>
+<script>
+
+	function toggleChart(){
+		gantt.config.show_chart = !gantt.config.show_chart;
+		gantt.render()
+	}
+
+	gantt.message({
+		text:"The values in the resource timeline are calculated depending on the zoom level. <br/>" +
+		"You can change the zoom level with and without the main timeline.",
+		expire: -1
+	});
+
+	var zoomConfig = {
+		levels: [
+			{
+				name: "day",
+				scale_height: 27,
+				min_column_width: 80,
+				scales: [
+					{ unit: "day", step: 1, format: "%d %M" }
+				]
+			},
+			{
+				name: "week",
+				scale_height: 50,
+				min_column_width: 50,
+				scales: [
+					{
+						unit: "week", step: 1, format: function (date) {
+							var dateToStr = gantt.date.date_to_str("%d %M");
+							var endDate = gantt.date.add(date, -6, "day");
+							var weekNum = gantt.date.date_to_str("%W")(date);
+							return "#" + weekNum + ", " + dateToStr(date) + " - " + dateToStr(endDate);
+						}
+					},
+					{ unit: "day", step: 1, format: "%j %D" }
+				]
+			},
+			{
+				name: "month",
+				scale_height: 50,
+				min_column_width: 120,
+				scales: [
+					{ unit: "month", format: "%F, %Y" },
+					{ unit: "week", format: "Week #%W" }
+				]
+			},
+			{
+				name: "quarter",
+				height: 50,
+				min_column_width: 90,
+				scales: [
+					{ unit: "month", step: 1, format: "%M" },
+					{
+						unit: "quarter", step: 1, format: function (date) {
+							var dateToStr = gantt.date.date_to_str("%M");
+							var endDate = gantt.date.add(gantt.date.add(date, 3, "month"), -1, "day");
+							return dateToStr(date) + " - " + dateToStr(endDate);
+						}
+					}
+				]
+			},
+			{
+				name: "year",
+				scale_height: 50,
+				min_column_width: 30,
+				scales: [
+					{ unit: "year", step: 1, format: "%Y" }
+				]
+			}
+		]
+	};
+
+	gantt.ext.zoom.init(zoomConfig);
+	gantt.ext.zoom.setLevel("week");
+
+	function zoomIn() {
+		gantt.ext.zoom.zoomIn();
+	}
+	function zoomOut() {
+		gantt.ext.zoom.zoomOut()
+	}
+
+
+	var resourceConfig = {
+		columns: [
+			{
+				name: "name", label: "Name", tree: true, template: function (resource) {
+					return resource.text;
+				}
+			},
+			{
+				name: "workload", label: "Workload", template: function (resource) {
+					var tasks;
+					var store = gantt.getDatastore(gantt.config.resource_store),
+						field = gantt.config.resource_property;
+
+					if (store.hasChild(resource.id)) {
+						tasks = gantt.getTaskBy(field, store.getChildren(resource.id));
+					} else {
+						tasks = gantt.getTaskBy(field, resource.id);
+					}
+
+					var totalDuration = 0;
+					for (var i = 0; i < tasks.length; i++) {
+						totalDuration += tasks[i].duration;
+					}
+
+					return (totalDuration || 0) * 8 + "h";
+				}
+			}
+		],
+	};
+
+	gantt.templates.resource_cell_class = function (start_date, end_date, resource, tasks) {
+		var css = [];
+		css.push("resource_marker");
+		if (tasks.length <= 1) {
+			css.push("workday_ok");
+		} else {
+			css.push("workday_over");
+		}
+		return css.join(" ");
+	};
+
+
+
+	gantt.templates.resource_cell_value = function (start_date, end_date, resource, tasks) {
+		var cell_duration = gantt.calculateDuration({ start_date: start_date, end_date: end_date });
+
+		var result = 0;
+		tasks.forEach(function (item) {
+			var assignments = gantt.getResourceAssignments(resource.id, item.id);
+			assignments.forEach(function (assignment) {
+				var task = gantt.getTask(assignment.task_id);
+				var hours_amount = 0;
+
+				if (+task.start_date <= +start_date && +task.end_date >= +end_date) {
+					hours_amount += cell_duration;
+				}
+				//the task is in the left part
+				else if (+task.start_date <= +start_date && +task.end_date >= +start_date && +task.end_date < +end_date) {
+					var left_duration = gantt.calculateDuration({ start_date: start_date, end_date: task.end_date });
+					hours_amount += left_duration;
+				}
+				//the task is in the right part
+				else if (+task.end_date >= +end_date && +task.start_date >= +start_date && +task.start_date < +end_date) {
+					var right_duration = gantt.calculateDuration({ start_date: task.start_date, end_date: end_date });
+					hours_amount += right_duration;
+				}
+				//the task is inside cell
+				else if (+task.start_date >= +start_date && +task.end_date <= +end_date) {
+					var task_duration = gantt.calculateDuration({ start_date: task.start_date, end_date: task.end_date });
+					hours_amount += task_duration;
+				}
+
+				result += assignment.value * hours_amount;
+			});
+		});
+
+		if (result % 1) {
+			result = Math.round(result * 10) / 10;
+		}
+		return "<div>" + result + "</div>";
+	};
+
+	gantt.config.columns = [
+		{ name: "text", tree: true, width: 320, resize: true },
+		{ name: "start_date", align: "center", width: 80, resize: true },
+		{
+			name: "resources", align: "center", width: 80, label: "Resources", resize: true,
+			template: function (task) {
+				if (task.type == gantt.config.types.project) {
+					return "";
+				}
+
+				var result = "";
+				var store = gantt.getDatastore("resource");
+				var assignments = task[gantt.config.resource_property];
+
+				if (!assignments || !assignments.length) {
+					return "";
+				}
+
+				if (assignments.length == 1) {
+					return store.getItem(assignments[0].resource_id).text.split(",")[0];
+				}
+
+				assignments.forEach(function (assignment) {
+					var resource = store.getItem(assignment.resource_id);
+					if (!resource)
+						return;
+					result += "<div class='owner-label' title='" + resource.text + "'>" + resource.text.substr(0, 1) + "</div>";
+
+				});
+
+				return result;
+			}
+		},
+		{ name: "duration", width: 60, align: "center", resize: true },
+		{ name: "add", width: 44 }
+	];
+
+
+
+	gantt.locale.labels.section_owner = "Owner";
+	gantt.config.lightbox.sections = [
+		{ name: "description", height: 38, map_to: "text", type: "textarea", focus: true },
+		{
+			name: "resources", type: "resources", map_to: "owner", options: gantt.serverList("people"), default_value: 8
+		},
+		{ name: "time", type: "duration", map_to: "auto" }
+	];
+
+	gantt.config.resource_store = "resource";
+	gantt.config.resource_property = "owner";
+	gantt.config.order_branch = true;
+	gantt.config.open_tree_initially = true;
+	gantt.config.layout = {
+		css: "gantt_container",
+		rows: [
+			{
+				cols: [
+					{ view: "grid", group: "grids", scrollY: "scrollVer" },
+					{ resizer: true, width: 1 },
+					{ view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer" },
+					{ view: "scrollbar", id: "scrollVer", group: "vertical" }
+				],
+				gravity: 2
+			},
+			{ resizer: true, width: 1 },
+			{
+				config: resourceConfig,
+				cols: [
+					{ view: "resourceGrid", group: "grids", width: 435, scrollY: "resourceVScroll" },
+					{ resizer: true, width: 1 },
+					{ view: "resourceTimeline", scrollX: "scrollHor", scrollY: "resourceVScroll" },
+					{ view: "scrollbar", id: "resourceVScroll", group: "vertical" }
+				],
+				gravity: 1
+			},
+			{ view: "scrollbar", id: "scrollHor" }
+		]
+	};
+
+	var resourcesStore = gantt.createDatastore({
+		name: gantt.config.resource_store,
+		type: "treeDatastore",
+		initItem: function (item) {
+			item.parent = item.parent || gantt.config.root_id;
+			item[gantt.config.resource_property] = item.parent;
+			item.open = true;
+			return item;
+		}
+	});
+
+	resourcesStore.attachEvent("onParse", function () {
+		var people = [];
+		resourcesStore.eachItem(function (res) {
+			if (!resourcesStore.hasChild(res.id)) {
+				var copy = gantt.copy(res);
+				copy.key = res.id;
+				copy.label = res.text;
+				people.push(copy);
+			}
+		});
+		gantt.updateCollection("people", people);
+	});
+
+	resourcesStore.parse([
+		{ id: 1, text: "QA", parent: null },
+		{ id: 2, text: "Development", parent: null },
+		{ id: 3, text: "Sales", parent: null },
+		{ id: 4, text: "Other", parent: null },
+		{ id: 5, text: "Unassigned", parent: 4 },
+		{ id: 6, text: "John", parent: 1 },
+		{ id: 7, text: "Mike", parent: 2 },
+		{ id: 8, text: "Anna", parent: 2 },
+		{ id: 9, text: "Bill", parent: 3 },
+		{ id: 10, text: "Floe", parent: 3 }
+	]);
+
+	gantt.init("gantt_here");
+	gantt.parse({
+		"data": [
+			{ "id": 1, "text": "Office itinerancy", "type": "project", "start_date": "02-04-2024 00:00", "duration": 17, "progress": 0.4, "owner": [{ "resource_id": "5", "value": 3 }], "parent": 0 },
+			{ "id": 2, "text": "Office facing", "type": "project", "start_date": "02-04-2024 00:00", "duration": 8, "progress": 0.6, "owner": [{ "resource_id": "5", "value": 4 }], "parent": "1" },
+			{ "id": 3, "text": "Furniture installation", "type": "project", "start_date": "11-04-2024 00:00", "duration": 8, "parent": "1", "progress": 0.6, "owner": [{ "resource_id": "5", "value": 2 }] },
+			{ "id": 4, "text": "The employee relocation", "type": "project", "start_date": "13-04-2024 00:00", "duration": 5, "parent": "1", "progress": 0.5, "owner": [{ "resource_id": "5", "value": 4 }], "priority": 3 },
+			{ "id": 5, "text": "Interior office", "type": "task", "start_date": "03-04-2024 00:00", "duration": 7, "parent": "2", "progress": 0.6, "owner": [{ "resource_id": "6", "value": 5 }], "priority": 1 },
+			{ "id": 6, "text": "Air conditioners check", "type": "task", "start_date": "03-04-2024 00:00", "duration": 7, "parent": "2", "progress": 0.6, "owner": [{ "resource_id": "7", "value": 1 }], "priority": 2 },
+			{ "id": 7, "text": "Workplaces preparation", "type": "task", "start_date": "12-04-2024 00:00", "duration": 8, "parent": "3", "progress": 0.6, "owner": [{ "resource_id": "10", "value": 2 }] },
+			{ "id": 8, "text": "Preparing workplaces", "type": "task", "start_date": "14-04-2024 00:00", "duration": 5, "parent": "4", "progress": 0.5, "owner": [{ "resource_id": "10", "value": 4 }, { "resource_id": "9", "value": 5 }], "priority": 1 },
+			{ "id": 9, "text": "Workplaces importation", "type": "task", "start_date": "21-04-2024 00:00", "duration": 4, "parent": "4", "progress": 0.5, "owner": [{ "resource_id": "7", "value": 3 }] },
+			{ "id": 10, "text": "Workplaces exportation", "type": "task", "start_date": "27-04-2024 00:00", "duration": 3, "parent": "4", "progress": 0.5, "owner": [{ "resource_id": "8", "value": 5 }], "priority": 2 },
+			{ "id": 11, "text": "Product launch", "type": "project", "progress": 0.6, "start_date": "02-04-2024 00:00", "duration": 13, "owner": [{ "resource_id": "5", "value": 4 }], "parent": 0 },
+			{ "id": 12, "text": "Perform Initial testing", "type": "task", "start_date": "03-04-2024 00:00", "duration": 5, "parent": "11", "progress": 1, "owner": [{ "resource_id": "7", "value": 6 }] },
+			{ "id": 13, "text": "Development", "type": "project", "start_date": "03-04-2024 00:00", "duration": 11, "parent": "11", "progress": 0.5, "owner": [{ "resource_id": "5", "value": 2 }] },
+			{ "id": 14, "text": "Analysis", "type": "task", "start_date": "03-04-2024 00:00", "duration": 6, "parent": "11", "owner": [], "progress": 0.8 },
+			{ "id": 15, "text": "Design", "type": "project", "start_date": "03-04-2024 00:00", "duration": 5, "parent": "11", "progress": 0.2, "owner": [{ "resource_id": "5", "value": 5 }] },
+			{ "id": 16, "text": "Documentation creation", "type": "task", "start_date": "03-04-2024 00:00", "duration": 7, "parent": "11", "progress": 0, "owner": [{ "resource_id": "7", "value": 2 }], "priority": 1 },
+			{ "id": 17, "text": "Develop System", "type": "task", "start_date": "03-04-2024 00:00", "duration": 2, "parent": "13", "progress": 1, "owner": [{ "resource_id": "8", "value": 1 }], "priority": 2 },
+			{ "id": 25, "text": "Beta Release", "type": "milestone", "start_date": "06-04-2024 00:00", "parent": "13", "progress": 0, "owner": [{ "resource_id": "5", "value": 1 }], "duration": 0 },
+			{ "id": 18, "text": "Integrate System", "type": "task", "start_date": "10-04-2024 00:00", "duration": 2, "parent": "13", "progress": 0.8, "owner": [{ "resource_id": "6", "value": 2 }], "priority": 3 },
+			{ "id": 19, "text": "Test", "type": "task", "start_date": "13-04-2024 00:00", "duration": 4, "parent": "13", "progress": 0.2, "owner": [{ "resource_id": "6", "value": 3 }] },
+			{ "id": 20, "text": "Marketing", "type": "task", "start_date": "13-04-2024 00:00", "duration": 4, "parent": "13", "progress": 0, "owner": [{ "resource_id": "8", "value": 4 }], "priority": 1 },
+			{ "id": 21, "text": "Design database", "type": "task", "start_date": "03-04-2024 00:00", "duration": 4, "parent": "15", "progress": 0.5, "owner": [{ "resource_id": "6", "value": 5 }] },
+			{ "id": 22, "text": "Software design", "type": "task", "start_date": "03-04-2024 00:00", "duration": 4, "parent": "15", "progress": 0.1, "owner": [{ "resource_id": "8", "value": 3 }], "priority": 1 },
+			{ "id": 23, "text": "Interface setup", "type": "task", "start_date": "03-04-2024 00:00", "duration": 5, "parent": "15", "progress": 0, "owner": [{ "resource_id": "8", "value": 5 }], "priority": 1 },
+			{ "id": 24, "text": "Release v1.0", "type": "milestone", "start_date": "20-04-2024 00:00", "parent": "11", "progress": 0, "owner": [{ "resource_id": "5", "value": 3 }], "duration": 0 }
+		],
+		"links": [
+			{ "id": "2", "source": "2", "target": "3", "type": "0" },
+			{ "id": "3", "source": "3", "target": "4", "type": "0" },
+			{ "id": "7", "source": "8", "target": "9", "type": "0" },
+			{ "id": "8", "source": "9", "target": "10", "type": "0" },
+			{ "id": "16", "source": "17", "target": "25", "type": "0" },
+			{ "id": "17", "source": "18", "target": "19", "type": "0" },
+			{ "id": "18", "source": "19", "target": "20", "type": "0" },
+			{ "id": "22", "source": "13", "target": "24", "type": "0" },
+			{ "id": "23", "source": "25", "target": "18", "type": "0" }
+		]
+	});
+
+</script>
+</body>

@@ -1,0 +1,35 @@
+﻿@page
+@model PMS.Pages.Gantt.ProjectGanttModel
+@{
+	Layout = null;
+
+}
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Basic initialization</title>
+	<script src="~/gantt/codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link href="~/gantt/codebase/dhtmlxgantt.css?v=8.0.0" rel="stylesheet" />
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+	<div id="gantt_here" style='width:100%; height:100%;'></div>
+	<script>
+
+		gantt.init("gantt_here");
+
+		gantt.parse({
+			data: [
+				{ id: 2, text: "Task #1", start_date: "02-04-2023", duration: 8 },
+				{ id: 3, text: "Task #2", start_date: "11-04-2023", duration: 8 }
+			]
+		});
+	</script>
+</body>

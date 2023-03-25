@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Import Excel file</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+
+	<script src="../common/snippets/dhx_file_dnd.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../common/snippets/dhx_file_dnd.css?v=8.0.0">
+
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			overflow: hidden;
+			font-family: Arial;
+		}
+
+		.xlsx-sample {
+			background: url("common/excel.png");
+			width: 32px;
+			height: 32px;
+			background-repeat: no-repeat;
+			padding-left: 40px;
+			line-height: 32px;
+			display: inline-block;
+			background-size: 32px;
+		}
+
+		.gantt-excel-form{
+			width:800px;
+		}
+
+		.gantt-excel-form table{
+			width:740px;
+			text-align: left;
+			border-collapse: collapse;
+		}
+
+		.gantt-excel-form .dhtmlx_popup_text{
+			max-height: 600px;
+			overflow: auto;
+		}
+
+		.gantt-excel-form table th{
+			text-align: center
+		}
+		.gantt-excel-form table td{
+			border:1px solid #aeaeae;
+			padding:5px;
+		}
+
+		.gantt-excel-form table td select{
+			width:100%;
+			padding:5px;
+		}
+		#excelFile{
+			border: none;
+			background: #ededed;
+		}
+	</style>
+</head>
+
+<body>
+<div class="gantt_control" style="text-align: center; padding: 5px;">
+	<p>
+		You can use any XLSX file or download this sample <a class="xlsx-sample"
+																		   href="../common/DemoProject.xlsx"
+																		   target="_blank">DemoProject.xlsx</a>
+	</p>
+	<p>
+	<form id="excelImport" action="" method="POST" enctype="multipart/form-data">
+		<input type="file" id="excelFile" name="file"
+			   accept=".xlsx,.xls"/>
+		<button id="excelImportBtn" type="submit">Load from Excel</button>
+	</form>
+	</p>
+</div>
+<div id="gantt_here" style='width:100%; height:calc(100vh - 121px);'></div>
+<script>
+
+	gantt.plugins({
+		export_api: true,
+	});
+
+	gantt.config.row_height = 24;
+	gantt.config.auto_types = true;
+	gantt.config.date_format = "%Y-%m-%d %H:%i";
+
+	gantt.message("Upload <b>Excel</b> file using 'Choose File' button or simply drag-and-drop it into the page");
+
+	if (!window.FormData) {
+		gantt.message({type:"error", text: "Your browsers does not support Ajax File upload, please open this demo in a modern browser"});
+	}
+
+	gantt.config.static_background = true;
+
+	gantt.config.date_format = "%Y-%m-%d %H:%i";
+	gantt.init("gantt_here");
+
+	var fileDnD = fileDragAndDrop();
+	fileDnD.fileTypeMessage = "Only XLSX or XLS files are supported!";
+	fileDnD.dndFileTypeMessage = "Please try XLSX or XLS project file.";
+	fileDnD.dndHint = "Drop Excel file into Gantt";
+	fileDnD.mode = "excel";
+	fileDnD.init(gantt.$container);
+
+	function sendFile(file) {
+		fileDnD.showUpload();
+		upload(file, function () {
+			fileDnD.hideOverlay();
+		})
+	}
+
+	function to_snake_case(name){
+		return (name + "").toLowerCase().replace(/ /, "_");
+	}
+	function loadTable(mapping, data){
+		var ganttDataset = {
+			data:[],
+			links: []
+		};
+
+		data.forEach(function(item){
+			var copy = {};
+			for(var i in item){
+				if(mapping[i]){
+					copy[mapping[i]] = item[i];
+				}else{
+					copy[to_snake_case(i)] = item[i];
+				}
+
+				copy.open = true;
+				if(copy.wbs){
+					var wbs = copy.wbs + "";
+					copy.id = wbs;
+					var parts = wbs.split(".");
+					parts.pop();
+					copy.parent = parts.join(".");
+				}
+			}
+			ganttDataset.data.push(copy);
+		});
+
+		gantt.clearAll();
+		gantt.parse(ganttDataset);
+
+	}
+
+	function getOptions(selectedIndex){
+		return [
+			"wbs", "text", "start_date", "duration", "end_date", "id", "parent"
+		].map(function(name, index){
+			return "<option value='"+name+"' "+(selectedIndex == index ? "selected":"")+">" + name +"</option>";
+		}).join("");
+	}
+
+	function upload(file, callback) {
+		gantt.importFromExcel({
+			server:"https://export.dhtmlx.com/gantt",
+			data: file,
+			callback: function (project) {
+				if (project) {
+
+					var header = [];
+					var headerControls = [];
+					var body = [];
+
+					project.forEach(function(task){
+						var cols = [];
+						if(!header.length){
+							for(var i in task){
+								header.push(i);
+							}
+							header.forEach(function(col, index){
+								cols.push("<th>" + col + "</th>");
+								headerControls.push("<td><select data-column-mapping='"+col+"'>"+getOptions(index)+"</select>")
+							});
+							body.push("<tr>" + cols.join("") +  "</tr>");
+							body.push("<tr>" + headerControls.join("") +  "</tr>");
+						}
+						cols = [];
+						header.forEach(function(col){
+							cols.push("<td>" + task[col] + "</td>");
+						});
+						body.push("<tr>" + cols.join("") +  "</tr>");
+					});
+
+
+					var div = gantt.modalbox({
+						title:"Assign columns",
+						type:"excel-form",
+						text: "<table>" + body.join("") + "</table>",
+						buttons: [
+							{ label:"Save",   css:"link_save_btn",   value:"save" },
+							{ label:"Cancel", css:"link_cancel_btn", value:"cancel" }
+						],
+						callback: function(result){
+							switch(result){
+								case "save":
+									var selects = div.querySelectorAll("[data-column-mapping]");
+									var mapping = {};
+									selects.forEach(function(select){
+										mapping[select.getAttribute("data-column-mapping")] = select.value;
+									});
+									loadTable(mapping, project);
+									break;
+								case "cancel":
+									//Cancel
+									break;
+							}
+						}
+					});
+
+
+
+				}
+
+				if (callback)
+					callback(project);
+			}
+		});
+	}
+
+	fileDnD.onDrop(sendFile);
+	var form = document.getElementById("excelImport");
+	form.onsubmit = function (event) {
+		event.preventDefault();
+		var fileInput = document.getElementById("excelFile");
+		if (fileInput.files[0])
+			sendFile(fileInput.files[0]);
+	};
+</script>
+</body>

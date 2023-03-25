@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Full Screen with additional elements</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+	<style>
+		html, body {
+			height: 100%;
+			width: 100%;
+			padding: 0px;
+			margin: 0px;
+		}
+		#myCover {
+			width:700px;
+			height:600px;
+		}
+		#toggleBtn {
+			max-height: 30px;
+		}
+		#gantt_here {
+			height: calc(100% - 52px);
+		}
+	</style>
+</head>
+<body>
+	<div id="myCover">
+		<div class="gantt_control">
+			<button id="toggle_fullscreen" onclick="gantt.ext.fullscreen.toggle();">toggle fullscreen</button>
+		</div>
+		<div id="gantt_here"></div>
+	</div>
+	<script>
+		gantt.plugins({
+			fullscreen: true
+		});
+		gantt.ext.fullscreen.getFullscreenElement = function() {
+			return document.getElementById("myCover");
+		}
+		gantt.init("gantt_here");
+
+		gantt.parse(demo_tasks);
+	</script>
+</body>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Inline editing - Custom keyboard mapping</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/skins/dhtmlxgantt_terrace.css?v=8.0.0">
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+
+	</style>
+</head>
+
+<body>
+<div id="gantt_here" style='width:100%; height:100%;'></div>
+<script>
+
+	var textEditor = {type: "text", map_to: "text"};
+	var dateEditor = {type: "date", map_to: "start_date", min: new Date(2023, 0, 1), max: new Date(2024, 0, 1)};
+	var durationEditor = {type: "number", map_to: "duration", min:0, max: 100};
+
+	gantt.config.columns = [
+		{name: "text", tree: true, width: '*', resize: true, editor: textEditor},
+		{name: "start_date", align: "center", resize: true, editor: dateEditor},
+		{name: "duration", align: "center", editor: durationEditor},
+		{name: "add", width: 44}
+	];
+
+	var mapping = {
+		init: function(inlineEditors){
+			gantt.attachEvent("onTaskDblClick", function (id, e) {
+				var cell = inlineEditors.locateCell(e.target);
+				if (cell && inlineEditors.getEditorConfig(cell.columnName)) {
+					inlineEditors.startEdit(cell.id, cell.columnName);
+					return false;
+				}
+				return true;
+			});
+			gantt.attachEvent("onEmptyClick", function () {
+				inlineEditors.hide();
+				return true;
+			});
+		},
+
+		onShow: function(inlineEditors, node){
+
+			node.onkeydown = function (e) {
+				e = e || window.event;
+				if(e.defaultPrevented){
+					return;
+				}
+
+				var keyboard = gantt.constants.KEY_CODES;
+
+				var shouldPrevent = true;
+				switch (e.keyCode) {
+					case gantt.keys.edit_save:
+						inlineEditors.save();
+						break;
+					case gantt.keys.edit_cancel:
+						inlineEditors.hide();
+						break;
+					case keyboard.TAB:
+						if(e.shiftKey){
+							inlineEditors.editPrevCell(true);
+						}else{
+							inlineEditors.editNextCell(true);
+						}
+						break;
+					default:
+						shouldPrevent = false;
+						break;
+				}
+
+				if(shouldPrevent){
+					e.preventDefault();
+				}
+			};
+		},
+
+		onHide: function(inlineEditors, node){}
+	};
+
+	gantt.ext.inlineEditors.setMapping(mapping);
+
+	gantt.init("gantt_here");
+	gantt.parse(demo_tasks);
+
+</script>
+</body>

@@ -1,0 +1,352 @@
+<!doctype html>
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet" />
+
+		<link rel="stylesheet" type="text/css" href="../common/docs.css">
+		<link rel="stylesheet" type="text/css" href="../common/codehighlight/codemirror.css">
+		<script src="../common/codehighlight/codemirror.js"></script>
+		<script src="../common/codehighlight/xml.js"></script>
+		<script src="../common/codehighlight/htmlmixed.js"></script>
+		<script src="../common/codehighlight/javascript.js"></script>
+		<script src="../common/sample_sources.js"></script>
+		<script src="../common/bodyScrollLock.min.js"></script>
+		<script src="../common/sample_navigation.js"></script>
+		<style class="custom_styles"></style>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="initial-scale = 1.0" />
+		<title>Gantt : Samples</title>
+		
+	</head>
+<body>
+	
+	<div class="page-header">
+		<div class='page-header__inside'>
+			<a href='//dhtmlx.com' title="DHTMLX - JavaScript Web App Framework & UI Widgets" class="dhx-logo" target="_blank">
+				<svg viewBox="0 0 82 50" class="dhx-logo-icon desktop">
+					<path fill-rule="evenodd" class="dhx-logo-icon line" d="M71.1 36L64.5 23.6L57.9 36H48L59 17.9L48 1H57.9L64.5 11.2L71.1 1H81L68.9 17.9L81 36H71.1ZM1 41V39H81V41H1ZM47 36L55 23.6V13L47 1V13.4H36V1H27V4.8C28.6 6.1 30 7.7 31 9.7C32.3 12.2 33 15.1 33 18.5C33 21.8 32.3 24.7 30.9 27.3C29.8 29.2 28.5 30.8 27 32.1V36H36V21.3H47V36ZM32 18.5C32 21.8 31.3 24.7 29.9 27.3C28.5 29.9 26.7 31.9 24.5 33.2C22.7 34.4 20.7 35.1 18.6 35.5C16.5 35.8 14.2 36 11.8 36H1V1H11.8C14.2 1 16.5 1.2 18.7 1.5C20.8 1.8 22.8 2.6 24.7 3.8C27 5.3 28.8 7.3 30.1 9.8C31.3 12.2 32 15.2 32 18.5ZM18.6 8.8C20.2 9.7 21.4 11 22.2 12.6C23 14.2 23.4 16.2 23.5 18.4C23.5 20.8 23.1 22.7 22.4 24.3C21.6 25.9 20.5 27.2 19.1 28.1C17.9 28.9 16.6 29.3 15.3 29.4C13.9 29.5 12.3 29.5 10.3 29.5H10.1V7.6H10.3C12.1 7.6 13.6 7.6 14.9 7.7C16.2 7.8 17.4 8.1 18.6 8.8ZM5 44V45H3V48H5V49H2V44H5ZM5 48V45H6V48H5ZM20 46H18V44H17V49H18V47H20V49H21V44H20V46ZM36 44V45H34V49H33V45H31V44H36ZM48 45H47V44H46V49H47V46H48V47H49V46H50V49H51V44H50V45H49V46H48V45ZM61 44H62V48H65V49H61V44ZM77 45H76V44H75V45H76V46H77V47H76V48H75V49H76V48H77V47H78V48H79V49H80V48H79V47H78V46H79V45H80V44H79V45H78V46H77V45Z"></path>
+				</svg>
+
+				<svg viewBox="0 0 40 23" class="dhx-logo-icon mobile">
+					<path fill-rule="evenodd" class="dhx-logo-icon line" d="m34.612 16.655-3.265-5.869-3.265 5.87h-4.817l5.388-8.646L23.265 0h4.817l3.265 4.838L34.612 0h4.816L33.47 8.01l5.96 8.645h-4.817ZM.245 19.035v-.952h39.184v.952H.245Zm22.53-2.38 3.919-5.869V5.71L22.776 0v5.869h-5.388V0H12.98v1.824c.816.635 1.469 1.348 1.959 2.3.653 1.19.98 2.538.98 4.204 0 1.586-.327 2.934-1.062 4.203-.571.872-1.143 1.666-1.877 2.3v1.824h4.408v-6.98h5.387v6.98ZM15.43 8.328c0 1.586-.327 2.934-1.062 4.203-.734 1.269-1.55 2.22-2.612 2.776-.898.555-1.877.872-2.857 1.11a22.896 22.896 0 0 1-3.347.238H.245V0H5.55c1.143 0 2.286.08 3.347.238 1.061.159 2.04.555 2.939 1.11 1.143.714 2.04 1.666 2.612 2.855.653 1.11.98 2.538.98 4.125Zm-6.531-4.6c.735.396 1.306 1.03 1.714 1.824.408.793.572 1.745.653 2.776 0 1.11-.163 2.062-.571 2.775-.408.794-.898 1.349-1.633 1.825-.571.317-1.143.555-1.796.555-.653.08-1.47.08-2.449.08h-.081V3.172H7.02a5.64 5.64 0 0 1 1.878.555ZM2.204 20.462v.476h-.98v1.428h.98v.475H.734v-2.379h1.47Zm0 1.904v-1.428h.49v1.428h-.49Zm7.347-.952h-.98v-.952h-.49v2.38h.49v-.952h.98v.951h.49v-2.379h-.49v.952Zm7.837-.952v.476h-.98v1.903h-.49v-1.903h-.98v-.476h2.45Zm5.877.476h-.49v-.476h-.49v2.38h.49v-1.428h.49v.476h.49v-.476h.49v1.427h.49v-2.379h-.49v.476h-.49v.476h-.49v-.476Zm6.368-.476h.49v1.904h1.469v.475h-1.96v-2.379Zm7.836.476h-.49v-.476h-.49v.476h.49v.476h.49v-.476Zm-.49 1.428v-.476h.49v-.476h.49v.476h-.49v.476h-.49Zm0 0v.475h-.49v-.476h.49Zm1.47 0v-.476h-.49v.476h.49Zm0 0v.475h.49v-.476h-.49Zm-.49-.952h.49v-.476h-.49v.476Zm.98-.476v-.476h-.49v.476h.49Z"></path>
+				</svg>
+			</a>
+
+			<div class="toggle-list-title mobile" onclick="toggle_list()">Gantt Samples</div>
+
+			<div class="toggle-list-btn mobile" onclick="toggle_list()">
+				<div class="toggle-list-btn__row"></div>
+				<div class="toggle-list-btn__row"></div>
+				<div class="toggle-list-btn__row"></div>
+			</div>
+
+			<ul class="site-menu m-dropdown desktop">
+				<li class="menu-link-block">
+					<a href="//docs.dhtmlx.com/gantt/" title="" class="menu-link" target="_blank">Documentation</a>
+				</li>
+
+				<li class="menu-link-block">
+					<a href="//docs.dhtmlx.com/gantt/api__refs__gantt.html" title="" class="menu-link" target="_blank">Gantt API</a>
+				</li>
+
+				<li class="menu-link-block">
+					<a href="//forum.dhtmlx.com/c/gantt" title="" class="menu-link" target="_blank">Developer forum</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="page-body">
+		<div class="page-aside" id="page-aside" onclick="toggle_mobile_menu(event);">
+			<div class="page-aside__container">
+				<div class="close-page-aside" onclick="toggle_list()"></div>
+
+				<div class="page-aside__inside">
+					<!-- main burger -->
+					<div class="page-aside__head desktop">
+						<div class="toggle-list-btn" onclick="toggle_list()">
+							<div class="toggle-list-btn__row"></div>
+							<div class="toggle-list-btn__row"></div>
+							<div class="toggle-list-btn__row"></div>
+						</div>
+
+						<div class="page-aside__head-title" onclick="toggle_list()">DHTMLX Gantt Samples</div>
+					</div>
+
+					<ul class="mobile-site-menu">
+						<li class="mobile-site-menu__row">
+							<a href="//docs.dhtmlx.com/gantt/" title="" class="mobile-menu-link" target="_blank">Documentation</a>
+						</li>
+
+						<li class="mobile-site-menu__row">
+							<a href="//docs.dhtmlx.com/gantt/api__refs__gantt.html" title="" class="mobile-menu-link" target="_blank">Gantt API</a>
+						</li>
+
+						<li class="mobile-site-menu__row">
+							<a href="//forum.dhtmlx.com/c/gantt" title="" class="mobile-menu-link" target="_blank">Developer forum</a>
+						</li>
+					</ul>
+
+					<!-- search -->
+					<div class="search_wrapper-container">
+						<div class="search_wrapper">
+							<div class="search-elem">
+								<span class="search-elem__icon">
+									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M11.5088 11.509L14.7789 14.7791L11.5088 11.509C9.15535 13.8625 5.33959 13.8625 2.98615 11.509C0.632628 9.15553 0.632628 5.33977 2.98615 2.98633C5.33959 0.632811 9.15535 0.632811 11.5088 2.98633C13.8623 5.33977 13.8623 9.15553 11.5088 11.509V11.509Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+									</svg>
+								</span>
+
+								<input type="search" class="search-field" placeholder="Find samples" oninput="filterSamples(this.value)" />
+							</div>
+
+							<span class="no_results">No results</span>
+						</div>
+					</div>
+
+					<!-- demos navigation -->
+					<svg class="svg" xmlns="http://www.w3.org/2000/svg">
+						<symbol viewBox="0 0 8 12" id="arrow">
+							<path d="M0.589966 10.58L5.16997 6L0.589966 1.41L1.99997 0L7.99997 6L1.99997 12L0.589966 10.58Z"></path>
+						</symbol>
+					</svg>
+
+					<div class="aside-nav links">
+						<div data-level=1 data-folder='10_layout' id=01_rightside_columns.html class="link">Grid columns rightside of gantt</div>
+<div data-level=1 data-folder='10_layout' id=02_resource_panel.html class="link">Gantt chart with resource panel</div>
+<div data-level=1 data-folder='10_layout' id=03_scale_at_bottom.html class="link">Time scale at the bottom of gantt</div>
+<div data-level=1 data-folder='10_layout' id=04_rtl.html class="link">Right to left gantt</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="page-container">
+			<div class="demo-container">
+				<div class="demo-container__nav">
+					<span class="demo-container__nav-btn desktop show_demo" onclick="toggle_demo('demo')">Demo</span>
+
+					<span class="demo-container__nav-btn desktop show_code" onclick="toggle_demo('code')">Source code</span>
+
+					<span class="demo-container__nav-btn desktop show_api" onclick="toggle_demo('api')">API reference</span>
+
+					<span class="demo-container__nav-btn desktop share" onclick="shareSample()">Share</span>
+
+					<div class="demo-container__nav-dropdown mobile">
+						<div class="demo-container__nav-dropdown-chosen" onclick="navDropdown();">
+							<div class="demo-container__nav-dropdown-chosen-label" id="nav-dropdown-chosen">Demo</div>
+
+							<div class="demo-container__nav-dropdown-arrow">
+								<svg class="arrow-icon" viewBox="0 0 8 12">
+									<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow" class="arrow-icon line"></use>
+								</svg>
+							</div>
+						</div>
+
+						<div class="demo-container__nav-dropdown-list" id="nav-dropdown-list">
+							<div class="demo-container__nav-dropdown-row">
+								<span class="demo-container__nav-btn show_demo" onclick="toggle_demo('demo'); toggle_dropdown(event);">Demo</span>
+							</div>
+
+							<div class="demo-container__nav-dropdown-row">
+								<span class="demo-container__nav-btn show_code" onclick="toggle_demo('code'); toggle_dropdown(event);">Source code</span>
+							</div>
+
+							<div class="demo-container__nav-dropdown-row">
+								<span class="demo-container__nav-btn show_api" onclick="toggle_demo('api'); toggle_dropdown(event);">API reference</span>
+							</div>
+
+							<div class="demo-container__nav-dropdown-row">
+								<span class="demo-container__nav-btn share" onclick="shareSample(); navDropdown();">Share</span>
+							</div>
+						</div>
+					</div>
+
+					<a href="01_initialization/01_basic_init.html" title="Open the sample in a separate tab" id="current_sample" class="demo-container__nav-btn show_sample" target="_blank">Open sample</a>
+				</div>
+
+				<div class="demo-body demo">
+					<iframe id="x6" class="preview_frame" frameborder="0"
+							src="">
+					</iframe>
+					<div id="source_code">
+					</div>
+					<div class="api-container" id=api_reference>
+						<div class="api-container__inside">
+							<h3>Google suggestions
+								<div class=suggestions>
+								</div>
+							</h3>
+							<h3>Files
+								<div class=files>
+								</div>
+							</h3>
+							<h3>Methods
+								<div class=methods>
+								</div>
+							</h3>
+							<h3>Properties
+								<div class=properties>
+								</div>
+							</h3>
+							<h3>Events
+								<div class=events>
+								</div>
+							</h3>
+							<h3>Templates
+								<div class=templates>
+								</div>
+							</h3>
+							<h3>Other
+								<div class=other>
+								</div>
+							</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer class="footer">
+		<div class="dhx-container">
+			<div class="footer-nav">
+				<div class="footer-nav__col">
+					<div class="footer-nav__title">
+						<span class="footer-title-link">Development center</span>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/docs/download.shtml" title="" class="footer-link" target="_blank">Download</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/docs/products/docsExplorer/samples.shtml" title="" class="footer-link" target="_blank">Code Examples</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/docs/products/demoApps/" title="" class="footer-link" target="_blank">Demos</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//forum.dhtmlx.com/" title="" class="footer-link" target="_blank">Forum</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/docs/technical-support.shtml" title="" class="footer-link" target="_blank">Technical Support</a>
+					</div>
+				</div>
+
+				<div class="footer-nav__col">
+					<div class="footer-nav__title">
+						<span class="footer-title-link">Community</span>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//github.com/DHTMLX" title="" class="footer-link" target="_blank">GitHub</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//www.youtube.com/user/dhtmlx" title="" class="footer-link" target="_blank">YouTube</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//www.facebook.com/dhtmlx" title="" class="footer-link" target="_blank">Facebook</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//twitter.com/dhtmlx" title="" class="footer-link" target="_blank">Twitter</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//www.linkedin.com/groups/3345009/" title="" class="footer-link" target="_blank">LinkedIn</a>
+					</div>
+				</div>
+
+				<div class="footer-nav__col">
+					<div class="footer-nav__title">
+						<span class="footer-title-link">Company</span>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/docs/company.shtml" title="" class="footer-link" target="_blank">About us</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/docs/contact.shtml" title="" class="footer-link" target="_blank">Contact us</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/docs/products/licenses.shtml" title="" class="footer-link" target="_blank">Licensing</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/blog/" title="" class="footer-link" target="_blank">Blog</a>
+					</div>
+
+					<div class="footer-nav__row">
+						<a href="//dhtmlx.com/clients/" title="" class="footer-link" target="_blank">Client's Area</a>
+					</div>
+				</div>
+
+				<div class="footer-nav__col">
+					<div class="footer-nav__title">
+						<span class="footer-title-link">DHTMLX Components</span>
+					</div>
+
+					<div class="footer-nav__sub-cols">
+						<div class="footer-nav__sub-col">
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/gantt/index.html" title="" class="footer-link">Gantt</a>
+							</div>
+
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/scheduler/index.html" title="" class="footer-link">Scheduler</a>
+							</div>
+
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/diagram/index.html" title="" class="footer-link">Diagram</a>
+							</div>
+
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/suite/" title="" class="footer-link">Suite 7</a>
+							</div>
+
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/spreadsheet/index.html" title="" class="footer-link">Spreadsheet</a>
+							</div>
+						</div>
+
+						<div class="footer-nav__sub-col">
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/pivot/index.html" title="" class="footer-link">Pivot</a>
+							</div>
+
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/richtext/index.html" title="" class="footer-link">RichText</a>
+							</div>
+
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/vault/index.html" title="" class="footer-link">Vault</a>
+							</div>
+
+							<div class="footer-nav__row">
+								<a href="//docs.dhtmlx.com/suite5.html" title="" class="footer-link">Suite 5</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="copyrights">Copyright © 2023 XB Software Ltd.</div>
+		</div>
+	</footer>
+</body>
+<script>
+	document.addEventListener("DOMContentLoaded", function(event) {
+		loadSampleFromParams()
+  });
+
+
+</script>
+</html>

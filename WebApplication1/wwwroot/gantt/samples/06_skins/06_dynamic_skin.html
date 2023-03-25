@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Change skin dynamically</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link id="skin" rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+	</style>
+	<script>
+		function changeSkin(name) {
+			var link = document.createElement("link");
+
+			link.onload = function () {
+				gantt.resetSkin();
+				gantt.render();
+			};
+
+			link.rel = "stylesheet";
+			link.type = "text/css";
+			link.id = "skin";
+			link.href = "../../codebase/skins/dhtmlxgantt_" + name + ".css?v=8.0.0";
+			document.head.replaceChild(link, document.querySelector("#skin"));
+
+		}
+	</script>
+</head>
+
+<body>
+
+<div class="gantt_control">
+	<button onclick="changeSkin('terrace')">Terrace</button>
+	<button onclick="changeSkin('skyblue')">Skyblue</button>
+	<button onclick="changeSkin('meadow')">Meadow</button>
+	<button onclick="changeSkin('broadway')">Broadway</button>
+	<button onclick="changeSkin('material')">Material</button>
+	<button onclick="changeSkin('contrast_white')">High contrast light</button>
+	<button onclick="changeSkin('contrast_black')">High contrast dark</button>
+</div>
+<div id="gantt_here" style='width:100%; height:calc(100vh - 52px);'></div>
+
+
+<script>
+	gantt.init("gantt_here");
+	gantt.parse({
+		data: [
+			{ id: 1, text: "Project #2", start_date: "01-04-2023", duration: 18, progress: 0.4, open: true },
+			{ id: 2, text: "Task #1", start_date: "02-04-2023", duration: 8, progress: 0.6, parent: 1 },
+			{ id: 3, text: "Task #2", start_date: "11-04-2023", duration: 8, progress: 0.6, parent: 1 }
+		],
+		links: [
+			{id: 1, source: 1, target: 2, type: "1"},
+			{id: 2, source: 2, target: 3, type: "0"}
+		]
+	});
+
+</script>
+</body>

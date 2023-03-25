@@ -53,10 +53,63 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\gantt\backend\index.js" />
+    <None Include="wwwroot\gantt\backend\item_initializer.js" />
+    <None Include="wwwroot\gantt\backend\router.js" />
+    <None Include="wwwroot\gantt\backend\router_dynamic_loading.js" />
+    <None Include="wwwroot\gantt\backend\server.js" />
+    <None Include="wwwroot\gantt\backend\storage.js" />
+    <None Include="wwwroot\gantt\backend\storage_tree.js" />
+    <None Include="wwwroot\gantt\codebase\dhtmlxgantt.js" />
+    <None Include="wwwroot\gantt\codebase\dhtmlxgantt.js.map" />
+    <None Include="wwwroot\gantt\codebase\sources\dhtmlxgantt.js" />
+    <None Include="wwwroot\gantt\samples\02_extensions\data.js" />
+    <None Include="wwwroot\gantt\samples\04_customization\common\suite.min.js" />
+    <None Include="wwwroot\gantt\samples\04_customization\common\suite_calendar_editor.js" />
+    <None Include="wwwroot\gantt\samples\04_customization\common\suite_link_editor.js" />
+    <None Include="wwwroot\gantt\samples\04_customization\common\suite_resource_editor.js" />
+    <None Include="wwwroot\gantt\samples\04_customization\common\suite_task_editor.js" />
+    <None Include="wwwroot\gantt\samples\10_layout\data.js" />
+    <None Include="wwwroot\gantt\samples\11_resources\common\jquery_multiselect.js" />
+    <None Include="wwwroot\gantt\samples\11_resources\common\resource_filter.js" />
+    <None Include="wwwroot\gantt\samples\common\bodyScrollLock.min.js" />
+    <None Include="wwwroot\gantt\samples\common\codehighlight\codemirror.js" />
+    <None Include="wwwroot\gantt\samples\common\codehighlight\htmlmixed.js" />
+    <None Include="wwwroot\gantt\samples\common\codehighlight\javascript.js" />
+    <None Include="wwwroot\gantt\samples\common\codehighlight\xml.js" />
+    <None Include="wwwroot\gantt\samples\common\constraint-arrow.svg" />
+    <None Include="wwwroot\gantt\samples\common\data.js" />
+    <None Include="wwwroot\gantt\samples\common\data_baselines.js" />
+    <None Include="wwwroot\gantt\samples\common\data_end_dates.js" />
+    <None Include="wwwroot\gantt\samples\common\data_extra.js" />
+    <None Include="wwwroot\gantt\samples\common\data_large.js" />
+    <None Include="wwwroot\gantt\samples\common\DemoProject.mpp" />
+    <None Include="wwwroot\gantt\samples\common\DemoProject.xlsx" />
+    <None Include="wwwroot\gantt\samples\common\dump.sql" />
+    <None Include="wwwroot\gantt\samples\common\PROJECT.xer" />
+    <None Include="wwwroot\gantt\samples\common\resource_construction_materials.js" />
+    <None Include="wwwroot\gantt\samples\common\resource_project_assignments.js" />
+    <None Include="wwwroot\gantt\samples\common\resource_project_assignments_percents.js" />
+    <None Include="wwwroot\gantt\samples\common\resource_project_construction.js" />
+    <None Include="wwwroot\gantt\samples\common\resource_project_multiple_owners.js" />
+    <None Include="wwwroot\gantt\samples\common\resource_project_single_resource.js" />
+    <None Include="wwwroot\gantt\samples\common\resource_project_single_resource_diagram.js" />
+    <None Include="wwwroot\gantt\samples\common\sample_navigation.js" />
+    <None Include="wwwroot\gantt\samples\common\sample_sources.js" />
+    <None Include="wwwroot\gantt\samples\common\snippets\dhx_file_dnd.js" />
+    <None Include="wwwroot\gantt\samples\common\snippets\multiselect.js" />
+    <None Include="wwwroot\gantt\samples\common\testdata.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PMS.Application\PMS.Application.csproj" />
     <ProjectReference Include="..\PMS.DataEF\PMS.DataEF.csproj" />
     <ProjectReference Include="..\PMS.Data\PMS.Data.csproj" />
     <ProjectReference Include="..\PMS.Infrastructure\PMS.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\gantt\codebase\dhtmlxgantt.d.ts" />
   </ItemGroup>
 
 </Project>

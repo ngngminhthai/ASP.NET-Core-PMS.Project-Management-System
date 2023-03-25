@@ -1,0 +1,56 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "start_date": "2018-04-01 00:00:00",
+      "end_date": "2018-04-06 00:00:00",
+      "text": "Project #1",
+      "progress": "0.8",
+      "parent": "0",
+      "open": 1
+    },
+    {
+      "id": "2",
+      "start_date": "2018-04-02 00:00:00",
+      "end_date": "2018-04-06 00:00:00",
+      "text": "Task #1",
+      "progress": "0.5",
+      "parent": "1",
+      "open": 1
+    },
+    {
+      "id": "3",
+      "start_date": "2018-04-06 00:00:00",
+      "end_date": "2018-04-09 00:00:00",
+      "text": "Task #2",
+      "progress": "0.7",
+      "parent": "1",
+      "open": 1
+    },
+    {
+      "id": "4",
+      "start_date": "2018-04-09 00:00:00",
+      "end_date": "2018-04-11 00:00:00",
+      "text": "Task #3",
+      "progress": "0",
+      "parent": "1",
+      "open": 1
+    }
+  ],
+  "collections": {
+    "links": [
+      {
+        "id": "1",
+        "source": "2",
+        "target": "3",
+        "type": "0"
+      },
+      {
+        "id": "2",
+        "source": "3",
+        "target": "4",
+        "type": "0"
+      }
+    ]
+  }
+}

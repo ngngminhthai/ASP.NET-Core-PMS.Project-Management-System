@@ -1,0 +1,16 @@
+{
+  "name": "dhtmlx-gantt-samples",
+  "version": "1.0.0",
+  "description": "Simple backend and REST api for dhtmlx gantt samples",
+  "main": "./index.js",
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "author": "DHTMLX",
+  "license": "DHTMLX Evaluation License",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "striptags": "^3.1.1"
+  }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Export data : MS Project, PrimaveraP6, Excel &amp; iCal</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+	</style>
+</head>
+
+<body>
+<div class="gantt_control">	
+	<input value="Export to MS Project" type="button" onclick='gantt.exportToMSProject({skip_circular_links: false})' style='margin:0 15px;'>
+	<input value="Export to PrimaveraP6" type="button" onclick='gantt.exportToPrimaveraP6({skip_circular_links: false})' style='margin:0 15px;'>
+	<input value="Export to Excel" type="button" onclick='gantt.exportToExcel()' style='margin:0 15px;'>
+	<input value="Export to iCal" type="button" onclick='gantt.exportToICal()' style='margin:0 15px;'>
+</div>
+<div id="gantt_here" style='width:100%; height: calc(100vh - 52px);'></div>
+
+<script>
+
+	gantt.plugins({
+		export_api: true,
+	});
+
+	gantt.config.auto_types = true;
+	gantt.config.fit_tasks = true;
+	gantt.templates.task_text = function (s, e, task) {
+		return "Export " + task.text;
+	};
+
+	gantt.config.columns[0].template = function (obj) {
+		return obj.text;
+	};
+
+	gantt.init("gantt_here");
+	gantt.parse(demo_tasks);
+</script>
+</body>
