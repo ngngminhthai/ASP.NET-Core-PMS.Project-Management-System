@@ -35,9 +35,9 @@
                    <div class="col-2">                      
                             <a class="add search d-flex me-2" href="/kanban?projectId=@Model.Id"> See Board </a>
                    </div>
-                   <div class="col-2">
+                   @*<div class="col-2">
                         <a class="add search d-flex me-2" href="/ProjectTaskUser?projectTaskId=@Model.Id"> User </a> 
-                   </div>
+                   </div>*@
                </div>
             </div>
         </div>
@@ -87,7 +87,7 @@
                                     
                                      <input  type="hidden" value="@item.Id" name="projectTaskId" />
                                      <input  type="hidden" value="@Model.Id" name="projectId" />
-                                        <input type="hidden" value="@@Model.paginationParams.PageNumber" name="page" />
+                                        <input type="hidden" value="@Model.paginationParams.PageNumber" name="page" />
 
                                      
                                      <select  onchange="tosubmit(@item.Id)" name="columnId">
