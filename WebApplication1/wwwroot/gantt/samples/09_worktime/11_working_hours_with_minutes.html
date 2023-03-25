@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Specify work time with minute precision (8:30-17:30)</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+		.gantt_task_cell.day_end, .gantt_task_cell.no_work_hour.day_start {
+			border-right-color: #C7DFFF;
+		}
+
+		.gantt_task_cell.week_end.day_end, .gantt_task_cell.week_end.day_start {
+			border-right-color: #E2E1E1;
+		}
+
+		.gantt_task_cell.week_end, .gantt_task_cell.no_work_hour {
+			background-color: #F5F5F5;
+		}
+
+		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+			background-color: #F8EC9C;
+		}
+	</style>
+</head>
+
+<body>
+<div id="gantt_here" style='width:100%; height:500px;'></div>
+
+<script>
+	gantt.templates.timeline_cell_class = function (task, date) {
+		if (!gantt.isWorkTime(date, "minute")) {
+			return ("no_work_hour");
+		}
+
+		return "";
+	};
+
+	var hourFormatter = gantt.ext.formatters.durationFormatter({
+		enter: "hour", 
+		store: "minute", 
+		format: "hour",
+		short: true	
+	});
+
+	gantt.config.columns = [
+		{name: "text", tree: true, width: 170, resize: true},
+		{name: "start_date", align: "center", resize: true},
+		{name: "duration", label:"Duration", resize: true, align: "center", template: function(task) {
+			return hourFormatter.format(task.duration);
+		}, width: 100},
+		{name: "add", width: 44}
+	];
+	gantt.config.lightbox.sections = [
+		{name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
+		{name: "time", type: "duration", map_to: "auto", formatter: hourFormatter}
+	];
+
+	gantt.config.work_time = true;
+	gantt.config.date_format = "%d-%m-%Y %H:%i";
+	gantt.config.min_column_width = 20;
+	gantt.config.duration_unit = "minute";
+	gantt.config.duration_step = 1;
+	gantt.config.scale_height = 75;
+
+	gantt.config.scales = [
+		{unit: "hour", step: 1, format: "%g %a"},
+		{unit: "day", step: 1, format: "%j %F, %l"},
+		{unit: "minute", step: 15, format: "%i"}
+	];
+	
+
+	gantt.setWorkTime({hours: ["8:15-17:45"]});//global working hours
+	gantt.setWorkTime({day: 2, hours: false});// make Tuesdays day-off
+	gantt.setWorkTime({day: 5, hours: ["8:30-16:15"]});//Fridays and Saturdays are short days
+	gantt.setWorkTime({day: 6, hours: ["9:15-12:45"]});//Saturdays are also work days
+
+	gantt.init("gantt_here");
+	gantt.parse({
+		data:[
+			{id:1, text:"Task #1", start_date:"02-04-2023 8:15", duration:120, parent:"0", progress:0.5, open: true},
+			{id:3, text:"Task #2", start_date:"02-04-2023 11:30", duration:185, parent:"0", progress: 0.6, open: true},
+			{id:4, text:"Task #3", start_date:"05-04-2023 8:45", duration:185, parent:"0", progress: 0.5, open: true},
+			{id:5, text:"Task #1.1", start_date:"02-04-2023 8:15", duration:500, parent:"1", progress: 0.6, open: true},
+			{id:6, text:"Task #1.2", start_date:"02-04-2023 10:15", duration:20, parent:"1", progress: 0.6, open: true},
+			{id:7, text:"Task #2.1", start_date:"04-04-2023 8:15", duration:60, parent:"3", progress: 0.6, open: true},
+			{id:8, text:"Task #3.1", start_date:"06-04-2023 12:00", duration:150, parent:"4", progress: 0.5, open: true},
+			{id:9, text:"Task #3.2", start_date:"07-04-2023 9:15", duration:300, parent:"4", progress: 0.5, open: true},
+			{id:10, text:"Task #3.3", start_date:"07-04-2023 10:15", duration:120, parent:"4", progress: 0.5, open: true},
+		],
+		links:[
+			{id:"1",source:"1",target:"3",type:"1"},
+			{id:"2",source:"3",target:"4",type:"0"},
+			{id:"3",source:"1",target:"5",type:"2"},
+			{id:"4",source:"1",target:"6",type:"2"},
+			{id:"5",source:"3",target:"7",type:"2"},
+			{id:"6",source:"4",target:"8",type:"2"},
+			{id:"7",source:"4",target:"9",type:"2"},
+			{id:"8",source:"4",target:"10",type:"2"},
+
+		]
+	});
+</script>
+</body>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Simple context menu</title>
+	<script src="https://cdn.dhtmlx.com/edge/dhtmlx.js?v=8.0.0"></script>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+
+
+	<link rel="stylesheet" href="https://cdn.dhtmlx.com/edge/skins/terrace/dhtmlx.css?v=8.0.0">
+
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+	</style>
+</head>
+
+<body>
+<div id="gantt_here" style='width:100%; height:100%'></div>
+<div id="context"></div>
+
+<script>
+	gantt.init("gantt_here");
+	gantt.parse(demo_tasks);
+
+	var menu = new dhtmlXMenuObject();
+	menu.setIconsPath("../common/sample_images/");
+	menu.renderAsContextMenu();
+	menu.setSkin("dhx_terrace");
+	menu.loadStruct("../common/dhxmenu.xml");
+
+	gantt.attachEvent("onContextMenu", function (taskId, linkId, event) {
+		var x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
+			y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+
+		if (taskId) {
+			menu.showContextMenu(x, y);
+		} else if (linkId) {
+			menu.showContextMenu(x, y);
+		}
+
+		if (taskId || linkId) {
+			return false;
+		}
+
+		return true;
+	});
+
+	gantt.message({
+	    text:"This example uses dhtmlxContextMenu which can be used under GPLv2 license or has to be obtained separately. <br><br> You can do this or use a third-party context-menu widget instead.",
+	    expire:1000*30
+	});
+</script>
+</body>

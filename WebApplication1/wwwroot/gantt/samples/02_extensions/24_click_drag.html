@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>Create new tasks by Drag and Drop</title>
+		<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+		<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+		<style>
+			html, body {
+				height: 100%;
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="gantt_here" style="width: 100%; height: 80%;"></div>
+		<script>
+			gantt.plugins({
+				click_drag: true
+			});
+			gantt.message({
+				text: "Click and drag to create a new task",
+				expire: -1
+			});
+
+			gantt.config.lightbox.sections = [
+				{ name: "description", height: 38, map_to: "text", type: "textarea", focus: true },
+				{ name: "priority", height: 22, map_to: "priority", type: "select", options: [
+					{key: 1, label: "High"},
+					{key: 2, label: "Normal"},
+					{key: 3, label: "Low"}
+				] },
+				{ name: "time", type: "duration", map_to: "auto" }
+			];
+			gantt.locale.labels.section_priority = "Priority";
+			gantt.config.click_drag = {
+				callback: onDragEnd,
+				singleRow: true
+			};
+
+			gantt.init("gantt_here");
+			gantt.parse({
+				data: [
+					{ id: 1, text: "Project #1", start_date: "01-04-2023", duration: 18, progress: 0.4, open: true },
+					{ id: 2, text: "Task #1", start_date: "02-04-2023", duration: 8, progress: 0.6, parent: 1 },
+					{ id: 3, text: "Task #2", start_date: "11-04-2023", duration: 8, progress: 0.6, parent: 1 }
+				],
+				links: [
+					{id: 1, source: 1, target: 2, type: "1"}
+				]
+			});
+			function onDragEnd(startPoint, endPoint, startDate, endDate, tasksBetweenDates, tasksInRow) {
+				if (tasksInRow.length === 1) {
+					var parent = tasksInRow[0];
+					gantt.createTask({
+						text:"Subtask of " + parent.text,
+						start_date: gantt.roundDate(startDate),
+						end_date: gantt.roundDate(endDate)
+					}, parent.id);
+				} else if (tasksInRow.length === 0) {
+					gantt.createTask({
+						text:"New task",
+						start_date: gantt.roundDate(startDate),
+						end_date: gantt.roundDate(endDate)
+					});
+				}
+			}
+
+		</script>
+	</body>
+</html>

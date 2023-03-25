@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<title>Empty Gantt with placeholder grid and timeline</title>
+<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+<link rel="stylesheet" href="https://docs.dhtmlx.com/gantt/codebase/dhtmlxgantt.css?v=8.0.0">
+<link rel="stylesheet" href="../common/controls_styles.css?v=7.1.7">
+
+
+<style>
+.weekend{ 
+  background: LightGray;
+}
+    
+</style>
+
+</head>
+
+<body>
+
+<div class="gantt_control" >
+  <input type=button value="Load tasks" onclick="gantt.parse(tasks)">
+  <input type=button value="Remove tasks" onclick="gantt.clearAll()">
+</div>
+  
+<div id="gantt_here" style="width: 100%; height: 90%;position: relative;"></div>
+
+  <script>
+
+  var tasks = {
+    "data": [
+      { "id": "10", "text": "Project #1", "start_date": "02-04-2025", "duration": 3, "order": 10, "progress": 0.4, "open": true },
+      { "id": "1", "text": "Task #1", unscheduled: true, "start_date": "03-04-2025", "duration": 2, "order": 10, "progress": 0.6, "parent": "10" },
+      { "id": "2", "text": "Task #2", "start_date": "02-04-2025", "duration": 2, "order": 20, "progress": 0.6, "parent": "10" },
+      { "id": "20", "text": "Project #2", "start_date": "02-04-2025", "duration": 3, "order": 10, "progress": 0.4, "type": "project", "open": true },
+      { "id": "3", "text": "Task #3", calendar_id: "custom", "start_date": "03-04-2025", "duration": 2, "order": 10, "progress": 0.6, "parent": "20" },
+      { "id": "4", "text": "Task #4", calendar_id: "custom2", "start_date": "10-04-2025", "duration": 2, "order": 20, "progress": 0.6, "parent": "20" }
+    ],
+    "links": [
+      { "id": 1, "source": 1, "target": 2, "type": "1" },
+      { "id": 2, "source": 2, "target": 3, "type": "0" },
+      { "id": 3, "source": 3, "target": 4, "type": "0" },
+      { "id": 4, "source": 2, "target": 5, "type": "2" }
+    ]
+  }
+  gantt.templates.timeline_cell_class = function (task, date) {
+    if (!gantt.isWorkTime({ date: date, task: task })) {
+      return "weekend";
+    }
+  };
+
+  gantt.addCalendar({
+    id: "custom"
+  });
+  gantt.getCalendar("custom").setWorkTime({ day: 5, hours: false });
+
+  gantt.addCalendar({
+    id: "custom2"
+  });
+  gantt.getCalendar("custom2").setWorkTime({ day: 3, hours: false });
+
+
+  gantt.config.work_time = true;
+  gantt.config.row_height = 20;
+
+  gantt.config.min_column_width = 50;
+
+  gantt.config.timeline_placeholder = true;
+
+  gantt.config.start_date = new Date(2025, 03, 01);
+  gantt.config.end_date = new Date(2025, 04, 01);
+
+
+  gantt.init("gantt_here");
+  
+
+</script>
+</body>

@@ -1,0 +1,7 @@
+.gantt_cal_larea{
+	overflow:visible;
+}
+.gantt_cal_chosen,
+.gantt_cal_chosen select{
+	width: 400px;
+}

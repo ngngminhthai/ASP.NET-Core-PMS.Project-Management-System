@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Custom content inside the timeline cells</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+		.cost{
+			text-decoration: underline;
+			text-align: center;
+		}
+
+		.deadline {
+			position: absolute;
+			border-radius: 12px;
+			border: 2px solid #585858;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+
+			width: 20px;
+			height: 20px;
+			z-index: 1;
+			background: url("common/deadline_icon.png") center no-repeat;
+		}
+
+		.button{
+			margin: 5px;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div id="gantt_here" style='width:100%; height:100%;'></div>
+
+	<script>
+
+		function randomValueForDate(date, offset){
+			return String(date.valueOf()).substr(offset, 2)*1;
+		}
+
+		gantt.templates.timeline_cell_content = function (task, date) {
+			if (17 <= task.id && task.id <= 20){
+				const demoValue = randomValueForDate(date, 7) 
+				var value2 = Math.round(demoValue + demoValue * 0.15);
+				return `<div class='cost'>${randomValueForDate(date, 7)}</div>
+				<div class='cost'>${value2}</div>`;
+			}
+			return "";
+		};
+
+		gantt.init("gantt_here");
+		gantt.parse(projects_with_milestones);
+
+		gantt.showDate(new Date(2023,03,15));
+
+	</script>
+</body>

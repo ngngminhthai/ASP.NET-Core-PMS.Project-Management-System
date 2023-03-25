@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Custom data api - using local storage</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+</head>
+<body>
+
+<div id="gantt_here" style="width: 100%; height: 100vh;"></div>
+
+
+<script type="text/javascript">
+ 	gantt.config.lightbox.sections = [
+		{name: "description", height: 38, map_to: "text", type: "textarea", focus: true},
+		{
+			name: "priority", height: 22, map_to: "priority", type: "select", options: [
+				{key: 1, label: "High"},
+				{key: 2, label: "Normal"},
+				{key: 3, label: "Low"}
+			]
+		},
+		{name: "time", type: "duration", map_to: "auto"}
+	];
+	gantt.locale.labels.section_priority = "Priority";
+
+	gantt.config.date_format="%Y-%m-%d %H:%i";
+
+	gantt.message({
+		expire: -1,
+		text: "Gantt stores tasks and links in the localStorage.<br> Create any task and reload the page."
+	});
+
+	gantt.init("gantt_here");
+
+	var initialData = {
+		data: localStorage["task"] ? JSON.parse(localStorage["task"]) : [],
+		links: localStorage["link"] ? JSON.parse(localStorage["link"]) : []
+	}
+
+	gantt.parse(initialData);
+
+	var dp = gantt.createDataProcessor(function(mode, taskState, data, rowId) {
+		var workData = [];
+
+		if (localStorage[mode]) {
+			workData = JSON.parse(localStorage[mode]);
+		}
+
+		switch(taskState) {
+			case "create":
+				workData.push(data);
+			break;
+			case "update":
+				var itemIndex = workData.findIndex(function(entry, index) {
+					return entry.id == rowId;
+				});
+				workData[itemIndex] = data;
+			break;
+			break;
+			case "delete":
+				var itemIndex = workData.findIndex(function(entry, index) {
+					return entry.id == rowId;
+				});
+				workData.splice(itemIndex, 1);
+			break;
+		}
+		
+		localStorage[mode] = JSON.stringify(workData);
+	});
+
+</script>
+</body>
+</html>

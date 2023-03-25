@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Different worktimes for different time periods</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+		.gantt_task_cell.day_end, .gantt_task_cell.no_work_hour.day_start {
+			border-right-color: #C7DFFF;
+		}
+
+		.gantt_task_cell.week_end.day_end, .gantt_task_cell.week_end.day_start {
+			border-right-color: #E2E1E1;
+		}
+
+		.gantt_task_cell.week_end, .gantt_task_cell.no_work_hour {
+			background-color: #F5F5F5;
+		}
+
+		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+			background-color: #F8EC9C;
+		}
+	</style>
+</head>
+
+<body>
+<div class="gantt_control">
+	<input type="button" value="Show All Scale" onclick='showAll()'/>
+	<input type="button" value="Show work days only" onclick='hideWeekEnds()'/>
+	<input type="button" value="Show office hours" onclick='hideNotWorkingTime()'/>
+</div>
+<div id="gantt_here" style='width:100%; height:calc(100vh - 52px);'></div>
+
+<script>
+	gantt.message({
+		text: "Gantt use different worktime schedule between the 1st of December and 1st of March. Try selecting <b>Project #2</b>.",
+		expire: 15000
+	});
+
+	gantt.config.work_time = true;
+	gantt.setWorkTime({hours: [8, 12, 13, 17]});//global working hours. 8:00-12:00, 13:00-17:00
+
+	var calendarId = gantt.addCalendar({
+		id:"global", // optional
+		worktime: {
+			hours: ["8:00-17:00"],
+			days: [ 1, 1, 1, 1, 1, 1 ,1],
+			customWeeks: {
+				winter: {
+					from: new Date(2023, 11, 1),// December 1st, 2023
+					to: new Date(2024, 2, 1),// March 1st 00:00, 2024,
+					hours: ["9:00-13:00", "14:00-16:00"],
+					days: [ 1, 1, 1, 1, 0, 0, 0]
+				}
+			}
+		},
+
+	});
+
+	gantt.config.min_column_width = 20;
+	gantt.config.duration_unit = "hour";
+	gantt.config.scale_height = 20 * 4;
+	gantt.config.start_date = new Date(2023, 0, 1);
+	gantt.config.end_date = new Date(2024, 0, 1);
+	gantt.templates.timeline_cell_class = function (task, date) {
+		var css = [];
+
+		if (date.getHours() == 7) {
+			css.push("day_start");
+		}
+		if (date.getHours() == 16) {
+			css.push("day_end");
+		}
+		if (!gantt.isWorkTime(date, 'day')) {
+			css.push("week_end");
+		} else if (!gantt.isWorkTime(date, 'hour')) {
+			css.push("no_work_hour");
+		}
+
+		return css.join(" ");
+	};
+
+	var weekScaleTemplate = function (date) {
+		var dateToStr = gantt.date.date_to_str("%d %M");
+		var weekNum = gantt.date.date_to_str("(week %W)");
+		var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
+		return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
+	};
+
+
+
+	gantt.config.scales = [
+		{unit: "year", step: 1, format: "%M %Y"},
+		{unit: "month", step: 1, format: "%M %Y"},
+		{unit: "day", step: 1, format: "%l, %F %d"},
+		{unit: "hour", step: 1, format: "%G"}
+	];
+
+
+	function showAll() {
+		gantt.ignore_time = null;
+		gantt.render();
+	}
+
+	function hideWeekEnds() {
+		gantt.ignore_time = function (date) {
+			return !gantt.isWorkTime(date, "day");
+		};
+		gantt.render();
+	}
+
+	function hideNotWorkingTime() {
+		gantt.ignore_time = function (date) {
+			return !gantt.isWorkTime(date);
+		};
+		gantt.render();
+	}
+
+	gantt.init("gantt_here");
+	gantt.parse({
+		data:[
+			{id:11, text:"Project #1", start_date:"28-11-2023", duration:"11", progress: 0.6, open: true},
+			{id:1, text:"Project #2", start_date:"01-12-2023", duration:"18", progress: 0.4, open: true},
+
+			{id:2, text:"Task #1", start_date:"02-12-2023", duration:"8", parent:"1", progress:0.5, open: true},
+			{id:3, text:"Task #2", start_date:"11-12-2023", duration:"8", parent:"1", progress: 0.6, open: true},
+			{id:4, text:"Task #3", start_date:"13-12-2023", duration:"6", parent:"1", progress: 0.5, open: true},
+			{id:5, text:"Task #1.1", start_date:"02-12-2023", duration:"7", parent:"2", progress: 0.6, open: true},
+			{id:6, text:"Task #1.2", start_date:"03-12-2023", duration:"7", parent:"2", progress: 0.6, open: true},
+			{id:7, text:"Task #2.1", start_date:"11-12-2023", duration:"8", parent:"3", progress: 0.6, open: true},
+			{id:8, text:"Task #3.1", start_date:"14-12-2023", duration:"5", parent:"4", progress: 0.5, open: true},
+			{id:9, text:"Task #3.2", start_date:"14-12-2023", duration:"4", parent:"4", progress: 0.5, open: true},
+			{id:10, text:"Task #3.3", start_date:"14-12-2023", duration:"3", parent:"4", progress: 0.5, open: true},
+			
+			{id:12, text:"Task #1", start_date:"03-12-2023", duration:"5", parent:"11", progress: 1, open: true},
+			{id:13, text:"Task #2", start_date:"02-12-2023", duration:"7", parent:"11", progress: 0.5, open: true},
+			{id:14, text:"Task #3", start_date:"02-12-2023", duration:"6", parent:"11", progress: 0.8, open: true},
+			{id:15, text:"Task #4", start_date:"02-12-2023", duration:"5", parent:"11", progress: 0.2, open: true},
+			{id:16, text:"Task #5", start_date:"02-12-2023", duration:"7", parent:"11", progress: 0, open: true},
+
+			{id:17, text:"Task #2.1", start_date:"03-12-2023", duration:"2", parent:"13", progress: 1, open: true},
+			{id:18, text:"Task #2.2", start_date:"06-12-2023", duration:"3", parent:"13", progress: 0.8, open: true},
+			{id:19, text:"Task #2.3", start_date:"10-12-2023", duration:"4", parent:"13", progress: 0.2, open: true},
+			{id:20, text:"Task #2.4", start_date:"10-12-2023", duration:"4", parent:"13", progress: 0, open: true},
+			{id:21, text:"Task #4.1", start_date:"03-12-2023", duration:"4", parent:"15", progress: 0.5, open: true},
+			{id:22, text:"Task #4.2", start_date:"03-12-2023", duration:"4", parent:"15", progress: 0.1, open: true},
+			{id:23, text:"Task #4.3", start_date:"03-12-2023", duration:"5", parent:"15", progress: 0, open: true}
+		],
+		links:[
+			{id:"1",source:"1",target:"2",type:"1"},
+			{id:"2",source:"2",target:"3",type:"0"},
+			{id:"3",source:"3",target:"4",type:"0"},
+			{id:"4",source:"2",target:"5",type:"2"},
+			{id:"5",source:"2",target:"6",type:"2"},
+			{id:"6",source:"3",target:"7",type:"2"},
+			{id:"7",source:"4",target:"8",type:"2"},
+			{id:"8",source:"4",target:"9",type:"2"},
+			{id:"9",source:"4",target:"10",type:"2"},
+			{id:"10",source:"11",target:"12",type:"1"},
+			{id:"11",source:"11",target:"13",type:"1"},
+			{id:"12",source:"11",target:"14",type:"1"},
+			{id:"13",source:"11",target:"15",type:"1"},
+			{id:"14",source:"11",target:"16",type:"1"},
+			{id:"15",source:"13",target:"17",type:"1"},
+			{id:"16",source:"17",target:"18",type:"0"},
+			{id:"17",source:"18",target:"19",type:"0"},
+			{id:"18",source:"19",target:"20",type:"0"},
+			{id:"19",source:"15",target:"21",type:"2"},
+			{id:"20",source:"15",target:"22",type:"2"},
+			{id:"21",source:"15",target:"23",type:"2"}
+		]
+	});
+</script>
+</body>

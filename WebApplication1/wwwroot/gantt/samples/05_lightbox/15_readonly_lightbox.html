@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Readonly lightbox</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+
+	<style>
+		html,
+		body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+		.readonly, .readonly.odd{
+			background: Gainsboro;
+		}
+		.readonly_bar{
+			background: SlateGray;
+		}
+		.gantt_task_progress{
+			background-color:rgba(33,33,33,0.17);
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<div class="gantt_control">
+		<input value="Toggle Readonly Mode" type="button" onclick='toggleReadonly()'>
+	</div>
+
+	<div id="gantt_here" style='width:100%; height:calc(100vh - 52px);'></div>
+	<script>
+
+		function toggleReadonly() {
+			gantt.config.readonly = !gantt.config.readonly;
+			gantt.message("Readonly mode: " + gantt.config.readonly);
+			gantt.init("gantt_here");
+		}
+
+		var tasks = {
+			"data": [
+				{ "id": "1", "text": "Ordinary task #1", "start_date": "05-04-2025", "duration": 3, "progress": 0.4, "open": true },
+				{ "id": "2", "text": "Editable task #2", "editable": true, "start_date": "07-04-2025", "duration": 2, "progress": 0.6 },
+				{ "id": "3", "text": "Readonly task #3", "readonly": true, "start_date": "04-04-2025", "duration": 2, "progress": 0.6 },
+			],
+			"links": [
+			]
+		}
+
+		gantt.templates.grid_row_class = 
+		gantt.templates.task_row_class = function(start, end, task){
+			if (gantt.isReadonly(task.id)) {
+				return "readonly"
+			};
+		};
+		gantt.templates.task_class = function(start, end, task){
+			if (gantt.isReadonly(task.id)) {
+				return "readonly_bar"
+			};
+		};
+
+
+		gantt.attachEvent("onTaskDblClick", function(id,e){
+			gantt.showLightbox(id)
+			return true;
+		});
+
+		gantt.attachEvent("onLightboxSave", function(id, task, is_new){
+			if (gantt.isReadonly(id)){
+				gantt.alert("You cannot edit this task");
+				return false;
+			}
+
+			return true;
+		})
+
+
+		gantt.init("gantt_here");
+		gantt.parse(tasks);
+
+		gantt.message({
+			text: `
+				In the read-only mode, you cannot edit tasks. <br>
+				But if you use the Gantt API, you can open the lightbox and check the task properties.
+			`,
+			expire: -1
+		})
+		toggleReadonly();
+
+	</script>
+</body>

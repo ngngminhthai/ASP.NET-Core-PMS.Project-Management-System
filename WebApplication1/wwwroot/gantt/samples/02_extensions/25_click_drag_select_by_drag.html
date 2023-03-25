@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>Select multiple tasks by Drag and Drop</title>
+		<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+		<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+		<style>
+			html, body {
+				height: 100%;
+				padding: 0;
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="gantt_control">
+			<input type="radio" id="mode1" class="gantt_radio" name="selectMode" value="1"/><label for="mode1"><i class="material-icons"></i>Select in dates</label>
+			<input type="radio" id="mode2" class="gantt_radio" name="selectMode" value="2"/><label for="mode2"><i class="material-icons"></i>Select in rows</label>
+			<input type="radio" id="mode3" class="gantt_radio" name="selectMode" value="3" checked /><label for="mode3"><i class="material-icons"></i>Select in bounds</label>
+			<button onClick="unselectTasks()">Unselect</button>
+		</div>
+		<div id="gantt_here" style="width: 100%; height:calc(100vh - 52px);"></div>
+
+
+		<script>
+			function unselectTasks() {
+				gantt.eachSelectedTask(function(item) {
+					gantt.unselectTask(item.id);
+				});
+			};
+			gantt.plugins({
+				multiselect: true,
+				click_drag: true
+			});
+			gantt.message({
+				text: "Click and drag to select multiple tasks",
+				expire: -1
+			});
+			gantt.config.lightbox.sections = [
+				{name: "description", height: 38, map_to: "text", type: "textarea", focus: true},
+				{
+					name: "priority", height: 22, map_to: "priority", type: "select", options: [
+						{key: 1, label: "High"},
+						{key: 2, label: "Normal"},
+						{key: 3, label: "Low"}
+					]
+				},
+				{name: "time", type: "duration", map_to: "auto"}
+			];
+			gantt.locale.labels.section_priority = "Priority";
+
+			gantt.config.multiselect = true;
+			gantt.config.click_drag = {
+				callback: onDragEnd
+			};
+			gantt.config.autoscroll = true;
+			gantt.config.autoscroll_speed = 50;
+
+			gantt.init("gantt_here");
+
+			gantt.parse({
+				data: [
+					{id: 11, text: "Project #1", start_date: "28-03-2013", duration: "11"},
+					{id: 1, text: "Project #2", start_date: "01-04-2013", duration: "18"},
+
+					{id: 2, text: "Task #1", start_date: "02-04-2013", duration: "8"},
+					{id: 3, text: "Task #2", start_date: "11-04-2013", duration: "8"},
+					{id: 4, text: "Task #3", start_date: "13-04-2013", duration: "6"},
+					{id: 5, text: "Task #1.1", start_date: "02-04-2013", duration: "7"},
+					{id: 6, text: "Task #1.2", start_date: "03-04-2013", duration: "7"},
+					{id: 7, text: "Task #2.1", start_date: "11-04-2013", duration: "8"},
+					{id: 8, text: "Task #3.1", start_date: "14-04-2013", duration: "5"},
+					{id: 9, text: "Task #3.2", start_date: "14-04-2013", duration: "4"},
+					{id: 10, text: "Task #3.3", start_date: "14-04-2013", duration: "3"},
+
+					{id: 12, text: "Task #1", start_date: "03-04-2013", duration: "5"},
+					{id: 13, text: "Task #2", start_date: "02-04-2013", duration: "7"},
+					{id: 14, text: "Task #3", start_date: "02-04-2013", duration: "6"},
+					{id: 15, text: "Task #4", start_date: "02-04-2013", duration: "5"},
+					{id: 16, text: "Task #5", start_date: "02-04-2013", duration: "7"},
+
+					{id: 17, text: "Task #2.1", start_date: "03-04-2013", duration: "2"},
+					{id: 18, text: "Task #2.2", start_date: "06-04-2013", duration: "3"},
+					{id: 19, text: "Task #2.3", start_date: "10-04-2013", duration: "4"},
+					{id: 20, text: "Task #2.4", start_date: "10-04-2013", duration: "4"},
+					{id: 21, text: "Task #4.1", start_date: "03-04-2013", duration: "4"},
+					{id: 22, text: "Task #4.2", start_date: "03-04-2013", duration: "4"},
+					{id: 23, text: "Task #4.3", start_date: "03-04-2013", duration: "5"}
+				],
+				links: [
+					{id: 1, source: 1, target: 2, type: "1"}
+				]
+			});
+
+			function onDragEnd(startPoint, endPoint, startDate, endDate, tasksBetweenDates, tasksInRows) {
+				var mode = document.querySelector("input[name=selectMode]:checked").value;
+				switch(mode) {
+					case "1":
+						unselectTasks();
+						tasksBetweenDates.forEach(function(item) {
+							gantt.selectTask(item.id);
+						});
+					break;
+					case "2":
+						unselectTasks();
+						tasksInRows.forEach(function(item) {
+							gantt.selectTask(item.id);
+						});
+					break;
+					case "3":
+						unselectTasks();
+						for (var i=0; i<tasksBetweenDates.length; i++) {
+							for (var j=0; j<tasksInRows.length; j++) {
+								if (tasksBetweenDates[i] === tasksInRows[j]) {
+									gantt.selectTask(tasksBetweenDates[i].id);
+								}
+							}
+						}
+					break;
+					return;
+				}
+			}
+		</script>
+	</body>
+</html>

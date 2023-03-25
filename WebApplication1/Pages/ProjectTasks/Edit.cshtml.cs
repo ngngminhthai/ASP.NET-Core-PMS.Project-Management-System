@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PMS.Application.Services;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
@@ -33,6 +34,31 @@ namespace PMS.Pages.ProjectTasks
 
             ProjectTask = await _context.ProjectTasks
                 .Include(p => p.Project).FirstOrDefaultAsync(m => m.Id == id);
+
+
+            //query dependencies of a task
+            if (ProjectTask != null)
+            {
+                if (!string.IsNullOrEmpty(ProjectTask.Dependencies))
+                {
+                    // Split the dependencies string into an array of task IDs
+                    string[] dependencyIds = ProjectTask.Dependencies.Split(',');
+
+                    // Parse the task IDs into integers
+                    int[] dependencyIntIds = dependencyIds.Select(int.Parse).ToArray();
+
+                    // Retrieve the dependent tasks from the database
+                    IQueryable<ProjectTask> dependentTasks = _context.ProjectTasks.Where(t => dependencyIntIds.Contains(t.Id));
+
+                    // Store the dependent tasks in a variable for later use
+                    List<ProjectTask> taskDependencies = dependentTasks.ToList();
+
+                    ViewData["TaskDependencies"] = taskDependencies;
+
+
+                }
+
+            }
 
             if (ProjectTask == null)
             {

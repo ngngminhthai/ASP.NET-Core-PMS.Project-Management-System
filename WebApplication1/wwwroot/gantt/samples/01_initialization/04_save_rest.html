@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Backend storage using REST API</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+<div id="gantt_here" style='width:100%; height:100%;'></div>
+<script>
+	gantt.message({
+		text: "This example requires a RESTful API on the backend. <br>Check our <a target='_blank' href='https://docs.dhtmlx.com/gantt/desktop__server_side.html'>guides on backend integration here</a> ",
+		expire: -1
+	});
+	gantt.message({
+		text: "You can also find our step-by-step tutorials for different platforms <a target='_blank' href='https://docs.dhtmlx.com/gantt/desktop__howtostart_guides.html'>here </a> ",
+		expire: -1
+	});
+
+	gantt.attachEvent("onBeforeTaskAdd", function(id,task){
+		//do not allow incorrect dates
+		task.start_date = task.start_date || gantt.getTaskByIndex(0).start_date || new Date();
+		task.end_date = task.end_date || gantt.getTaskByIndex(0).end_date || new Date();
+		return true;
+	});
+
+	gantt.config.date_format = "%Y-%m-%d %H:%i:%s";
+	gantt.init("gantt_here");
+	gantt.load("/gantt/backend/data");
+
+	var dp = gantt.createDataProcessor({
+		url: "/gantt/backend/data",
+		mode: "REST"
+	});
+</script>
+</body>

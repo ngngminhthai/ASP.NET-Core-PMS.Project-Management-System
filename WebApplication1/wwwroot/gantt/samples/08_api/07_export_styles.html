@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Task styles</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/customstyles.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+	</style>
+</head>
+
+<body>
+<div class="gantt_control">
+	<input value="Export to PDF" type="button" onclick="exportGantt('pdf')">
+	<input value="Export to PNG" type="button" onclick="exportGantt('png')">
+</div>
+<div id="gantt_here" style='width:100%; height: calc(100vh - 52px);'></div>
+
+<script>
+
+	gantt.plugins({
+		export_api: true,
+	});
+
+	gantt.config.columns = [
+		{name: "text", label: "Task name", tree: true, width: "*"},
+		{name: "start_date", label: "Start time", align: "center"},
+		{
+			name: "priority", label: "Priority", align: "center", template: function (obj) {
+				if (obj.priority == 1) {
+					return "High"
+				}
+				if (obj.priority == 2) {
+					return "Medium"
+				}
+				return "Low"
+			}
+		}
+	];
+
+	gantt.templates.task_class = function (start, end, task) {
+		switch (task.priority) {
+			case "1":
+				return "high";
+				break;
+			case "2":
+				return "medium";
+				break;
+			case "3":
+				return "low";
+				break;
+		}
+	};
+
+	gantt.init("gantt_here");
+	gantt.parse(users_data);
+
+	function exportGantt(mode) {
+		if (mode == "png"){
+			gantt.exportToPNG({
+				header: '<link rel="stylesheet" href="//docs.dhtmlx.com/gantt/samples/common/customstyles.css?v=8.0.0">'
+			});
+		}else if (mode == "pdf"){
+			gantt.exportToPDF({
+				header: '<link rel="stylesheet" href="//docs.dhtmlx.com/gantt/samples/common/customstyles.css?v=8.0.0">'
+			});
+		}
+	}
+</script>
+</body>

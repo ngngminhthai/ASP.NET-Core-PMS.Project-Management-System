@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Working with 30000 tasks</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+
+	<script src="../common/data_large.js?v=8.0.0"></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+		.gantt_task_cell.week_end {
+			background-color: #EFF5FD;
+		}
+
+		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+			background-color: #F8EC9C;
+		}
+
+	</style>
+	
+</head>
+
+<body>
+<div id="gantt_here" style='width:100%; height:100%;'></div>
+<script>
+
+
+	gantt.attachEvent("onLoadStart", function () {
+		gantt.message("Loading...");
+	});
+	gantt.attachEvent("onLoadEnd", function () {
+		gantt.message({
+			text: "Loaded " + gantt.getTaskCount() + " tasks, " + gantt.getLinkCount() + " links",
+			expire: 8 * 1000
+		});
+	});
+
+	gantt.config.min_column_width = 30;
+	gantt.config.scale_height = 60;
+	gantt.config.work_time = true;
+
+	gantt.config.scales = [
+		{unit: "day", step: 1, format: "%d"},
+		{unit: "month", step: 1, format: "%F, %Y"},
+		{unit: "year", step: 1, format: "%Y"}
+	];
+
+
+	gantt.config.row_height = 22;
+
+	gantt.config.static_background = true;
+	gantt.templates.timeline_cell_class = function (task, date) {
+		if (!gantt.isWorkTime(date))
+			return "week_end";
+		return "";
+	};
+
+	gantt.init("gantt_here");
+	gantt.parse(taskData);
+
+</script>
+</body>

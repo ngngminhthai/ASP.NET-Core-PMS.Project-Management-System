@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Draw links as SVG images</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+
+		.gantt_task_link{
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+
+<div id="gantt_here" style='width:100%; height:100%'></div>
+<script>
+	gantt.message({
+		text: `The links are rendered with the <a href='https://docs.dhtmlx.com/gantt/api__gantt_addtasklayer.html'>addTaskLayer</a> function as SVG images. 
+			In this example, it only works with Finish-to-Start links`,
+		expire: -1
+	});
+
+
+	gantt.addTaskLayer(function (task) {
+		if (task.$source[0]) {
+			var main_el = document.createElement("div");
+			var source_links = task.$source;
+			for (var i = 0; i < source_links.length; i++) {
+				var el = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+				var link = gantt.getLink(source_links[i]);
+				var target_id = link.target
+				if (!gantt.isTaskExists(target_id)) continue;
+				var target_task = gantt.getTask(link.target);
+
+				var startx = gantt.posFromDate(task.end_date);
+				var starty = gantt.getTaskPosition(task, task.start_date, task.end_date).top + 16;
+				var endx = gantt.posFromDate(target_task.start_date)
+				var endy = (gantt.getTaskPosition(target_task, target_task.start_date, target_task.end_date).top + gantt.config.row_height / 2);
+				el.style.position = "absolute";
+				el.style.left = startx + 'px';
+				if (endx < startx) el.style.left = endx + 'px';
+				el.style.top = starty+'px';
+
+				el.setAttribute("width", Math.abs(-startx + endx) || 10);
+				el.setAttribute("height", Math.abs(-starty + endy+ gantt.config.row_height));
+
+				var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+				var start = "0 0 ";
+				var end = (-startx + endx) + " " + (-starty + endy) + " "
+				var curve = " Q "+(-startx + endx)/4+" " +(-starty + endy) + " " 
+
+				if (endx < startx){
+					start = " " +(startx - endx) + " 0";
+					end = " 0 " + (-starty + endy);
+				}
+				if (endx == startx){
+					curve = ""
+				}
+
+				path.setAttribute("d", "M "+ start + curve + end );
+				path.setAttribute("stroke", "#ffa011");
+				path.setAttribute("stroke-width", "1.2");
+				path.setAttribute("fill", "none");
+				el.appendChild(path);
+
+				var triangle = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+				triangle.setAttribute("d", "M "+ (-startx + endx) + " " + (-starty + endy) + " "+ (-startx + endx - 5) + " " + (-starty + endy - 5)+ " "+ (-startx + endx-5) + " " + (-starty + endy+5) + "Z");     
+				triangle.setAttribute("stroke", "#ffa011");
+				triangle.setAttribute("stroke-width", "2");
+				triangle.setAttribute("fill", "#ffa011");
+				el.appendChild(triangle);
+				
+				main_el.appendChild(el)
+				
+			}
+			return main_el;
+		}
+		return false;
+	});
+
+	function repaint_predecessors(id){
+		var task = gantt.getTask(id);
+		var target_links = task.$target;
+		if (!task.$target[0]) return;
+
+		gantt.batchUpdate(function(){
+			for (var i = 0; i < target_links.length; i++) {
+				var link = gantt.getLink(target_links[i]);
+				var source_id = link.source;
+				gantt.refreshTask(source_id);
+			}
+		});
+	}
+
+	gantt.attachEvent("onTaskDrag", function(id, mode, task, original){
+		repaint_predecessors(id)
+	});
+	gantt.attachEvent("onAfterTaskDrag", function(id, mode, e){
+		repaint_predecessors(id)
+	});
+
+	gantt.plugins({
+		auto_scheduling: true
+	})
+
+	gantt.config.static_background = true;
+	gantt.config.auto_scheduling = true;
+
+	gantt.init("gantt_here");
+
+	// Generate tasks:
+	var amount = 100;
+	var tasks = [];
+	tasks.push({
+		text: `Project #1`,
+		id: 1,
+		start_date: new Date(),
+		type:"project",
+		duration: 1,
+		open: true,
+		parent: 0
+	});
+
+	for(var i = 2; i < amount; i++) { 
+		tasks.push({
+			text: `Task ${i}`,
+			id: i,
+			start_date: new Date(),
+			duration: 1,
+			open: true,
+			parent: 1
+		});
+	}
+
+	var links = []
+	for(var i = 2; i < amount; i++) { 
+		links.push({
+			id:i, 
+			source:i,
+			target:i+1, 
+			type:'0',
+			lag: 1
+		});
+	}
+
+	var data = {
+		data: tasks,
+		links: links
+	}
+
+	gantt.parse(data);
+
+</script>
+</body>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Export data from Gantt</title>
+	<script src="../../codebase/dhtmlxgantt.js?v=8.0.0"></script>
+	<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css?v=8.0.0">
+	<link rel="stylesheet" href="../common/controls_styles.css?v=8.0.0">
+
+	<script src="../common/testdata.js?v=8.0.0"></script>
+	<style>
+		html, body {
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
+	</style>
+</head>
+
+<body>
+
+<div class="gantt_control">
+	<input value="Export to PDF" type="button" onclick='gantt.exportToPDF()'>
+	<input value="Export to PNG" type="button" onclick='gantt.exportToPNG()'>
+	<input value="Export :: Meadow" type="button" onclick='gantt.exportToPNG({ skin:"meadow" })'>
+	<input value="Export :: Broadway" type="button" onclick='gantt.exportToPDF({ skin:"broadway" })'>
+	<input value="Export :: Skyblue" type="button" onclick='gantt.exportToPDF({ skin:"skyblue" })'>
+	<input value="Export :: Material" type="button" onclick='gantt.exportToPNG({ skin:"material" })'>
+</div>
+
+<div id="gantt_here" style='width:100%; height:calc(100vh - 52px);'></div>
+<script>
+	gantt.plugins({
+		export_api: true,
+	});
+	gantt.config.grid_width = 400;
+
+	gantt.templates.task_text = function (s, e, task) {
+		return "Export " + task.text;
+	}
+	gantt.config.columns[0].template = function (obj) {
+		return obj.text + " - <b>" + obj.progress*100 + "%</b>";
+	}
+	gantt.init("gantt_here");
+	gantt.parse(demo_tasks);
+</script>
+</body>
