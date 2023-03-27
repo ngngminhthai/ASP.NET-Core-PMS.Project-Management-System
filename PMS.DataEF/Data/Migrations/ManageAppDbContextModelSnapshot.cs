@@ -391,21 +391,6 @@ namespace PMS.DataEF.Data.Migrations
                     b.ToTable("Priority");
                 });
 
-            modelBuilder.Entity("ProjectTaskProjectTask", b =>
-                {
-                    b.Property<int>("DependentTasksId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SuccessorTaksId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DependentTasksId", "SuccessorTaksId");
-
-                    b.HasIndex("SuccessorTaksId");
-
-                    b.ToTable("ProjectTaskProjectTask");
-                });
-
             modelBuilder.Entity("WebApplication1.Data.Entities.ConversationAggregate.Conversation", b =>
                 {
                     b.Property<int>("Id")
@@ -713,10 +698,16 @@ namespace PMS.DataEF.Data.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PriorityValue")
                         .HasColumnType("int");
 
                     b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProjectTaskId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -733,6 +724,8 @@ namespace PMS.DataEF.Data.Migrations
                     b.HasIndex("KanbanColumeID");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProjectTaskId");
 
                     b.ToTable("ProjectTasks");
                 });
@@ -970,7 +963,7 @@ namespace PMS.DataEF.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("WebApplication1.Data.Entities.ManageUser", "User")
-                        .WithMany()
+                        .WithMany("ProjectRole_Users")
                         .HasForeignKey("UserId");
 
                     b.Navigation("ProjectRole");
@@ -1013,21 +1006,6 @@ namespace PMS.DataEF.Data.Migrations
                         .HasForeignKey("UserUploadedId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ProjectTaskProjectTask", b =>
-                {
-                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", null)
-                        .WithMany()
-                        .HasForeignKey("DependentTasksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", null)
-                        .WithMany()
-                        .HasForeignKey("SuccessorTaksId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebApplication1.Data.Entities.ConversationAggregate.Conversation", b =>
@@ -1117,6 +1095,10 @@ namespace PMS.DataEF.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", null)
+                        .WithMany("SuccessorTaks")
+                        .HasForeignKey("ProjectTaskId");
+
                     b.Navigation("KanbanColume");
 
                     b.Navigation("Project");
@@ -1179,6 +1161,8 @@ namespace PMS.DataEF.Data.Migrations
                 {
                     b.Navigation("ConversationUser");
 
+                    b.Navigation("ProjectRole_Users");
+
                     b.Navigation("ProjectTask_Users");
 
                     b.Navigation("ProjectUsers");
@@ -1202,6 +1186,8 @@ namespace PMS.DataEF.Data.Migrations
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", b =>
                 {
                     b.Navigation("ProjectTask_Users");
+
+                    b.Navigation("SuccessorTaks");
                 });
 #pragma warning restore 612, 618
         }

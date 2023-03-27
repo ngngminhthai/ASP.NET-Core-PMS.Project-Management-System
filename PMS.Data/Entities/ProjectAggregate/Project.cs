@@ -45,7 +45,7 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
                 }
             }
         }
-        public void CalculateCriticalPath()
+        public List<ProjectTask> CalculateCriticalPath()
         {
             CalculateSuccessorTasks();
 
@@ -100,14 +100,15 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
               }
               Console.WriteLine("----------------------------");*/
             DrawGanttChart();
-
+            List<ProjectTask> criticalTasks = new List<ProjectTask>();
             foreach (ProjectTask task in GetCriticalPath(ProjectTasks))
             {
+                criticalTasks.Add(task);
                 Console.WriteLine($"Task {task.Name}: [{task.Duration}|{task.EarliestStart}|{task.EarliestFinish}|{task.LatestStart}|{task.LatestFinish}]");
             }
             Console.WriteLine("----------------------------");
 
-
+            return criticalTasks;
         }
 
         public List<ProjectTask> ScheduleTasks(List<ProjectTask> tasks)

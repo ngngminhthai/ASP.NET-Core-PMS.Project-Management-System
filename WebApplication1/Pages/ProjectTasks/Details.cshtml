@@ -6,330 +6,63 @@
 }
 
 <div class="main-content">
-    
-    <div class="row">
-        <div class="col-12">
-            <div class="box project">
-                <div class="box-header">
-                    <h4 class="box-title">@Model.ProjectTask.Name</h4>
-                    <div class="box-right d-flex">
-                        <a class="btn" href="project-details.html">Task Details</a>
-                        <div class="icon-ratting">
-                            <i class='bx bxs-star'></i>
-                        </div>
-                        <div class="dropdown ml-14">
-                            <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class='bx bx-dots-vertical-rounded fs-22'></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="bx bx-trash"></i> Delete</a>
-                                <a class="dropdown-item" href="#"><i class="bx bx-edit mr-5"></i>Edit</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="divider"></div>
-                <div class="box-body d-flex justify-content-between pb-0">
-                    <div class="team-name">
-                        <a href="#" class="team">
-                            <div class="icon"><i class="fas fa-tags"></i></div>
-                            <h5>
-                                @Model.ProjectTask.KanbanColume.NameColume
-                                
-                               </h5>
-                        </a>
-                    </div>
-                    <div class="action">
-                        <a href="#" class="comment">@Model.ProjectTask.ProjectTask_Users.Count Members</a>
-                        @*<a href="#" class="edit">Edit</a>*@
-                        <a href="#" class="invite"><i class="fas fa-user-plus mr-5"></i>Invite People</a>
-                        <a href="#" class="add">New<i class="fas fa-caret-down pl-12"></i></a>
-                    </div>
-                    <ul class="">
-                       <li><p>Start Date: @Model.ProjectTask.StartDate</p></li>
-                       <li><p>End Date: @Model.ProjectTask.EndDate</p></li>
-                       <li><p>Duration: @Model.ProjectTask.Duration</p></li>
-              
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="card-title">@Model.ProjectTask.Name</h4>
                         
-                     
-                    </ul>
-                </div>
-                <div class="divider"></div>
-                <div class="box-body content">
-                    <h4 class="title">Task Description</h4>
-                    <p class="fs-18 font-w400 font-main mt-27 mb-29">
-                      @Model.ProjectTask.Description
-                    </p>
-                    @*<ul>
-                        <li>
-                            <p class="fs-18 font-w600 color-primary mb-23"><span class="pr-19">1.</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </li>
-                        <li>
-                            <p class="fs-18 font-w600 color-primary mb-23"><span class="pr-15">2.</span>Fusce vitae ligula iaculis, sollicitudin sem at, venenatis turpis.</p>
-                        </li>
-                        <li>
-                            <p class="fs-18 font-w600 color-primary mb-23"><span class="pr-25">.</span>Maecenas pharetra mi sit amet dolor rhoncus, quis placerat elit cursus.</p>
-                        </li>
-                        <li>
-                            <p class="fs-18 font-w600 color-primary mb-23"><span class="pr-15">3.</span>Nullam eleifend nisi nec diam varius, vitae malesuada ex eleifend.</p>
-                        </li>
-                        <li>
-                            <p class="fs-18 font-w600 color-primary mb-23"><span class="pr-25">.</span>Integer convallis nisi quis vestibulum semper.</p>
-                        </li>
-                    </ul>
-                    <h6 class="mt-30">Proin rutrum ipsum quis sem faucibus, in elementum mi dignissim.</h6>
-                    <p class="mt-32 fs-18">
-                        Cras eu elit congue, placerat dui ut, tincidunt nisl. Nulla leo elit, pharetra bibendum justo quis, cursus consectetur erat. Sed nec posuere turpis. Maecenas nec bibendum purus. Nulla fringilla, lorem iaculis iaculis fermentum,
-                        ligula nibh mollis ipsum, et scelerisque risus ante eu sem. Phasellus ac sagittis nisi. Suspendisse potenti. Nunc volutpat dui ipsum. Suspendisse potenti.
-                    </p>
-                    <ul class="list-img">
-                        <li>
-                            <div class="img-dv"><img src="./images/product/project-01.jpg" alt=""></div>
-
-                        </li>
-                        <li>
-                            <div class="img-dv"><img src="./images/product/project-02.jpg" alt=""></div>
-
-                        </li>
-                        <li>
-                            <div class="img-dv"><img src="./images/product/project-03.jpg" alt=""></div>
-
-                        </li>
-                        <li>
-                            <div class="img-dv">
-                                <img src="./images/product/project-04.jpg" alt="">
-                                <div class="overlay-1"></div>
-                                <a href="#" class="more">
-                                    <h5 class="text-white">+ More 5 files</h5>
-                                </a>
-
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <i class="fas fa-tags mr-3"></i>
+                                        <strong>Column:</strong> @Model.ProjectTask.KanbanColume.NameColume
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-calendar-alt mr-3"></i>
+                                        <strong>Start Date:</strong> @Model.ProjectTask.StartDate
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-calendar-check mr-3"></i>
+                                        <strong>End Date:</strong> @Model.ProjectTask.EndDate
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-clock mr-3"></i>
+                                        <strong>Duration:</strong> @Model.ProjectTask.Duration
+                                    </li>
+                                </ul>
                             </div>
-
-
-                        </li>
-                    </ul>
-
-                    <div class="form-chat">
-                        <form action="#" method="get" accept-charset="utf-8">
-                            <div class="message-form-chat">
-                                <!-- /.pin -->
-                                <span class="message-text">
-                                    <textarea name="message" placeholder="Type comment here" required="required"></textarea>
-                                </span>
-                                <!-- /.message-text -->
-                                <span class="camera">
-                                    <a href="#" title="">
-                                        <i class="fas fa-smile"></i>
-                                    </a>
-                                </span>
-                                <!-- /.camera -->
-                                <span class="icon-message">
-                                    <a href="#" title="">
-                                        <i class="fas fa-paperclip"></i>
-                                    </a>
-                                </span>
-                                <!-- /.icon-right -->
-                                <!-- <div class="icon-mobile">
-                                    <ul>
-                                        <li>
-                                            <a href="#" title=""><i class="fas fa-smile"></i></a>
+                            <div class="col-md-6">
+                                <h4 class="mb-4">Assignees</h4>
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var user in Model.Assignees)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            @user.UserName
+                                            <span class="badge badge-primary badge-pill">Role: @user.Role</span>
                                         </li>
-                                        <li>
-                                            <a href="#" title=""><i class="fas fa-paperclip"></i></a>
-                                        </li>
-                                    </ul>
-                                </div> -->
-                                <!-- /.icon-right -->
-                                <span class="btn-send">
-                                    <button class="waves-effect" type="submit">Send <i class="fas fa-paper-plane"></i></button>
-                                </span>
-                                <!-- /.btn-send -->
+                                    }
 
+                                   
+                                </ul>
                             </div>
-                            <!-- /.message-form-chat -->
-                            <div class="clearfix"></div>
-                        </form>
-                        <!-- /form -->
-                    </div>*@
-
-                    @*<div class="project-description mt-10">
-                        <h4>Project Description</h4>
-                        <div class="comment-box">
-                            <div class="comment d-flex">
-                                <div class="left d-flex">
-                                    <div class="comment-pic">
-                                        <img src="./images/avatar/cmt-01.png" alt="">
-                                    </div>
-                                    <div class="comment-body">
-                                        <div class="name">
-                                            <h5 class="font-w600 fs-18">Elizabeth Holland</h5>
-                                            <p class="text mb-0 fs-18">Duis pretium gravida enim, vel maximus ligula fermentum a. Sed rhoncus eget ex id egestas. Nam nec nisl placerat, tempus erat a, condimentum metus.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="right">
-                                    <div class="group-action mt-10">
-                                        <a href="#" class="like active"><i class="fas fa-thumbs-up"></i>34 Like</a>
-                                        <a href="#" class="reply"><i class="fas fa-reply-all"></i>Reply</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="comment d-flex">
-                                <div class="left d-flex">
-                                    <div class="comment-pic">
-                                        <img src="./images/avatar/cmt-02.png" alt="">
-                                    </div>
-                                    <div class="comment-body">
-                                        <div class="name">
-                                            <h5 class="font-w600 fs-18">Mike Palmer</h5>
-                                            <p class="text mb-0 fs-18">
-                                                Donec dapibus mauris id odio ornare tempus. Duis sit amet accumsan justo, quis tempor ligula. Quisque quis pharetra felis. Ut quis consequat orci, at consequat felis. Suspendisse auctor laoreet placerat.
-                                                Nam et risus non lacus dignissim lacinia sit amet nec eros.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="right">
-                                    <div class="group-action mt-10">
-                                        <a href="#" class="like"><i class="fas fa-thumbs-up"></i>34 Like</a>
-                                        <a href="#" class="reply"><i class="fas fa-reply-all"></i>Reply</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="comment rep d-flex">
-                                <div class="left d-flex">
-                                    <div class="comment-pic">
-                                        <img src="./images/avatar/cmt-03.png" alt="">
-                                    </div>
-                                    <div class="comment-body">
-                                        <div class="name">
-                                            <h5 class="font-w600 fs-18">Beatrice Collins</h5>
-                                            <p class="text mb-0 fs-18">Donec dapibus mauris id odio ornare tempus. Duis sit amet accumsan justo, quis tempor ligula. Quisque quis pharetra felis. Ut quis consequat orci.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="right">
-                                    <div class="group-action mt-10">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="comment rep d-flex">
-                                <div class="left d-flex">
-                                    <div class="comment-pic">
-                                        <img src="./images/avatar/cmt-04.png" alt="">
-                                    </div>
-                                    <div class="comment-body">
-                                        <div class="name">
-                                            <h5 class="font-w600 fs-18">Roger Meyer</h5>
-                                            <p class="text mb-0 fs-18">Donec dapibus mauris id odio ornare tempus. Duis sit amet accumsan justo, quis tempor ligula. Quisque quis pharetra felis. Ut quis consequat orci.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="right">
-                                    <div class="group-action mt-10">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="divider mb-0"></div>
                         </div>
-                    </div>*@
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div id="add_project" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create Project</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
+                        <hr>
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Project Name</label>
-                                    <input class="form-control" value="" type="text">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Client</label>
-                                    <select class="select">
-                                        <option>Client 1</option>
-                                        <option>Client 2</option>
-                                    </select>
-                                </div>
+                            <div class="col-md-12">
+                                <h4 class="mb-4">Task Description</h4>
+                                <p>@Model.ProjectTask.Description</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Start Date</label>
-                                    <div class="cal-icon">
-                                        <input class="form-control " type="date">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>End Date</label>
-                                    <div class="cal-icon">
-                                        <input class="form-control " type="date">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Rate</label>
-                                    <input placeholder="$50" class="form-control" value="" type="text">
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>&nbsp;</label>
-                                    <select class="select">
-                                        <option>Hourly</option>
-                                        <option selected>Fixed</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Priority</label>
-                                    <select class="select">
-                                        <option selected>High</option>
-                                        <option>Medium</option>
-                                        <option>Low</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea rows="4" class="form-control" placeholder="Enter your message here"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Upload Files</label>
-                            <input class="form-control" type="file">
-                        </div>
-                        <div class="submit-section">
-                            <button class="btn btn-primary submit-btn">Save</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Add more modals here if
