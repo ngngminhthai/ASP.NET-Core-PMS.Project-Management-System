@@ -99,7 +99,13 @@
                                     foreach(var user  in Model.Users)
                                     {
                                         <li class="d-flex align-items-center">
-                                            <input checked="@Model.Member.Contains(user.Id)" style="margin-left:5px" type="checkbox" name="members" value="@user.Id">
+                                            @if(Model.Member!=null){
+                                                <input checked="@Model.Member.Contains(user.Id)" style="margin-left:5px" type="checkbox" name="members" value="@user.Id">
+                                            }
+                                            else
+                                            {
+                                                <input  style="margin-left:5px" type="checkbox" name="members" value="@user.Id">
+                                            }
                                             <span>@user.UserName</span>
                                         </li>
                                     }
