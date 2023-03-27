@@ -7,5 +7,6 @@ namespace PMS.Application.ViewModels
     {
         public ManageUser User { get; set; }
         public Project Project { get; set; }
+        public string ImageProfile { get; set; }
     }
 }

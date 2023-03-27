@@ -15,7 +15,7 @@
                                     flex-direction: column;">
                             <label for="profile-image">Profile Image</label>
                                 <input type="file" class="form-control-file" id="profile-image" name="file">
-                            <img style="height: 150px; width: 150px;" src="~/uploads/@Model.User.ImageProfile" class="img-fluid mt-3" alt="User Image">
+                            <img style="height: 150px; width: 150px; object-fit: cover" src="~/uploads/@Model.User.ImageProfile" class="img-fluid mt-3" alt="User Image">
                         </div>
                         <input hidden asp-for="@Model.User.Id" value="@Model.User.Id"/>
                         <div class="form-group">

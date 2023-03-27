@@ -110,36 +110,36 @@
             @foreach (var item in Model.ListProjectUser)
             {
                 <div class="col-3 col-md-6 col-sm-12 mb-25">
-                    <div class="box client">
+                    <div class="box client" data-user-id="@item.User.Id">
 
-                        <div class="dropdown">
-                            <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class='bx bx-dots-horizontal-rounded'></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+
+                            <div class="dropdown">
+                                <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-horizontal-rounded"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="bx bx-trash"></i> Delete</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_client"><i class="bx bx-edit mr-5"></i>Edit</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="box-body pt-5 pb-0" style="overflow:hidden">
+                            <div class="box-body pt-5 pb-0">
+                                <div class="img-box">
+                                    <img style="width: 100px; height: 100px;object-fit: cover" src="~/uploads/@item.User.ImageProfile" alt="">
+                                    <div class="pulse-css"></div>
+                                </div>
+                                <a href="client-details.html"><h5 class="mt-17">@item.User.UserName</h5></a>
 
-                            <a href="client-details.html"><h5 class="mt-17">@item.User.UserName</h5></a>
-
-                            <p class="fs-14 font-w400 font-main">Founder at <span class="text-clo-primary font-w500 pl-4">Company Name</span></p>
-                            <ul class="info">
-                                <li class="fs-14">
-                                    <i class='bx bxs-phone'></i>@if (item.User.PhoneNumber != null)
-                                    {
-                                        @item.User.PhoneNumber
-                                    }
-                                </li>
-                                <li class="fs-14"><i class='bx bxs-envelope'></i>@item.User.Email </li>
-                            </ul>
-                            <div class="group-btn d-flex justify-content-between">
-                                <a class="bg-btn-pri color-white" href="message.html">Message</a>
-                                <a class="bg-btn-sec color-main" href="user-profile.html">View Profile</a>
+@*                                <p class="fs-14 font-w400 font-main">Founder at <span class="text-clo-primary font-w500 pl-4">Company Name</span></p>
+*@                                <ul class="info">
+                                    <li class="fs-14"><i class="bx bxs-phone"></i>(589)505-4521</li>
+                                    <li class="fs-14"><i class="bx bxs-envelope"></i>@item.User.Email</li>
+                                </ul>
+                                <div class="group-btn d-flex justify-content-between">
+                                    <a class="bg-btn-pri color-white" href="message.html">Message</a>
+                                    <a class="bg-btn-sec color-main" href="user-profile.html">View Profile</a>
+                                </div>
                             </div>
-                        </div>
+
 
                     </div>
                 </div>
@@ -264,29 +264,198 @@
             </div>
         </div>
     </div>
-
+    <div class="modal custom-modal fade" id="delete_client" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-header">
+                        <h3>Delete Client</h3>
+                        <p>Are you sure want to delete?</p>
+                    </div>
+                    <div class="modal-btn delete-action">
+                        <div class="row">
+                            <div class="col-6 mb-0">
+                                <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                            </div>
+                            <div class="col-6 mb-0">
+                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="edit_client" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Client</h4>
+                    <h4 class="modal-title">Edit Role</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
+                    <label for="project_roles">Project Roles</label>
+
+                    <ul id="item-list"></ul>
+
                     <input type="hidden" />
                     <form>
                         <div class="form-group">
-                            <label>Client Name</label>
-                            <input type="text" class="form-control" value="Tom Schneider">
+                            <input hidden id="edit_userId" name="userId" value="" />
+                            <input hidden name="projectId" value="@Model.ProjectId" />
+                            <label for="project_roles">Add new Role</label>
+                            <select id="project_roles" name="project_role_id" class="form-control">
+                                @if (Model.ProjectRoles != null)
+                                {
+                                    @foreach (var role in Model.ProjectRoles)
+                                    {
+                                        <option value="@role.Id">@role.Name</option>
+                                    }
+                                }
+                            </select>
                         </div>
-
+                        <button id="addBtn" type="submit" class="btn btn-primary">Add</button>
+                        <button id="saveBtn" type="submit" class="btn btn-danger">Save</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
+
+	<script>
+          $(document).ready(function () {
+            $("#addBtn").click(function (e) {
+            e.preventDefault();
+
+                var selectedOption = $("#project_roles option:selected");
+                var selectedValue = selectedOption.val();
+                var selectedText = selectedOption.text();
+
+                // Check if the selected option's value is already in the list
+                if ($("#item-list li[data-value='" + selectedValue + "']").length > 0) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: `Can't add duplicated role`,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    return;
+                }
+
+
+
+        var selectedOption = $("#project_roles option:selected");
+                //var listItem = $("<li>").addClass("list-group-item d-flex justify-content-between align-items-center").text(selectedOption.text());
+                var listItem = $("<li>").addClass("list-group-item d-flex justify-content-between align-items-center").text(selectedText).attr("data-value", selectedValue);
+
+                var removeBtn = $("<span>").addClass("badge badge-danger badge-pill remove-item").html("&times;");
+                listItem.append(removeBtn);
+                    $("#item-list").append(listItem);
+                });
+
+                $(document).on("click", ".remove-item", function () {
+                    $(this).parent().remove();
+                });
+          });
+
+        $('.dropdown-item[data-target="#delete_client"]').click(function () {
+            var userId = $(this).closest('.box.client').data('user-id');
+            $('.continue-btn').data('user-id', userId);
+        });
+        $('.dropdown-item[data-target="#edit_client"]').click(function () {
+            var userId = $(this).closest('.box.client').data('user-id');
+            $('#edit_userId').val(userId);
+            RetriveUserRoles(userId);
+            console.log($('#edit_userId').val());
+        });
+        $('.continue-btn').click(function () {
+            var userId = $(this).data('user-id');
+            var projectId = '@Model.ProjectId';
+            window.location.href = `/ProjectUser/Index?handler=DeleteUser&userId=${userId}&projectId=${projectId}`
+            // perform delete action using the userId
+        });
+
+        $(document).on("click", "#saveBtn", function (e) {
+            e.preventDefault();
+
+            var projectRoles = [];
+
+            // Iterate through each item in the ul list and add to projectRoles array
+            $("#item-list li").each(function () {
+                var roleId = $(this).attr("data-value");
+                var roleName = $(this).text().trim();
+                var projectRole = {
+                    UserId: $("#edit_userId").val(),
+                    RoleId: roleId
+                };
+                projectRoles.push(projectRole);
+            });
+
+            var userId = $("#edit_userId").val();
+            var projectId = '@Model.ProjectId';
+
+            $.ajax({
+                type: "POST",
+                url: "/Projects/UpdateProjectRoles",
+                data: {
+                    projectRoles: projectRoles,
+                    userId: userId,
+                    projectId: projectId
+                },
+                success: function (result) {
+                    // Handle success
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+
+        function RetriveUserRoles(userId) {
+            $("#item-list").empty();
+            var projectId = "@Model.ProjectId"; // Replace with actual project ID
+
+            // Make AJAX request to ProjectsController's GetProjectRoles method
+            $.ajax({
+                type: "GET",
+                url: "/Projects/GetProjectRoles",
+                data: { projectId: projectId, userId: userId },
+                dataType: "json",
+                success: function (data) {
+                    // Loop through returned project roles and add them to the list
+                    $.each(data, function (i, role) {
+                        var listItem = $("<li>").addClass("list-group-item d-flex justify-content-between align-items-center")
+                            .text(role.Name)
+                            .attr("data-value", role.Id);
+                        var removeBtn = $("<span>").addClass("badge badge-danger badge-pill remove-item").html("&times;");
+                        listItem.append(removeBtn);
+                        $("#item-list").append(listItem);
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error: " + textStatus + " - " + errorThrown);
+                }
+            });
+        }
+
+	</script>
+}
+
+
 @{
     var error = TempData["Error"] as string;
 }
