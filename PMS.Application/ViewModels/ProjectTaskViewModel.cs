@@ -11,6 +11,7 @@ namespace PMS.Application.ViewModels
         public string Name { get; set; }
         public string Description { get; set; }
         public int ProjectId { get; set; }
+        public int PriorityValue { get; set; }
         public Priority Priority { get; set; }
         public Project Project { get; set; }
         public WorkingStatus WorkingStatus { get; set; }

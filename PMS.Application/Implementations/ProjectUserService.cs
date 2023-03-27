@@ -1,4 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using PMS.Application.Services;
 using PMS.Application.ViewModels;
 using PMS.Data.IRepositories;
@@ -32,6 +33,13 @@ namespace PMS.Application.Implementations
             }
             var userInProject = projectUserRepository.FindAll().Where(p => p.UserId == user.Id && p.ProjectId == projectId).FirstOrDefault();
             if (userInProject != null)
+            {
+                return 2;
+            }
+            
+            var userCreator = context.Projects.Include(p => p.Creator).Where(p => p.Id == projectId && p.Creator.UserName.Equals(userName))
+                .Select(p => p.Creator);
+            if (userCreator != null)
             {
                 return 2;
             }
