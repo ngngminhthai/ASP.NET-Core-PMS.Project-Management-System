@@ -2,44 +2,182 @@
 @model PMS.Pages.ProjectTasks.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+ViewData["Title"] = "Edit Task";
 }
 
-<h1>Edit</h1>
+@section Styles{
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.min.css">
+	<link href="~/lib/jquery/jquery.dropdown.css" rel="stylesheet" />
+}
 
-<h4>ProjectTask</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ProjectTask.Name" class="control-label"></label>
-                <input asp-for="ProjectTask.Name" class="form-control" />
-                <span asp-validation-for="ProjectTask.Name" class="text-danger"></span>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="card-title">Edit @Model.ProjectTask.Name</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <input type="text" value="@Model.ProjectTask.Id" name="taskId" hidden/>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="taskName">Task Name</label>
+                                        <input type="text" id="taskName" name="TaskName" value="@Model.ProjectTask.Name" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kanbanColumn">Kanban Column</label>
+                                        <select id="kanbanColumn" name="KanbanColumn" class="form-control">
+                                            @foreach (var item in Model.KanbanColumes)
+                                            {
+                                                if(item.Id == Model.KanbanColumeId)
+                                                {
+                                                    <option value="@item.Id" selected>@item.NameColume</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.Id">@item.NameColume</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kanbanColumn">Priority</label>
+                                        <select id="kanbanColumn" name="Priority" class="form-control">
+                                            @if(Model.PriorityValue == 1)
+                                            {
+                                                <option selected value="1">Low</option>
+                                            }
+                                            else{
+                                                <option value="1">Low</option>
+                                            }
+
+                                             @if(Model.PriorityValue == 2)
+                                            {
+                                                <option selected value="2">Medium</option>
+                                            }
+                                            else{
+                                                <option value="2">Medium</option>
+                                            }
+
+                                            @if (Model.PriorityValue == 3)
+                                            {
+                                                <option selected value="3">High</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="3">High</option>
+                                            }
+
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="startDate">Start Date</label>
+                                        <input type="date" id="startDate" name="StartDate" value="@Model.ProjectTask.StartDate.ToString("yyyy-MM-dd")" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="endDate">End Date</label>
+                                        <input type="date" id="endDate" name="EndDate" value="@Model.ProjectTask.EndDate.ToString("yyyy-MM-dd")" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="duration">Duration</label>
+                                        <input type="number" id="duration" name="Duration" value="@Model.ProjectTask.Duration" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="taskName">Assignees</label>
+                                        <div class="dropdown-mul-1">
+                                        <select style="display:none" name="selectedUsers" id="selectedUsers" multiple placeholder="Select">
+                                            @foreach (var user in Model.Users){
+                                                
+                                                bool isSelected = Model.ProjectTask_Users.Any(ptu => ptu.UserId == user.Id);
+                                                if(isSelected){
+                                                   <option value="@user.Id" selected>@user.UserName</option>
+                                                }else
+                                                {
+                                                   <option value="@user.Id">@user.UserName</option>
+                                                }
+                                               
+                                            }
+                                        </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="taskName">Dependencies</label>
+                                        <div class="form-group">
+                                            <div class="dropdown-mul-2">
+                                                <select style="display:none" name="selectedDependencies" id="selectedDependencies" multiple placeholder="Select">
+                                                    @foreach (var task in Model.ProjectTasks)
+                                                    {
+
+                                                        bool isSelected = Model.Dependencies.Any(dep => dep.Id == task.Id);
+                                                        if (isSelected)
+                                                        {
+                                                            <option value="@task.Id" selected>@task.Id:@task.Name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@task.Id">@task.Id:@task.Name</option>
+                                                        }
+
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="taskDescription">Task Description</label>
+                                        <textarea id="taskDescription" name="TaskDescription" class="form-control" rows="4">@Model.ProjectTask.Description</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success mr-2">Save Changes</button>
+                                        <a asp-controller="ProjectTasks" asp-action="Details" asp-route-id="@Model.ProjectTask.Id" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ProjectTask.Description" class="control-label"></label>
-                <input asp-for="ProjectTask.Description" class="form-control" />
-                <span asp-validation-for="ProjectTask.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectTask.ProjectId" class="control-label"></label>
-                <select asp-for="ProjectTask.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
-                <span asp-validation-for="ProjectTask.ProjectId" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="ProjectTask.Id" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
+
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@section Scripts{
+	<script src="~/lib/jquery/jquery.dropdown.js"></script>
+    <script>
+        $('.dropdown-mul-1').dropdown({
+            limitCount: 40,
+            multipleMode: 'label'
+        });
+
+        //// set default values
+        //$('.dropdown-mul-1').dropdown('select', [1, 3]);
+
+        $('.dropdown-mul-2').dropdown({
+            limitCount: 40,
+            multipleMode: 'label',
+            choice: function () {
+                // console.log(arguments,this);
+            }
+        });
+    </script>
+}                                       

@@ -10,7 +10,7 @@ using WebApplication1.Data;
 namespace PMS.DataEF.Data.Migrations
 {
     [DbContext(typeof(ManageAppDbContext))]
-    [Migration("20230311171643_InitDB")]
+    [Migration("20230327124451_InitDB")]
     partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -518,6 +518,9 @@ namespace PMS.DataEF.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ImageProfile")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -679,6 +682,9 @@ namespace PMS.DataEF.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Dependencies")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -694,14 +700,23 @@ namespace PMS.DataEF.Data.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PriorityValue")
                         .HasColumnType("int");
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProjectTaskId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Successors")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("WorkingStatusValue")
                         .HasColumnType("int");
@@ -711,6 +726,8 @@ namespace PMS.DataEF.Data.Migrations
                     b.HasIndex("KanbanColumeID");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProjectTaskId");
 
                     b.ToTable("ProjectTasks");
                 });
@@ -1080,6 +1097,10 @@ namespace PMS.DataEF.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", null)
+                        .WithMany("SuccessorTaks")
+                        .HasForeignKey("ProjectTaskId");
+
                     b.Navigation("KanbanColume");
 
                     b.Navigation("Project");
@@ -1165,6 +1186,8 @@ namespace PMS.DataEF.Data.Migrations
             modelBuilder.Entity("WebApplication1.Data.Entities.ProjectAggregate.ProjectTask", b =>
                 {
                     b.Navigation("ProjectTask_Users");
+
+                    b.Navigation("SuccessorTaks");
                 });
 #pragma warning restore 612, 618
         }

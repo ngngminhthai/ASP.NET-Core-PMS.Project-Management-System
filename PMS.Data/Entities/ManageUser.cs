@@ -3,6 +3,7 @@ using PMS.Data.Entities.ProjectAggregate;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebApplication1.Data.Entities.ConversationAggregate;
 using WebApplication1.Data.Entities.ProjectAggregate;
 namespace WebApplication1.Data.Entities
@@ -21,6 +22,10 @@ namespace WebApplication1.Data.Entities
         public virtual ICollection<ConversationUser> ConversationUser { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
         public ICollection<ProjectTask_User> ProjectTask_Users { get; set; }
+        public ICollection<ProjectRole_User> ProjectRole_Users { get; set; }
+
+        [NotMapped]
+        public string Role { get; set; }
 
     }
 }

@@ -406,15 +406,29 @@
         {
             if (task.ParentId != null)
             {
-                @:{ id: @task.Id, text: "@task.Name", title: "@task.Description", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", end_date: "@task.EndDate.ToString("dd-MM-yyyy")", status: @task.KanbanColumeID, priority: @task.PriorityValue, duration: @task.Duration, parent: @task.ParentId },
+                if (Model.CritialPathTasks.Contains(task))
+                {
+                    @:{ id: @task.Id, text: "@task.Name", title: "@task.Description", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", end_date: "@task.EndDate.ToString("dd-MM-yyyy")", status: @task.KanbanColumeID, priority: @task.PriorityValue, duration: @task.Duration, parent: @task.ParentId, color: "red" },
+                }
+                else
+                {
+                    @:{ id: @task.Id, text: "@task.Name", title: "@task.Description", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", end_date: "@task.EndDate.ToString("dd-MM-yyyy")", status: @task.KanbanColumeID, priority: @task.PriorityValue, duration: @task.Duration, parent: @task.ParentId },
+                }
             }
             else
             {
-                @:{ id: @task.Id, text: "@task.Name", title: "@task.Description", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", end_date: "@task.EndDate.ToString("dd-MM-yyyy")", status: @task.KanbanColumeID, priority: @task.PriorityValue, duration: @task.Duration },
-
+                if (Model.CritialPathTasks.Contains(task))
+                {
+                    @:{ id: @task.Id, text: "@task.Name", title: "@task.Description", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", end_date: "@task.EndDate.ToString("dd-MM-yyyy")", status: @task.KanbanColumeID, priority: @task.PriorityValue, duration: @task.Duration, color: "red" },
+                }
+                else
+                {
+                    @:{ id: @task.Id, text: "@task.Name", title: "@task.Description", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", end_date: "@task.EndDate.ToString("dd-MM-yyyy")", status: @task.KanbanColumeID, priority: @task.PriorityValue, duration: @task.Duration },
+                }
             }
         }
-               ];
+        ];
+
 
         var links = [];
 

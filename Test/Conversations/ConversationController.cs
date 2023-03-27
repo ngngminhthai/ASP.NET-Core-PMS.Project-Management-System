@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using PMS.Application.Services.Conversations;
+using PMS.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -71,13 +72,18 @@ namespace Test.Conversations
             context.Projects.Add(p);
             context.SaveChanges();
 
-            var taskA = new ProjectTask { Name = "A", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/8/2022"), Project = p };
-            var taskB = new ProjectTask { Name = "B", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/10/2022"), Project = p };
-            var taskC = new ProjectTask { Name = "C", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/13/2022"), Project = p };
-            var taskD = new ProjectTask { Name = "D", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/9/2022"), Project = p };
-            var taskE = new ProjectTask { Name = "E", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/10/2022"), Project = p };
-            var taskF = new ProjectTask { Name = "F", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/7/2022"), Project = p };
-            var taskG = new ProjectTask { Name = "G", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/6/2022"), Project = p };
+            var kanbanColume = new KanbanColume { NameColume = "To Do", ProjectId = p.Id };
+            context.kanbanColumes.Add(kanbanColume);
+            context.SaveChanges();
+
+
+            var taskA = new ProjectTask { Name = "A", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/8/2022"), Project = p, ParentId = 0, KanbanColumeID = kanbanColume.Id };
+            var taskB = new ProjectTask { Name = "B", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/10/2022"), Project = p, ParentId = 0, KanbanColumeID = kanbanColume.Id };
+            var taskC = new ProjectTask { Name = "C", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/13/2022"), Project = p, ParentId = 0, KanbanColumeID = kanbanColume.Id };
+            var taskD = new ProjectTask { Name = "D", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/9/2022"), Project = p, ParentId = 0, KanbanColumeID = kanbanColume.Id };
+            var taskE = new ProjectTask { Name = "E", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/10/2022"), Project = p, ParentId = 0, KanbanColumeID = kanbanColume.Id };
+            var taskF = new ProjectTask { Name = "F", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/7/2022"), Project = p, ParentId = 0, KanbanColumeID = kanbanColume.Id };
+            var taskG = new ProjectTask { Name = "G", StartDate = DateTime.Parse("1/1/2022"), EndDate = DateTime.Parse("1/6/2022"), Project = p, ParentId = 0, KanbanColumeID = kanbanColume.Id };
 
             taskC.DependentTasks.Add(taskA);
             taskF.DependentTasks.Add(taskC);
@@ -110,8 +116,8 @@ namespace Test.Conversations
 
 
             p.CalculateCriticalPath();
-            /*context.Projects.Add(p);
-            context.SaveChanges();*/
+            context.Projects.Add(p);
+            context.SaveChanges();
         }
 
 
