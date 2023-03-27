@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities.ProjectAggregate;
 
@@ -190,6 +193,130 @@ namespace PMS.Controllers
         private bool ProjectTaskExists(int id)
         {
             return _context.ProjectTasks.Any(e => e.Id == id);
+        }
+
+
+        [HttpPost]
+        public void SubmitLists(string list1, string projectId)
+        {
+            int prjId = Convert.ToInt32(projectId);
+            //var list = JsonConvert.DeserializeObject<List<dynamic>>(json);
+
+            //var tasks = new List<dynamic>();
+
+            //foreach (var item in list)
+            //{
+            //    var task = new
+            //    {
+            //        Id = (int)project.id,
+            //        Title = project.title,
+            //        DurationInDays = project.duration,
+            //        Status = project.status
+            //    };
+
+            //    tasks.Add(task);
+            //}
+        
+            dynamic value = JsonConvert.DeserializeObject(list1);
+
+            DateTime forStartDate = value.start_date;
+            DateTime forEndDate = value.end_date;
+
+
+            int column = Convert.ToInt32(value.status);
+            int length = _context.ProjectTasks.Where(k => k.KanbanColumeID == column).ToList().Count + 1;
+            ProjectTask projectTask = new ProjectTask {
+
+                ProjectId = prjId,
+                StartDate = forStartDate.AddDays(1),
+                EndDate = forEndDate.AddDays(1),
+                Name = value.text,
+                ParentId = value.parent,
+                Description = value.title,
+                Order = length,
+                KanbanColumeID = Convert.ToInt32(value.status),
+                PriorityValue = Convert.ToInt32(value.priority),
+                WorkingStatusValue = 1,
+            
+            };
+
+            _context.ProjectTasks.Add(projectTask);
+            _context.SaveChanges();
+           
+        }
+        [HttpPost]
+        public void UpdateTask(string dataSend)
+        {
+            // int prjId = Convert.ToInt32(projectId);
+            //var list = JsonConvert.DeserializeObject<List<dynamic>>(json);
+
+            //var tasks = new List<dynamic>();
+
+            //foreach (var item in list)
+            //{
+            //    var task = new
+            //    {
+            //        Id = (int)project.id,
+            //        Title = project.title,
+            //        DurationInDays = project.duration,
+            //        Status = project.status
+            //    };
+
+            //    tasks.Add(task);
+            //}
+
+            dynamic value = JsonConvert.DeserializeObject(dataSend);
+            int column = Convert.ToInt32(value.status);
+            int id = Convert.ToInt32(value.id);
+            DateTime forStartDate = value.start_date;
+            DateTime forEndDate = value.end_date;
+            ProjectTask pt = _context.ProjectTasks.Where(p => p.Id == id).FirstOrDefault();
+
+
+
+
+            pt.StartDate = forStartDate.AddDays(1);
+            pt.EndDate = forEndDate.AddDays(1);
+            pt.Name = value.text;
+            pt.ParentId = value.parent;
+            pt.Description = value.title;
+           // pt.Order = length;
+            pt.KanbanColumeID = Convert.ToInt32(value.status);
+            pt.PriorityValue = Convert.ToInt32(value.priority);
+            pt.WorkingStatusValue = 1;
+
+            
+
+            _context.ProjectTasks.Update(pt);
+            _context.SaveChanges();
+
+        }
+        [HttpPost]
+        public void CreateDependecy(int id, int target)
+        {
+            var task = _context.ProjectTasks.Where(p => p.Id == target).FirstOrDefault();
+            string update;
+            if (task.Dependencies != null)
+            {
+                update = task.Dependencies.ToString()+",";
+            }
+            else update = "";
+            
+
+            task.Dependencies = update +id.ToString();
+            _context.ProjectTasks.Update(task);
+            _context.SaveChanges();
+
+        }
+        [HttpPost]
+        public void DeleteTask(int dataSend)
+        {
+
+
+            var task = _context.ProjectTasks.Where(p => p.Id == dataSend).FirstOrDefault();
+            _context.ProjectTasks.Remove(task);
+            _context.SaveChanges();
+
         }
     }
 }

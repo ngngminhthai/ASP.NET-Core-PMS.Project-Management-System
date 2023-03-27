@@ -4,7 +4,15 @@
 @inject IWebHostEnvironment Environment
 @inject ICompositeViewEngine Engine
 @{
-    var imgProfile = ((ClaimsIdentity)User.Identity).Claims.FirstOrDefault(x => x.Type == "ImgProfile").ToString().Split(":")[1].Trim();
+    string imgProfile;
+    if (((ClaimsIdentity)User.Identity).Claims.FirstOrDefault(x => x.Type == "ImgProfile")!= null)
+    {
+        imgProfile  = ((ClaimsIdentity)User.Identity).Claims.FirstOrDefault(x => x.Type == "ImgProfile").ToString().Split(":")[1].Trim();
+    }
+    else
+    {
+        imgProfile = "";
+    }
 }
 
 <!DOCTYPE html>

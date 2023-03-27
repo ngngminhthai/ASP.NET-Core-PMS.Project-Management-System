@@ -1,518 +1,661 @@
 ﻿@page
 @model PMS.Pages.Gantt.IndexModel
 @{
-	Layout = null;
+    Layout = null;
 
 }
 <!DOCTYPE html>
 <head>
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<title>Basic initialization</title>
-	<script src="~/gantt/codebase/dhtmlxgantt.js?v=8.0.0"></script>
-	<link href="~/gantt/codebase/dhtmlxgantt.css?v=8.0.0" rel="stylesheet" />
-	<link href="~/gantt/samples/common/controls_styles.css?v=8.0.0" rel="stylesheet" />
-	<link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Basic initialization</title>
+    <script src="~/gantt/codebase/dhtmlxgantt.js?v=8.0.0"></script>
+    <link href="~/gantt/codebase/dhtmlxgantt.css?v=8.0.0" rel="stylesheet" />
+    <link href="~/gantt/samples/common/controls_styles.css?v=8.0.0" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
 
-	<link href="~/gantt/samples/11_resources/common/jquery_multiselect.css" rel="stylesheet" />
-	<script src="~/gantt/samples/11_resources/common/jquery_multiselect.js"></script>
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js?v=8.0.0"
-			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-			crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js?v=8.0.0"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css?v=8.0.0">
-	<script src="~/gantt/samples/common/resource_project_multiple_owners.js"></script>
+    <link href="~/gantt/samples/11_resources/common/jquery_multiselect.css" rel="stylesheet" />
+    <script src="~/gantt/samples/11_resources/common/jquery_multiselect.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js?v=8.0.0"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js?v=8.0.0"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css?v=8.0.0">
+    <script src="~/gantt/samples/common/resource_project_multiple_owners.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+            overflow: hidden;
+        }
 
-	<style>
-		html, body{
-			height: 100%;
-			padding: 0px;
-			margin: 0px;
-			overflow: hidden;
-		}
+        .btn-danger {
+            color: #fff !important;
+            background-color: #dc3545 !important;
+            border-color: #dc3545 !important;
+        }
 
-		.btn-danger {
-			color: #fff !important;
-			background-color: #dc3545 !important;
-			border-color: #dc3545 !important;
-		}
-		.btn-primary {
-			color: #fff !important;
-			background-color: #0d6efd !important;
-			border-color: #0d6efd !important;
-		}
+        .btn-primary {
+            color: #fff !important;
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+        }
 
-		.btn {
-			display: inline-block;
-			font-weight: 400;
-			line-height: 1.5;
-			color: #212529;
-			text-align: center;
-			text-decoration: none;
-			vertical-align: middle;
-			cursor: pointer;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			user-select: none;
-			background-color: transparent;
-			border: 1px solid transparent;
-			padding: .375rem .75rem;
-			font-size: 1rem;
-			border-radius: .25rem;
-			transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-			}
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
 
-		#gantt_here {
-			width: 100%;
-			height: 100%;
-		}
+        #gantt_here {
+            width: 100%;
+            height: 100%;
+        }
 
-		.gantt_grid_scale .gantt_grid_head_cell,
-		.gantt_task .gantt_task_scale .gantt_scale_cell {
-			font-weight: bold;
-			font-size: 14px;
-			color: rgba(0, 0, 0, 0.7);
-		}
+        .gantt_grid_scale .gantt_grid_head_cell,
+        .gantt_task .gantt_task_scale .gantt_scale_cell {
+            font-weight: bold;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.7);
+        }
 
-		.resource_marker {
-			text-align: center;
-		}
+        .resource_marker {
+            text-align: center;
+        }
 
-			.resource_marker div {
-				width: 28px;
-				height: 28px;
-				line-height: 29px;
-				display: inline-block;
-				border-radius: 15px;
-				color: #FFF;
-				margin: 3px;
-			}
+            .resource_marker div {
+                width: 28px;
+                height: 28px;
+                line-height: 29px;
+                display: inline-block;
+                border-radius: 15px;
+                color: #FFF;
+                margin: 3px;
+            }
 
-			.resource_marker.workday_ok div {
-				background: #51c185;
-			}
+            .resource_marker.workday_ok div {
+                background: #51c185;
+            }
 
-			.resource_marker.workday_over div {
-				background: #ff8686;
-			}
+            .resource_marker.workday_over div {
+                background: #ff8686;
+            }
 
-		.owner-label {
-			width: 20px;
-			height: 20px;
-			line-height: 20px;
-			font-size: 12px;
-			display: inline-block;
-			border: 1px solid #cccccc;
-			border-radius: 25px;
-			background: #e6e6e6;
-			color: #6f6f6f;
-			margin: 0 3px;
-			font-weight: bold;
-		}
-	</style>
+        .owner-label {
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 12px;
+            display: inline-block;
+            border: 1px solid #cccccc;
+            border-radius: 25px;
+            background: #e6e6e6;
+            color: #6f6f6f;
+            margin: 0 3px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-		<div class="gantt_control">
-			<button class='zoom_toggle' onclick="toggleMode(this)">Zoom to Fit</button>
-			<input type=button value="Zoom In" onclick="zoom_in();">
-			<input type=button value="Zoom Out" onclick="zoom_out();">
-			<button class="btn btn-danger">Back</button>
-			<button class="btn btn-primary">Save</button>
-		</div>
-		<div id="gantt_here" style='width:100%; height:400px;'></div>
+    <div class="gantt_control">
+        <button class='zoom_toggle' onclick="toggleMode(this)">Zoom to Fit</button>
+        <input type=button value="Zoom In" onclick="zoom_in();">
+        <input type=button value="Zoom Out" onclick="zoom_out();">
+        <button class="btn btn-danger">Back</button>
+        <button id="submit-button" class="btn btn-primary">Save</button>
+    </div>
+    <div id="gantt_here" style='width:100%; height:400px;'></div>
 
 
-	<script>
-		gantt.init("gantt_here");
+    <script>
+        gantt.init("gantt_here");
 
-		gantt.config.columns = [
-			{ name: "text", tree: true, width: 200, resize: true },
-			{ name: "start_date", align: "center", width: 80, resize: true },
-			{
-				name: "owner", align: "center", width: 75, label: "Owner", template: function (task) {
-					if (task.type == gantt.config.types.project) {
-						return "";
-					}
+        gantt.config.columns = [
+            //    { name: "title", tree: true, width: 200, resize: true, label: "TaskName" },
+            { name: "text", align: "left", width: 200, label: "TaskName", tree: true },
+            {
+                name: "status", align: "center", hidden: true, label: "Status",
 
-					var result = "";
-					var store = gantt.getDatastore("resource");
-					var owners = task[gantt.config.resource_property];
+                template: function (item) {
+        @foreach (var kanban in Model.KanbanColumes)
+        {
+            @:  if (@kanban.Id == item.status)
+            @:  return "@kanban.NameColume";
 
-					if (!owners || !owners.length) {
-						return "Unassigned";
-					}
-
-					if (owners.length == 1) {
-						return store.getItem(owners[0]).text;
-					}
-
-					owners.forEach(function (ownerId) {
-						var owner = store.getItem(ownerId);
-						if (!owner)
-							return;
-						result += "<div class='owner-label' title='" + owner.text + "'>" + owner.text.substr(0, 1) + "</div>";
-
-					});
-
-					return result;
-				}, resize: true
-			},
-			{ name: "duration", width: 60, align: "center" },
-			{ name: "add", width: 44 }
-		];
-
-		function toggleMode(toggle) {
-			gantt.$zoomToFit = !gantt.$zoomToFit;
-			if (gantt.$zoomToFit) {
-				toggle.innerHTML = "Set default Scale";
-				//Saving previous scale state for future restore
-				saveConfig();
-				zoomToFit();
-			} else {
-
-				toggle.innerHTML = "Zoom to Fit";
-				//Restore previous scale state
-				restoreConfig();
-				gantt.render();
-			}
-		}
-
-		var cachedSettings = {};
-
-		function saveConfig() {
-			var config = gantt.config;
-			cachedSettings = {};
-			cachedSettings.scales = config.scales;
-			cachedSettings.start_date = config.start_date;
-			cachedSettings.end_date = config.end_date;
-			cachedSettings.scroll_position = gantt.getScrollState();
-		}
-
-		function restoreConfig() {
-			applyConfig(cachedSettings);
-		}
-
-		function applyConfig(config, dates) {
-
-			gantt.config.scales = config.scales;
-
-			// restore the previous scroll position
-			if (config.scroll_position) {
-				setTimeout(function () {
-					gantt.scrollTo(config.scroll_position.x, config.scroll_position.y)
-				}, 4)
-			}
-		}
+        }
+                            return "undfine";
 
 
-		function zoomToFit() {
-			var project = gantt.getSubtaskDates(),
-				areaWidth = gantt.$task.offsetWidth,
-				scaleConfigs = zoomConfig.levels;
 
-			for (var i = 0; i < scaleConfigs.length; i++) {
-				var columnCount = getUnitsBetween(project.start_date, project.end_date, scaleConfigs[i].scales[scaleConfigs[i].scales.length - 1].unit, scaleConfigs[i].scales[0].step);
-				if ((columnCount + 2) * gantt.config.min_column_width <= areaWidth) {
-					break;
-				}
-			}
+                }
+            },
+            {
+                name: "priority", label: "Priority", width: 80, align: "center",
+                template: function (item) {
+                    if (item.priority == 1)
+                        return "High";
+                    if (item.priority == 2)
+                        return "Normal";
+                    if (item.priority == 3)
+                        return "Low";
+                    return "Undefined";
+                }
+            },
+            { name: "start_date", align: "center", width: 80, resize: true },
+            { name: "end_date", align: "center", width: 80, resize: true },
 
+            //{
+            //    name: "owner", align: "center", width: 75, label: "Owner", template: function (task) {
+            //        if (task.type == gantt.config.types.project) {
+            //            return "";
+            //        }
 
-			if (i == scaleConfigs.length) {
-				i--;
-			}
+            //        var result = "";
+            //        var store = gantt.getDatastore("resource");
+            //        var owners = task[gantt.config.resource_property];
 
-			gantt.ext.zoom.setLevel(scaleConfigs[i].name);
-			applyConfig(scaleConfigs[i], project);
-		}
+            //        if (!owners || !owners.length) {
+            //            return "Unassigned";
+            //        }
 
-		// get number of columns in timeline
-		function getUnitsBetween(from, to, unit, step) {
-			var start = new Date(from),
-				end = new Date(to);
-			var units = 0;
-			while (start.valueOf() < end.valueOf()) {
-				units++;
-				start = gantt.date.add(start, step, unit);
-			}
-			return units;
-		}
+            //        if (owners.length == 1) {
+            //            return store.getItem(owners[0]).text;
+            //        }
 
-		function zoom_in() {
-			gantt.ext.zoom.zoomIn();
-			gantt.$zoomToFit = false;
-			document.querySelector(".zoom_toggle").innerHTML = "Zoom to Fit";
-		}
-		function zoom_out() {
-			gantt.ext.zoom.zoomOut();
-			gantt.$zoomToFit = false;
-			document.querySelector(".zoom_toggle").innerHTML = "Zoom to Fit";
-		}
+            //        owners.forEach(function (ownerId) {
+            //            var owner = store.getItem(ownerId);
+            //            if (!owner)
+            //                return;
+            //            result += "<div class='owner-label' title='" + owner.text + "'>" + owner.text.substr(0, 1) + "</div>";
 
+            //        });
 
-		var zoomConfig = {
-			levels: [
-				// hours
-				{
-					name: "hour",
-					scale_height: 27,
-					scales: [
-						{ unit: "day", step: 1, format: "%d %M" },
-						{ unit: "hour", step: 1, format: "%H:%i" },
-					]
-				},
-				// days
-				{
-					name: "day",
-					scale_height: 27,
-					scales: [
-						{ unit: "day", step: 1, format: "%d %M" }
-					]
-				},
-				// weeks
-				{
-					name: "week",
-					scale_height: 50,
-					scales: [
-						{
-							unit: "week", step: 1, format: function (date) {
-								var dateToStr = gantt.date.date_to_str("%d %M");
-								var endDate = gantt.date.add(date, -6, "day");
-								var weekNum = gantt.date.date_to_str("%W")(date);
-								return "#" + weekNum + ", " + dateToStr(date) + " - " + dateToStr(endDate);
-							}
-						},
-						{ unit: "day", step: 1, format: "%j %D" }
-					]
-				},
-				// months
-				{
-					name: "month",
-					scale_height: 50,
-					scales: [
-						{ unit: "month", step: 1, format: "%F, %Y" },
-						{
-							unit: "week", step: 1, format: function (date) {
-								var dateToStr = gantt.date.date_to_str("%d %M");
-								var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
-								return dateToStr(date) + " - " + dateToStr(endDate);
-							}
-						}
-					]
-				},
-				// quarters
-				{
-					name: "quarter",
-					height: 50,
-					scales: [
-						{
-							unit: "quarter", step: 3, format: function (date) {
-								var dateToStr = gantt.date.date_to_str("%M %y");
-								var endDate = gantt.date.add(gantt.date.add(date, 3, "month"), -1, "day");
-								return dateToStr(date) + " - " + dateToStr(endDate);
-							}
-						},
-						{ unit: "month", step: 1, format: "%M" },
-					]
-				},
-				// years
-				{
-					name: "year",
-					scale_height: 50,
-					scales: [
-						{
-							unit: "year", step: 5, format: function (date) {
-								var dateToStr = gantt.date.date_to_str("%Y");
-								var endDate = gantt.date.add(gantt.date.add(date, 5, "year"), -1, "day");
-								return dateToStr(date) + " - " + dateToStr(endDate);
-							}
-						}
-					]
-				},
-				// decades
-				{
-					name: "year",
-					scale_height: 50,
-					scales: [
-						{
-							unit: "year", step: 100, format: function (date) {
-								var dateToStr = gantt.date.date_to_str("%Y");
-								var endDate = gantt.date.add(gantt.date.add(date, 100, "year"), -1, "day");
-								return dateToStr(date) + " - " + dateToStr(endDate);
-							}
-						},
-						{
-							unit: "year", step: 10, format: function (date) {
-								var dateToStr = gantt.date.date_to_str("%Y");
-								var endDate = gantt.date.add(gantt.date.add(date, 10, "year"), -1, "day");
-								return dateToStr(date) + " - " + dateToStr(endDate);
-							}
-						},
-					]
-				},
-			],
-			element: function () {
-				return gantt.$root.querySelector(".gantt_task");
-			}
-		};
+            //        return result;
+            //    }, resize: true
+            //},
 
-		gantt.config.fit_tasks = true;
+            { name: "duration", width: 60, align: "center" },
+            { name: "add", width: 44 }
+        ];
+
+        function toggleMode(toggle) {
+            gantt.$zoomToFit = !gantt.$zoomToFit;
+            if (gantt.$zoomToFit) {
+                toggle.innerHTML = "Set default Scale";
+                //Saving previous scale state for future restore
+                saveConfig();
+                zoomToFit();
+            } else {
+
+                toggle.innerHTML = "Zoom to Fit";
+                //Restore previous scale state
+                restoreConfig();
+                gantt.render();
+            }
+        }
+
+        var cachedSettings = {};
+
+        function saveConfig() {
+            var config = gantt.config;
+            cachedSettings = {};
+            cachedSettings.scales = config.scales;
+            cachedSettings.start_date = config.start_date;
+            cachedSettings.end_date = config.end_date;
+            cachedSettings.scroll_position = gantt.getScrollState();
+        }
+
+        function restoreConfig() {
+            applyConfig(cachedSettings);
+        }
+
+        function applyConfig(config, dates) {
+
+            gantt.config.scales = config.scales;
+
+            // restore the previous scroll position
+            if (config.scroll_position) {
+                setTimeout(function () {
+                    gantt.scrollTo(config.scroll_position.x, config.scroll_position.y)
+                }, 4)
+            }
+        }
 
 
-		gantt.ext.zoom.init(zoomConfig);
+        function zoomToFit() {
+            var project = gantt.getSubtaskDates(),
+                areaWidth = gantt.$task.offsetWidth,
+                scaleConfigs = zoomConfig.levels;
 
-		gantt.ext.zoom.setLevel("day");
-
-		gantt.$zoomToFit = false;
-
-	</script>
-	<script>
-
-
-		var data = [
-		@foreach (var task in Model.ProjectTasks)
-		{
-			@:{ id: @task.Id, text: "@task.Name", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", duration: @task.Duration },
-		}
-				];
-
-		var links = [];
-
-		@foreach (var task in Model.ProjectTasks)
-		{
-			foreach (var dependentTask in task.DependentTasks)
-			{
-				@:links.push({ id: @dependentTask.Id, source: @dependentTask.Id, target: @task.Id, type: "0" });
-			}
-		}
+            for (var i = 0; i < scaleConfigs.length; i++) {
+                var columnCount = getUnitsBetween(project.start_date, project.end_date, scaleConfigs[i].scales[scaleConfigs[i].scales.length - 1].unit, scaleConfigs[i].scales[0].step);
+                if ((columnCount + 2) * gantt.config.min_column_width <= areaWidth) {
+                    break;
+                }
+            }
 
 
-				var resourceConfig = {
-			columns: [
-				{
-					name: "name", label: "Name", tree: true, template: function (resource) {
-						return resource.text;
-					}
-				},
-				{
-					name: "workload", label: "Workload", template: function (resource) {
-						var tasks;
-						var store = gantt.getDatastore(gantt.config.resource_store),
-							field = gantt.config.resource_property;
+            if (i == scaleConfigs.length) {
+                i--;
+            }
 
-						if (store.hasChild(resource.id)) {
-							tasks = gantt.getTaskBy(field, store.getChildren(resource.id));
-						} else {
-							tasks = gantt.getTaskBy(field, resource.id);
-						}
+            gantt.ext.zoom.setLevel(scaleConfigs[i].name);
+            applyConfig(scaleConfigs[i], project);
+        }
 
-						var totalDuration = 0;
-						for (var i = 0; i < tasks.length; i++) {
-							totalDuration += tasks[i].duration;
-						}
+        // get number of columns in timeline
+        function getUnitsBetween(from, to, unit, step) {
+            var start = new Date(from),
+                end = new Date(to);
+            var units = 0;
+            while (start.valueOf() < end.valueOf()) {
+                units++;
+                start = gantt.date.add(start, step, unit);
+            }
+            return units;
+        }
 
-						return (totalDuration || 0) * 8 + "h";
-					}
-				}
-			]
-		};
-
-		gantt.templates.resource_cell_class = function (start_date, end_date, resource, tasks) {
-			var css = [];
-			css.push("resource_marker");
-			if (tasks.length <= 1) {
-				css.push("workday_ok");
-			} else {
-				css.push("workday_over");
-			}
-			return css.join(" ");
-		};
-
-		gantt.templates.resource_cell_value = function (start_date, end_date, resource, tasks) {
-			return "<div>" + tasks.length * 8 + "</div>";
-		};
-
-		gantt.locale.labels.section_owner = "Owner";
-		gantt.config.lightbox.sections = [
-			{ name: "description", height: 38, map_to: "text", type: "textarea", focus: true },
-			//{name: "owner", height: 22, map_to: "owner_id", type: "select", options: gantt.serverList("people")},
-			{ name: "owner", height: 60, type: "multiselect", options: gantt.serverList("people"), map_to: "owner_id", unassigned_value: 5 },
-			{ name: "time", type: "duration", map_to: "auto" }
-		];
-
-		gantt.config.resource_store = "resource";
-		gantt.config.resource_property = "owner_id";
-		gantt.config.order_branch = true;
-		gantt.config.open_tree_initially = true;
-		gantt.config.layout = {
-			css: "gantt_container",
-			rows: [
-				{
-					cols: [
-						{ view: "grid", group: "grids", scrollY: "scrollVer" },
-						{ resizer: true, width: 1 },
-						{ view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer" },
-						{ view: "scrollbar", id: "scrollVer", group: "vertical" }
-					],
-					gravity: 2
-				},
-				{ resizer: true, width: 1 },
-				{
-					config: resourceConfig,
-					cols: [
-						{ view: "resourceGrid", group: "grids", width: 435, scrollY: "resourceVScroll" },
-						{ resizer: true, width: 1 },
-						{ view: "resourceTimeline", scrollX: "scrollHor", scrollY: "resourceVScroll" },
-						{ view: "scrollbar", id: "resourceVScroll", group: "vertical" }
-					],
-					gravity: 1
-				},
-				{ view: "scrollbar", id: "scrollHor" }
-			]
-		};
-
-		var resourcesStore = gantt.createDatastore({
-			name: gantt.config.resource_store,
-			type: "treeDatastore",
-			initItem: function (item) {
-				item.parent = item.parent || gantt.config.root_id;
-				item[gantt.config.resource_property] = item.parent;
-				item.open = true;
-				return item;
-			}
-		});
+        function zoom_in() {
+            gantt.ext.zoom.zoomIn();
+            gantt.$zoomToFit = false;
+            document.querySelector(".zoom_toggle").innerHTML = "Zoom to Fit";
+        }
+        function zoom_out() {
+            gantt.ext.zoom.zoomOut();
+            gantt.$zoomToFit = false;
+            document.querySelector(".zoom_toggle").innerHTML = "Zoom to Fit";
+        }
 
 
-		resourcesStore.attachEvent("onParse", function () {
-			var people = [];
-			resourcesStore.eachItem(function (res) {
-				if (!resourcesStore.hasChild(res.id)) {
-					var copy = gantt.copy(res);
-					copy.key = res.id;
-					copy.label = res.text;
-					people.push(copy);
-				}
-			});
-			gantt.updateCollection("people", people);
-		});
+        var zoomConfig = {
+            levels: [
+                // hours
+                {
+                    name: "hour",
+                    scale_height: 27,
+                    scales: [
+                        { unit: "day", step: 1, format: "%d %M" },
+                        { unit: "hour", step: 1, format: "%H:%i" },
+                    ]
+                },
+                // days
+                {
+                    name: "day",
+                    scale_height: 27,
+                    scales: [
+                        { unit: "day", step: 1, format: "%d %M" }
+                    ]
+                },
+                // weeks
+                {
+                    name: "week",
+                    scale_height: 50,
+                    scales: [
+                        {
+                            unit: "week", step: 1, format: function (date) {
+                                var dateToStr = gantt.date.date_to_str("%d %M");
+                                var endDate = gantt.date.add(date, -6, "day");
+                                var weekNum = gantt.date.date_to_str("%W")(date);
+                                return "#" + weekNum + ", " + dateToStr(date) + " - " + dateToStr(endDate);
+                            }
+                        },
+                        { unit: "day", step: 1, format: "%j %D" }
+                    ]
+                },
+                // months
+                {
+                    name: "month",
+                    scale_height: 50,
+                    scales: [
+                        { unit: "month", step: 1, format: "%F, %Y" },
+                        {
+                            unit: "week", step: 1, format: function (date) {
+                                var dateToStr = gantt.date.date_to_str("%d %M");
+                                var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
+                                return dateToStr(date) + " - " + dateToStr(endDate);
+                            }
+                        }
+                    ]
+                },
+                // quarters
+                {
+                    name: "quarter",
+                    height: 50,
+                    scales: [
+                        {
+                            unit: "quarter", step: 3, format: function (date) {
+                                var dateToStr = gantt.date.date_to_str("%M %y");
+                                var endDate = gantt.date.add(gantt.date.add(date, 3, "month"), -1, "day");
+                                return dateToStr(date) + " - " + dateToStr(endDate);
+                            }
+                        },
+                        { unit: "month", step: 1, format: "%M" },
+                    ]
+                },
+                // years
+                {
+                    name: "year",
+                    scale_height: 50,
+                    scales: [
+                        {
+                            unit: "year", step: 5, format: function (date) {
+                                var dateToStr = gantt.date.date_to_str("%Y");
+                                var endDate = gantt.date.add(gantt.date.add(date, 5, "year"), -1, "day");
+                                return dateToStr(date) + " - " + dateToStr(endDate);
+                            }
+                        }
+                    ]
+                },
+                // decades
+                {
+                    name: "year",
+                    scale_height: 50,
+                    scales: [
+                        {
+                            unit: "year", step: 100, format: function (date) {
+                                var dateToStr = gantt.date.date_to_str("%Y");
+                                var endDate = gantt.date.add(gantt.date.add(date, 100, "year"), -1, "day");
+                                return dateToStr(date) + " - " + dateToStr(endDate);
+                            }
+                        },
+                        {
+                            unit: "year", step: 10, format: function (date) {
+                                var dateToStr = gantt.date.date_to_str("%Y");
+                                var endDate = gantt.date.add(gantt.date.add(date, 10, "year"), -1, "day");
+                                return dateToStr(date) + " - " + dateToStr(endDate);
+                            }
+                        },
+                    ]
+                },
+            ],
+            element: function () {
+                return gantt.$root.querySelector(".gantt_task");
+            }
+        };
 
-		resourcesStore.parse([
-			{ id: 1, text: "QA", parent: null },
-			{ id: 2, text: "Development", parent: null },
-			{ id: 3, text: "Sales", parent: null },
-			{ id: 4, text: "Other", parent: null },
-			{ id: 5, text: "Unassigned", parent: 4 },
-			{ id: 6, text: "John", parent: 1 },
-			{ id: 7, text: "Mike", parent: 2 },
-			{ id: 8, text: "Anna", parent: 2 },
-			{ id: 9, text: "Bill", parent: 3 },
-			{ id: 10, text: "Floe", parent: 3 }
-		]);
+        gantt.config.fit_tasks = true;
 
-			gantt.parse({ data: data, links: links });
-		gantt.attachEvent("onAfterLinkAdd", function (id, link) {
-			console.log("Source: " + link.source + ", Target: " + link.target);
-		});
-		
-	</script>
-	
+
+        gantt.ext.zoom.init(zoomConfig);
+
+        gantt.ext.zoom.setLevel("day");
+
+        gantt.$zoomToFit = false;
+
+    </script>
+    <script>
+
+
+        var data = [
+        @foreach (var task in Model.ProjectTasks)
+        {
+            if (task.ParentId != null)
+            {
+                @:{ id: @task.Id, text: "@task.Name", title: "@task.Description", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", end_date: "@task.EndDate.ToString("dd-MM-yyyy")", status: @task.KanbanColumeID, priority: @task.PriorityValue, duration: @task.Duration, parent: @task.ParentId },
+            }
+            else
+            {
+                @:{ id: @task.Id, text: "@task.Name", title: "@task.Description", start_date: "@task.StartDate.ToString("dd-MM-yyyy")", end_date: "@task.EndDate.ToString("dd-MM-yyyy")", status: @task.KanbanColumeID, priority: @task.PriorityValue, duration: @task.Duration },
+
+            }
+        }
+               ];
+
+        var links = [];
+
+        @foreach (var task in Model.ProjectTasks)
+        {
+            foreach (var dependentTask in task.DependentTasks)
+            {
+                @:links.push({ id: @dependentTask.Id, source: @dependentTask.Id, target: @task.Id, type: "0" });
+            }
+        }
+
+
+                                                                        var resourceConfig = {
+            columns: [
+                {
+                    name: "name", label: "Name", tree: true, template: function (resource) {
+                        return resource.title;
+                    }
+                },
+                {
+                    name: "workload", label: "Workload", template: function (resource) {
+                        var tasks;
+                        var store = gantt.getDatastore(gantt.config.resource_store),
+                            field = gantt.config.resource_property;
+
+                        if (store.hasChild(resource.id)) {
+                            tasks = gantt.getTaskBy(field, store.getChildren(resource.id));
+                        } else {
+                            tasks = gantt.getTaskBy(field, resource.id);
+                        }
+
+                        var totalDuration = 0;
+                        for (var i = 0; i < tasks.length; i++) {
+                            totalDuration += tasks[i].duration;
+                        }
+
+                        return (totalDuration || 0) * 8 + "h";
+                    }
+                }
+            ]
+        };
+
+        gantt.templates.resource_cell_class = function (start_date, end_date, resource, tasks) {
+            var css = [];
+            css.push("resource_marker");
+            if (tasks.length <= 1) {
+                css.push("workday_ok");
+            } else {
+                css.push("workday_over");
+            }
+            return css.join(" ");
+        };
+
+        gantt.templates.resource_cell_value = function (start_date, end_date, resource, tasks) {
+            return "<div>" + tasks.length * 8 + "</div>";
+        };
+
+
+
+        gantt.locale.labels.section_owner = "Owner";
+        gantt.locale.labels.section_TaskName = "Task Name";
+        gantt.locale.labels.section_status = "Status";
+        gantt.locale.labels.section_priority = "Priority";
+        gantt.config.lightbox.sections = [
+            { name: "TaskName", height: 38, map_to: "text", type: "textarea", focus: true },
+            { name: "description", height: 38, map_to: "title", type: "textarea" },
+            {
+                name: "status", height: 38, map_to: "status", type: "select",
+                options: [
+        @foreach (var item in Model.KanbanColumes)
+        {
+            @:{ key: @item.Id , label: "@item.NameColume" },
+        }
+                                                                  ]
+            },
+            {
+                name: "priority", height: 22, map_to: "priority", type: "select",
+                options: [
+                    { key: 1, label: "High" },
+                    { key: 2, label: "Normal" },
+                    { key: 3, label: "Low" }
+                ]
+            },
+            //{name: "owner", height: 22, map_to: "owner_id", type: "select", options: gantt.serverList("people")},
+            //{ name: "owner", height: 60, type: "multiselect", options: gantt.serverList("people"), map_to: "owner_id", unassigned_value: 5 },
+            { name: "time", type: "time", map_to: "auto" }
+        ];
+
+        gantt.config.resource_store = "resource";
+        gantt.config.resource_property = "owner_id";
+        gantt.config.order_branch = true;
+        gantt.config.open_tree_initially = true;
+        gantt.config.layout = {
+            css: "gantt_container",
+            rows: [
+                {
+                    cols: [
+                        { view: "grid", group: "grids", scrollY: "scrollVer" },
+                        { resizer: true, width: 1 },
+                        { view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer" },
+                        { view: "scrollbar", id: "scrollVer", group: "vertical" }
+                    ],
+                    gravity: 2
+                },
+                { resizer: true, width: 1 },
+                {
+                    config: resourceConfig,
+                    cols: [
+                        { view: "resourceGrid", group: "grids", width: 435, scrollY: "resourceVScroll" },
+                        { resizer: true, width: 1 },
+                        { view: "resourceTimeline", scrollX: "scrollHor", scrollY: "resourceVScroll" },
+                        { view: "scrollbar", id: "resourceVScroll", group: "vertical" }
+                    ],
+                    gravity: 1
+                },
+                { view: "scrollbar", id: "scrollHor" }
+            ]
+        };
+
+        var resourcesStore = gantt.createDatastore({
+            name: gantt.config.resource_store,
+            type: "treeDatastore",
+            initItem: function (item) {
+                item.parent = item.parent || gantt.config.root_id;
+                item[gantt.config.resource_property] = item.parent;
+                item.open = true;
+                return item;
+            }
+        });
+
+
+        resourcesStore.attachEvent("onParse", function () {
+            var people = [];
+            resourcesStore.eachItem(function (res) {
+                if (!resourcesStore.hasChild(res.id)) {
+                    var copy = gantt.copy(res);
+                    copy.key = res.id;
+                    copy.label = res.title;
+                    people.push(copy);
+                }
+            });
+            gantt.updateCollection("people", people);
+        });
+
+        resourcesStore.parse([
+            { id: 1, text: "QA", parent: null },
+            { id: 2, text: "Development", parent: null },
+            { id: 3, text: "Sales", parent: null },
+            { id: 4, text: "Other", parent: null },
+            { id: 5, text: "Unassigned", parent: 4 },
+            { id: 6, text: "John", parent: 1 },
+            { id: 7, text: "Mike", parent: 2 },
+            { id: 8, text: "Anna", parent: 2 },
+            { id: 9, text: "Bill", parent: 3 },
+            { id: 10, text: "Floe", parent: 3 }
+        ]);
+
+        gantt.parse({ data: data, links: links });
+        gantt.attachEvent("onAfterLinkAdd", function (id, link) {
+            console.log("Source: " + link.source + ", Target: " + link.target);
+            var data = {
+                id: link.source,
+                target: link.target,
+
+            };
+
+            // Send the data via AJAX
+            $.ajax({
+                url: '/ProjectTasks/CreateDependecy',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+              
+                }
+            });
+        });
+
+
+
+
+        gantt.attachEvent("onAfterTaskDelete", function (id) {
+            console.log("Task with ID " + id + " has been deleted");
+            // Your code here
+            var data = {
+                dataSend: id,
+             
+            };
+
+            // Send the data via AJAX
+            $.ajax({
+                url: '/ProjectTasks/DeleteTask',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        });
+
+        gantt.attachEvent("onAfterTaskAdd", function (id, item) {
+            console.log("New task with ID " + id + " has been added: ", item);
+            var data = {
+                list1: JSON.stringify(item),
+                projectId: JSON.stringify(@Model.ProjectId),
+            };
+
+            // Send the data via AJAX
+            $.ajax({
+                url: '/ProjectTasks/SubmitLists',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        });
+        gantt.attachEvent("onAfterTaskUpdate", function (id, task) {
+            console.log("Update " + id + " has been updated with new values: ", task);
+            var data = {
+                dataSend: JSON.stringify(task),
+
+            };
+            $.ajax({
+                url: '/ProjectTasks/UpdateTask',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    //location.reload();
+                }
+            });
+        });
+
+        // Assume we have two lists of data
+
+
+        // Handle the button click event
+        $('#submit-button').click(function () {
+            // Serialize the data into JSON format
+
+        });
+               // nếu khồng dùng jquery
+    </script>
+
 </body>

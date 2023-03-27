@@ -69,11 +69,15 @@ namespace WebApplication1.Data.Entities.ProjectAggregate
 
         public String Dependencies { get; set; }
         public String Successors { get; set; }
-
+        [NotMapped]
         public List<ProjectTask> DependentTasks { get; set; } = new List<ProjectTask>();
         public List<ProjectTask> SuccessorTaks { get; set; } = new List<ProjectTask>();
 
         public ICollection<ProjectTask_User> ProjectTask_Users { get; set; }
+
+        public int? ParentId { get; set; }
+       
+
 
         [NotMapped]
         public int RemainDate
