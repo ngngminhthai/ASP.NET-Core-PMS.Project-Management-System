@@ -7,6 +7,7 @@ using PMS.Data.Entities.ProjectAggregate;
 using PMS.Pages.Shared;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -150,7 +151,37 @@ namespace PMS.Pages.ProjectTasks
         public IActionResult OnPostDelete(int projectTaskId, int id)
         {
 
-            projectTaskService.Delete(projectTaskId);
+
+
+            var taskdelete = _context.ProjectTasks.Where(p => p.Id == projectTaskId).FirstOrDefault();
+            var child = _context.ProjectTasks.Where(p => p.ParentId == taskdelete.Id).ToList();
+            if (child.Count > 0 || child != null)
+            {
+                foreach (var item in child)
+                {
+                    item.ParentId = null;
+                }
+            }
+
+
+            // update orther task
+            var listTask = _context.ProjectTasks.Where(p => p.KanbanColumeID == taskdelete.KanbanColumeID).ToList();
+
+
+            foreach (var item in listTask)
+            {
+                if (item.Order > taskdelete.Order)
+                {
+                    item.Order -= 1;
+                }
+
+            }
+
+
+            _context.ProjectTasks.UpdateRange(child);
+            _context.ProjectTasks.Remove(taskdelete);
+            _context.SaveChanges();
+
 
             return Redirect("../ProjectTasks?id=" + id);
 
