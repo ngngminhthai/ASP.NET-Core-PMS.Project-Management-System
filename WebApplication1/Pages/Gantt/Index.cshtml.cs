@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using PMS.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +17,19 @@ namespace PMS.Pages.Gantt
 		{
 			_context = context;
 		}
-
+		public int ProjectId { get; set; }
 		public IList<ProjectTask> ProjectTasks { get; set; }
-
-		public async Task OnGetAsync()
+		public IList<KanbanColume> KanbanColumes { get; set; }
+		public async Task OnGetAsync( int projectId )
 		{
+			ProjectId = projectId;
 			ProjectTasks = await _context.ProjectTasks
 				.Include(p => p.KanbanColume)
-				.Include(p => p.Project).ToListAsync();
-
+				.Include(p => p.Project)
+				.Where(p => p.ProjectId == projectId)
+				.ToListAsync();
+			KanbanColumes = await _context.kanbanColumes
+				.Where(k => k.ProjectId == projectId).ToListAsync();
 			foreach (var ProjectTask in ProjectTasks)
 			{
 				if (ProjectTask != null)
