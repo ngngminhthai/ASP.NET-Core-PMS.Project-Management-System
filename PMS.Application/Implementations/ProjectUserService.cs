@@ -38,7 +38,7 @@ namespace PMS.Application.Implementations
             }
             
             var userCreator = context.Projects.Include(p => p.Creator).Where(p => p.Id == projectId && p.Creator.UserName.Equals(userName))
-                .Select(p => p.Creator);
+                .Select(p => p.Creator).FirstOrDefault();
             if (userCreator != null)
             {
                 return 2;
