@@ -50,5 +50,10 @@ namespace PMS.Application.Implementations.ProjectRoles
             return projectPermissionRepository.FindAll(p => p.RoleId.Equals(id), p => p.ProjectRole).ToListAsync();
             //return _permissionRepository.FindAll(p => p.RoleId.Equals(id.ToString()), p => p.AppRole).ToListAsync();
         }
+
+        public List<ProjectRole> GetAllRoles(int projectId)
+        {
+            return projectRoleRepository.FindAll(r => r.ProjectId == projectId).ToList();
+        }
     }
 }

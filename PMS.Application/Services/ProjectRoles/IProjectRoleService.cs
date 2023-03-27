@@ -10,5 +10,6 @@ namespace PMS.Application.Services
         public Task<bool> CheckPermission(string functionId, string action, string[] roles, int projectId);
         IQueryable<ProjectRole> GetAll();
         public Task<List<ProjectPermission>> GetAllPermission(int id);
+        public List<ProjectRole> GetAllRoles(int projectId);
     }
 }

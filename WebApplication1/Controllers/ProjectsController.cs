@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 using PMS.Application.CQRS.Projects;
 using PMS.Application.CQRS.Projects.Comments;
 using PMS.Application.Services;
+using PMS.Data.Entities.ProjectAggregate;
 using PMS.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -282,5 +283,32 @@ namespace PMS.Controllers
         {
             return _context.Projects.Any(e => e.Id == id);
         }
+
+        public List<ProjectRole> GetProjectRoles(int projectId, string userId)
+        {
+            List<ProjectRole> projectRoles = _context.ProjectRole_Users
+                .Include(pr => pr.ProjectRole)
+                .Where(pr => pr.UserId == userId)
+                .Select(pr => pr.ProjectRole)
+                .Where(r => r.ProjectId == projectId)
+                .ToList();
+
+            return projectRoles;
+        }
+
+        public IActionResult UpdateProjectRoles(List<ProjectRole_User> projectRoles, string userId, int projectId)
+        {
+            List<ProjectRole_User> projectRoles2 = _context.ProjectRole_Users
+                .Include(pru => pru.ProjectRole)
+                .Where(pru => pru.ProjectRole.ProjectId == projectId && pru.UserId == userId)
+                .ToList();
+
+            _context.RemoveRange(projectRoles2);
+            _context.AddRange(projectRoles);
+            _context.SaveChanges();
+            return Redirect($"/ProjectUser/Index?projectId={projectId}");
+
+        }
+
     }
 }

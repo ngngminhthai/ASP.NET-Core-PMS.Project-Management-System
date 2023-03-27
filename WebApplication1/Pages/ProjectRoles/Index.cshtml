@@ -12,7 +12,7 @@
           @if(project != null){
             <h2>Project's Roles</h2>
             <p>
-                <a class="btn btn-primary" asp-page="Create">Create New</a>
+                <a class="btn btn-primary" asp-page="Create" asp-route-id="@project.Id">Create New</a>
             </p>
             <table class="table table-bordered">
                 <thead>

@@ -30,7 +30,8 @@ namespace WebApplication1.Services
             ((ClaimsIdentity)principal.Identity).AddClaims(new[]
             {
                 new Claim("Email",user.Email),
-                new Claim("Roles",string.Join(";",roles))
+                new Claim("Roles",string.Join(";",roles)),
+                new Claim("ImgProfile", user.ImageProfile)
             });
             return principal;
 

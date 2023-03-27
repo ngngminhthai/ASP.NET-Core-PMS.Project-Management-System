@@ -4,20 +4,116 @@
 @{
     ViewData["Title"] = "Tasks";
 }
+
+@section Styles{
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/png">
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="~/css/icons.min.css">
+    <!-- Plugin -->
+    <link rel="stylesheet" href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="~/lib/date-picker/datepicker.css">
+    <link rel="stylesheet" href="~/lib/datatable/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="~/lib/rating/css/rating-themes.css">
+    <!-- APP CSS -->             
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/grid.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+	<link href="~/lib/date-picker/datepicker.css" rel="stylesheet" />
+	<link href="~/lib/jquery/jquery.dropdown.css" rel="stylesheet" />
+}
+
 <div class="main-content">
     <div class="box">
+        <div class="row">
+            <div class="col-md-12 col-xl-10 mb-0">
+                <div class="row">
+                    <div class="col-md-12 col-xl-4 mb-0">
+                        <div class="form-group">
+                            <label class="form-label">From:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="bx bx-calendar"></i> </div>
+                                </div><input class="form-control fc-datepicker" placeholder="DD-MM-YYYY" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xl-4 mb-0">
+                        <div class="form-group">
+                            <label class="form-label">To:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="bx bx-calendar"></i> </div>
+                                </div><input class="form-control fc-datepicker" placeholder="DD-MM-YYYY" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xl-4 mb-0">
+                        <div class="form-group">
+                            <label class="form-label">Select Priority:</label>
+                            <select name="priority" class="form-control">
+                                <option value="">Select Priority</option>
+                                <option value="1">High</option>
+                                <option value="2">Medium</option>
+                                <option value="3">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xl-4 mb-0">
+                        <div class="form-group">
+                            <label class="form-label">Select Status:</label>
+                            <select name="status" class="form-control">
+                                <option value="">Select Status</option>
+                                <option value="1">Active</option>
+                                <option value="2">Inactive</option>
+                                <option value="3">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 col-xl-4 mb-0">
+                        <div class="form-group">
+                            <label class="form-label">Task Name</label>
+                            <input type="text" class="form-control" placeholder="Enter task name" />
+                            
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-xl-4 mb-0">
+                        <label class="form-label">Assignee</label>
+
+                        <div class="dropdown-mul-1">
+                            <select style="display:none" name="" id="" multiple placeholder="Select">
+                            </select>
+                        </div>
+                    </div>
+
+                   
+
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-2 mb-0">
+                <div class="form-group mt-32"> <a href="#" class="btn bg-primary btn-block color-white">Search</a> </div>
+            </div>
+        </div>
         <div class="box-body d-flex justify-content-between pt-0 pb-0">
-            <div class="search-form d-flex">
-                <input type="text" placeholder="Client Name" class="form-control">
+            @*<div class="search-form d-flex">
+                <input type="text" placeholder="Task Name" class="form-control">
                 <select class="form-control" id="inputState">
-                    <option selected="">Select Company Name</option>
+                    <option selected="">Select Status</option>
                     <option>Company 1 </option>
                     <option>Company 2</option>
                 </select>
+               
                 <button type="submit" class="search d-flex"><i class="fas fa-search"></i>Search</button>
                 <a href="#" class="add search d-flex me-2" data-toggle="modal" data-target="#add_task"><i class="fas fa-plus-circle mr-2"></i> New Task</a>
 
-            </div>
+            </div>*@
             @*   <div class="list-action">
             <a class="list active" href="#" onclick="liststyle()"><i class="bx bx-menu"></i></a>
             <a href="#" class="list-board" onclick="listboard()"><i class="bx bxs-dashboard"></i></a>
@@ -32,8 +128,11 @@
             </div>
             <div class="card-options pr-3">
                <div class="row">
-                   <div class="col-2">                      
-                            <a class="add search d-flex me-2" href="/kanban?projectId=@Model.Id"> See Board </a>
+                   <div class="col-2 d-flex">    
+                       
+                        <a class="add search d-flex me-2" href="/kanban?projectId=@Model.Id"> See Board </a>
+                        <a href="#" class="add search d-flex me-2" data-toggle="modal" data-target="#add_task"><i class="fas fa-plus-circle mr-2"></i> New Task</a>
+
                    </div>
                    @*<div class="col-2">
                         <a class="add search d-flex me-2" href="/ProjectTaskUser?projectTaskId=@Model.Id"> User </a> 
@@ -46,9 +145,9 @@
                 <thead>
                     <tr class="top">
                         <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 222.312px;">Name</th>
-                        <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 84.8281px;">Member</th>
-                        <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 87.9844px;">Start</th>
-                        <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 87.9844px;">End</th>
+@*                        <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 84.8281px;">Member</th>
+*@                        <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 87.9844px;">Start Date</th>
+                        <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 87.9844px;">End Date</th>
                         @*<th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 71.875px;">Progress</th>*@
                         <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 71.875px;">Priority</th>
                         <th class="border-bottom-0 sorting fs-14 font-w500" tabindex="0" aria-controls="task-profile" rowspan="1" colspan="1" style="width: 110.719px;">Work Status</th>
@@ -62,24 +161,29 @@
                             <td>
                                 <a href="#" class="d-flex "> <span>@item.Name</span> </a>
                             </td>
-                            <td>
+                           @* <td>
                                 <ul class="user-list mb-0">
                                     <li><img src="./images/avatar/user-1.png" alt="user"></li>
                                     <li><img src="./images/avatar/user-2.png" alt="user"></li>
                                     <li><img src="./images/avatar/user-3.png" alt="user"></li>
                                 </ul>
-                            </td>
+                            </td>*@
                             <td>@item.StartDate.ToString("d-M-yyyy")</td>
                             <td>@item.EndDate.ToString("d-M-yyyy")</td>
                             <td>
-                                <div class="dropdown">
+                               @* <div class="dropdown">
                                     
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item badge-danger" href="/ProjectTasks/Edit?handler=UpdatePriority&id=@item.Id&priority=1&pid=@item.ProjectId">Low</a>
                                         <a class="dropdown-item badge-warning" href="/ProjectTasks/Edit?handler=UpdatePriority&id=@item.Id&priority=2&pid=@item.ProjectId">Medium</a>
                                         <a class="dropdown-item badge-success" href="/ProjectTasks/Edit?handler=UpdatePriority&id=@item.Id&priority=3&pid=@item.ProjectId">High</a>
                                     </div>
-                                </div>
+                                </div>*@
+                                <select class="select form-control">
+                                    <option>Low</option>
+                                    <option>Medium</option>
+                                    <option>High</option>
+                                </select>
                             </td>
                             <td>
                                 <div class="dropdown">
@@ -89,19 +193,19 @@
                                      <input  type="hidden" value="@Model.Id" name="projectId" />
                                         <input type="hidden" value="@Model.paginationParams.PageNumber" name="page" />
 
-                                     
-                                     <select  onchange="tosubmit(@item.Id)" name="columnId">
+
+                                        <select class="select form-control" onchange="tosubmit(@item.Id)" name="columnId">
                                         @if (Model.Kanbans != null)
                                         {
                                             foreach (var i in Model.Kanbans)
                                             {
                                                     if(item.KanbanColumeID == i.Id)
                                                     {
-                                                        <option selected class="work-status badge badge-warning" value="@i.Id">@i.NameColume</option>
+                                                        <option selected value="@i.Id">@i.NameColume</option>
                                                     }
                                                     else
                                                     {
-                                                        <option class="work-status badge badge-warning" value="@i.Id">@i.NameColume</option>
+                                                        <option value="@i.Id">@i.NameColume</option>
                                                     }
                                             }
                                         }
@@ -111,7 +215,10 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="dropdown">
+                                <button class="btn btn-primary">View</button>
+                                <button class="btn btn-success">Edit</button>
+                                <button class="btn btn-danger">Delete</button>
+                               @* <div class="dropdown">
                                     <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bx bx-dots-horizontal-rounded"></i>
                                     </a>
@@ -126,7 +233,8 @@
                                             </form>
                                         </a>
                                     </div>
-                                </div>
+                                </div>*@
+                               
                             </td>
                         </tr>
                     }
@@ -158,21 +266,40 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                @*<div class="form-group">
                                     <label>Start Date</label>
                                     <div class="cal-icon">
                                         <input name="StartDate" type="date" required>
 
                                     </div>
+                                </div>*@
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <div class="input-group">
+
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="bx bx-calendar"></i> </div>
+                                        </div><input name="StartDate" class="form-control fc-datepicker" placeholder="DD-MM-YYYY" type="date">
+                                    </div>
                                 </div>
+                              
                             </div>
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                @*<div class="form-group">
                                     <label>End Date</label>
                                     <div class="cal-icon">
                                         <input name="EndDate" type="date">
                                     </div>
+                                </div>*@
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="bx bx-calendar"></i> </div>
+                                        </div><input name="EndDate" class="form-control fc-datepicker" placeholder="DD-MM-YYYY" type="date">
+                                    </div>
                                 </div>
+                               
                             </div>
                         </div>
                         <div class="row">
@@ -180,7 +307,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Priority</label>
-                                    <select class="select" name="PriorityValue">
+                                    <select class="select form-control" name="PriorityValue">
                                         <option value="1">Low</option>
                                         <option value="2">Medium</option>
                                         <option value="3">High</option>
@@ -191,7 +318,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>WorkingStatus</label>
-                                    <select class="select" name="KanbanId">
+                                    <select class="select form-control" name="KanbanId">
                                     @if(Model.Kanbans != null)
                                     {
                                         foreach(var item in Model.Kanbans)
@@ -204,6 +331,17 @@
                                 </div>
                             </div>
 
+                        </div>
+                        <div class="row"> 
+                            <div class="col-sm-12">
+                                <label>Assgin</label>
+
+                                <div class="dropdown-mul-1">
+                                    <select style="display:none" name="" id="" multiple placeholder="Select">
+                                    </select>
+                                </div>
+
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
@@ -233,9 +371,38 @@
     <script src="~/lib/chart.js/Chart.bundle.min.js"></script>
     <script src="~/lib/owl.carousel/owl.carousel.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/js/countto.js"></script>
+    <script src="~/lib/date-picker/datepicker.js"></script>
+    <script src="~/lib/rating/js/custom-ratings.js"></script>
+    <script src="~/lib/rating/js/jquery.barrating.js"></script>
+    <script src="~/lib/circle-progress/circle-progress.min.js"></script>
     <script src="~/lib/simplebar/simplebar.min.js"></script>
+
+    <script src="~/js/main.js"></script>
+    <script src="~/js/shortcode.js"></script>
+    <script src="~/js/pages/datepicker.js"></script>
+    <script src="~/js/pages/chart-circle.js"></script>
+	<script src="~/lib/jquery/jquery.dropdown.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
     <script>
+
+
+        $('.dropdown-mul-1').dropdown({
+            data: [
+                { id: 1, name: "Option1" }, 
+                { id: 2, name: "Option2" }
+            ],
+            limitCount: 40,
+            multipleMode: 'label',
+            choice: function () {
+                // console.log(arguments,this);
+            }
+        });
+
+
+
+
         function myFunction(id) {
             console.log('myFormDelete+'+id);
             Swal.fire({

@@ -1,7 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Hosting
 @using Microsoft.AspNetCore.Mvc.ViewEngines
+@using System.Security.Claims;
 @inject IWebHostEnvironment Environment
 @inject ICompositeViewEngine Engine
+@{
+    var imgProfile = ((ClaimsIdentity)User.Identity).Claims.FirstOrDefault(x => x.Type == "ImgProfile").ToString().Split(":")[1].Trim();
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -238,7 +243,9 @@
             </div> -->
             <div class="dropdown d-inline-block mt-12">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="rounded-circle header-profile-user" src="./images/profile/profile.png"
+                    <img style="width: 60px;
+    height: 60px;
+    object-fit: cover;" class="rounded-circle header-profile-user" src="~/uploads/@imgProfile"
                             alt="Header Avatar">
                         <span class="pulse-css"></span>
                         <span class="info d-xl-inline-block  color-span">

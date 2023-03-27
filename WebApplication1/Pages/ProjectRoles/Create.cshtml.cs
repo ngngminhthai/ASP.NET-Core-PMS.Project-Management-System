@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PMS.Data.Entities.ProjectAggregate;
-using WebApplication1.Data;
+using System.Threading.Tasks;
 
 namespace PMS.Pages.ProjectRoles
 {
@@ -19,9 +14,10 @@ namespace PMS.Pages.ProjectRoles
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int id)
         {
-        ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
+            //ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
+            ViewData["ProjectRoleId"] = id;
             return Page();
         }
 
@@ -39,7 +35,7 @@ namespace PMS.Pages.ProjectRoles
             _context.ProjectRoles.Add(ProjectRole);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { id = ProjectRole.ProjectId });
         }
     }
 }
