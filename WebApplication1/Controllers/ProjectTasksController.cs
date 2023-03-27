@@ -313,8 +313,33 @@ namespace PMS.Controllers
         {
 
 
-            var task = _context.ProjectTasks.Where(p => p.Id == dataSend).FirstOrDefault();
-            _context.ProjectTasks.Remove(task);
+            var taskdelete = _context.ProjectTasks.Where(p => p.Id == dataSend).FirstOrDefault();
+            var child = _context.ProjectTasks.Where(p => p.ParentId == taskdelete.Id).ToList();
+            if(child.Count > 0 || child != null )
+            {
+                foreach(var item in child)
+                {
+                    item.ParentId = null;
+                }
+            }
+
+
+            // update orther task
+            var listTask = _context.ProjectTasks.Where(p => p.KanbanColumeID == taskdelete.KanbanColumeID).ToList();
+
+
+            foreach (var item in listTask)
+            {
+                if (item.Order > taskdelete.Order)
+                {
+                    item.Order -= 1;
+                }
+
+            }
+         
+
+            _context.ProjectTasks.UpdateRange(child);
+            _context.ProjectTasks.Remove(taskdelete);
             _context.SaveChanges();
 
         }

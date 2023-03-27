@@ -130,6 +130,46 @@ namespace PMS.Pages.ProjectTasks
         {
             // Retrieve the existing task from the database
             var task = await _context.ProjectTasks.FindAsync(taskId);
+            var taskUser = _context.projectTask_Users.Where(p => p.ProjectTaskId == taskId).ToList();
+            if (taskUser != null || taskUser.Count() > 0)
+            {
+                List<ProjectTask_User> listUser = new List<ProjectTask_User>();
+                foreach (var item in selectedUsers)
+                {
+                    var iscontain = taskUser.Where(p => p.UserId == item).FirstOrDefault();
+                    if (iscontain == null)
+                    {
+                        taskUser.Add(new ProjectTask_User
+                        {
+                            ProjectTaskId = taskId,
+                            UserId = item
+
+                        }); ;
+                    }
+                }
+                List<ProjectTask_User> listDelete = taskUser.Where(p => !selectedUsers.Contains(p.UserId)).ToList();
+
+                foreach (var item in listDelete)
+                {
+                    taskUser.Remove(item);
+                }
+
+            }
+            else
+            {
+                foreach (var item in selectedUsers)
+                {
+                   
+                        taskUser.Add(new ProjectTask_User
+                        {
+                            ProjectTaskId = taskId,
+                            UserId = item
+
+                        }); ;
+                    
+                }
+            }
+            //taskUser.Remov(listDelete);
 
             if (task == null)
             {
@@ -143,6 +183,7 @@ namespace PMS.Pages.ProjectTasks
             task.StartDate = startDate;
             task.EndDate = endDate;
             task.Description = taskDescription;
+            
 
             // Update the task assignees
             var existingAssignees = await _context.projectTask_Users.Where(ptu => ptu.ProjectTaskId == taskId).ToListAsync();
