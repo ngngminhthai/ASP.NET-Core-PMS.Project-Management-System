@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ using WebApplication1.Data.Entities.UserAggregate;
 
 namespace PMS.Pages.Admin.Roles
 {
-
+    [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly IFunctionService functionService;

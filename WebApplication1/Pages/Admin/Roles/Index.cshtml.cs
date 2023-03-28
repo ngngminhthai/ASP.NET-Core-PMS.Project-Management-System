@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PMS.Application.Services;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using WebApplication1.Data.Entities;
 
 namespace PMS.Pages.Admin.Roles
 {
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         private readonly IRoleService _roleService;

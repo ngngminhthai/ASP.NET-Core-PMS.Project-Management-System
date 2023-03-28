@@ -1,4 +1,5 @@
-﻿using PMS.Application.Services.Conversations;
+﻿using Microsoft.EntityFrameworkCore;
+using PMS.Application.Services.Conversations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace PMS.Controllers
         {
             var messages = context.Messages
                 .Where(m => m.ConversationId == id)
+                .Include(m => m.User)
                 .OrderByDescending(m => m.DateCreated)
                 .Skip(skipCount)
                 .Take(5)
@@ -38,6 +40,10 @@ namespace PMS.Controllers
             {
                 context.Messages.Add(message);
                 context.SaveChanges();
+
+                var sender = context.Messages.Where(m => m.SenderId == senderId).Include(m => m.User).Select(m => m.User).FirstOrDefault();
+                message.User = sender;
+
                 return message;
             }
             catch (Exception e)

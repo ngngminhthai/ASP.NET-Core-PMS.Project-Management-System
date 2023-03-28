@@ -1,13 +1,32 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization;
 @using WebApplication1.Data.Entities.ProjectAggregate;
 @using WebApplication1.Models;
 @model PMS.Pages.Projects.DetailsModel
-
+@using PMS.Authorization;
+@using RBAC.Application.Authorization;
+@using TeduCoreApp.Authorization;
+@inject IAuthorizationService AuthorizationService
 @{
     ViewData["Title"] = "Details";
 }
 <!-- MAIN CONTENT -->
-
+@{
+    var resultEditMember = await AuthorizationService.AuthorizeAsync(
+           User,
+           new Payload
+                   {
+                       Resource = "project",
+                       ProjectRequirement = new ProjectRequirement { ProjectId = Model.Project.Id, Action = "Read", Resource = "MEMBER" }
+                   }, Operations.Read);
+    var resultEditRole = await AuthorizationService.AuthorizeAsync(
+        User,
+           new Payload
+           {
+               Resource = "project",
+               ProjectRequirement = new ProjectRequirement { ProjectId = Model.Project.Id, Action = "Read", Resource = "ROLE" }
+           }, Operations.Read);
+}
 
 <div class="main-content">
 
@@ -42,10 +61,17 @@
                         </a>
                     </div>*@
                     <div class="action">
-                        <a href="/ProjectRoles/Index?id=@Model.Project.Id" class="comment">Manage Roles</a>
-                        <a href="#" class="comment">32 Comments</a>
+                        @if (resultEditRole.Succeeded)
+                        {
+                            <a href="/ProjectRoles/Index?id=@Model.Project.Id" class="comment">Manage Roles</a>
+                        }
+                        <a href="#" class="comment">Comments</a>
                         <a href="../projecttasks?id=@Model.Project.Id" class="edit">List Task</a>
-                        <a href="../projectUser?projectId=@Model.Project.Id" class="invite"><i class="fas fa-user-plus mr-5"></i>Invite People</a>
+                        @if (resultEditMember.Succeeded){
+                                                    <a href="../projectUser?projectId=@Model.Project.Id" class="invite"><i class="fas fa-user-plus mr-5"></i>Invite People</a>
+
+                        }
+
                         @*<a href="#" class="add">New<i class="fas fa-caret-down pl-12"></i></a>*@
                         <a href="/ProjectUploadedFiles/Index?id=@Model.Project.Id">Files Attachments</a>
 
