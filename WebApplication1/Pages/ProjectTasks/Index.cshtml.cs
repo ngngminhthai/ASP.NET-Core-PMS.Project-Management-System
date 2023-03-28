@@ -1,3 +1,6 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using PMS.Application.ViewModels;
+using PMS.Authorization;
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -5,12 +8,14 @@ using PMS.Application.Services;
 using PMS.Data.Entities;
 using PMS.Data.Entities.ProjectAggregate;
 using PMS.Pages.Shared;
+using RBAC.Application.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using TeduCoreApp.Authorization;
 using WebApplication1.Data;
 using WebApplication1.Data.Entities;
 using WebApplication1.Data.Entities.ProjectAggregate;
@@ -23,11 +28,13 @@ namespace PMS.Pages.ProjectTasks
     {
         private readonly IProjectTaskService projectTaskService;
         private readonly ManageAppDbContext _context;
+        private readonly IAuthorizationService authorizationService;
 
-        public IndexModel(IProjectTaskService projectTaskService, ManageAppDbContext context)
+        public IndexModel(IProjectTaskService projectTaskService, ManageAppDbContext context, IAuthorizationService authorizationService)
         {
             this.projectTaskService = projectTaskService;
             _context = context;
+            this.authorizationService = authorizationService;
         }
 
         public PaginationParams paginationParams { get; set; } = new PaginationParams();
@@ -41,21 +48,34 @@ namespace PMS.Pages.ProjectTasks
         public int Id { get; set; }
         public List<KanbanColume> Kanbans { get; set; }
         public List<ManageUser> Users { get; set; }
-
-        //biding
-        public int Priority { get; set; }
+            public int Priority { get; set; }
         public int KanbanId { get; set; }
         public string Search { get; set; }
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
         public string [] Member { get; set; }
 
+          
+  
 
 
         public async Task OnGetAsync(int id, string search, string from,
             string to, string[] members
            , int kanbanId = 0, int priority = 0, int p = 1, int s = 6)
         {
+        
+              var result = await authorizationService.AuthorizeAsync(
+                User,
+                new Payload
+                {
+                    Resource = "project",
+                    ProjectRequirement = new ProjectRequirement { ProjectId = (int)id, Action = "Read", Resource = "task" }
+                }, Operations.Read);
+            if (result.Succeeded == false)
+                return Unauthorized();
+
+            ProjectTask = projectTaskService.GetAllWithPagination(id, null, p, s);
+
             IQueryable<ProjectTask> task = _context.ProjectTasks.Include(p => p.ProjectTask_Users)
                         .Include(p => p.KanbanColume);
                 
@@ -114,7 +134,8 @@ namespace PMS.Pages.ProjectTasks
             paginationParams.PageSize = s;
             paginationParams.PageNumber = p;
             paginationParams.Total = ProjectTask.MetaData.TotalCount;
-       
+
+            return Page();
 
 
         }
@@ -187,7 +208,7 @@ namespace PMS.Pages.ProjectTasks
 
 
         }
-       
+
 
 
         //public PagedList<ProjectTask> OnPostUpdate(int id, string keyword, int page, int pageSize)
@@ -195,7 +216,7 @@ namespace PMS.Pages.ProjectTasks
         //    var query = _context.ProjectTasks.Include(p => p.KanbanColume).Include(p => p.Project).Where(p => p.ProjectId == id);
         //    return PagedList<ProjectTask>.ToPagedList(query, page, pageSize);
         //}
-      
+
         public IActionResult OnPostUpdate2(int projectTaskId, int columnId, int projectId, int page)
         {
 
@@ -224,10 +245,10 @@ namespace PMS.Pages.ProjectTasks
             _context.Update(task);
 
             _context.SaveChanges();
-            return Redirect("../ProjectTasks?id=" + projectId+"&p="+page);
+            return Redirect("../ProjectTasks?id=" + projectId + "&p=" + page);
 
         }
     }
-   
+
 
 }

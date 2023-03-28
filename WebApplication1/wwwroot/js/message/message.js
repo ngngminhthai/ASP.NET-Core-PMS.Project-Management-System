@@ -63,7 +63,7 @@ $(document).ready(function () {
                         message = `
             <div class="message-in">
                 <div class="message-pic">
-                    <img src="./images/avatar/message-1.png" alt="">
+                    <img style="height: 60px; width: 60px; object-fit: cover" src="./uploads/${data.User.ImageProfile}" alt="">
                     <div class="pulse-css-1"></div>
                 </div>
                 <div class="message-body">
@@ -71,7 +71,7 @@ $(document).ready(function () {
                         <p>${data.Text}</p>
                     </div>
                     <div class="message-meta">
-                        <p class="mt-10">Sunday, march 17, 2021 at 2:39 PM</p>
+                        <p class="mt-10">${data.DateCreated}</p>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -84,7 +84,7 @@ $(document).ready(function () {
                         message = `
             <div class="message-out">
                 <div class="message-pic">
-                    <img src="./images/profile/profile.png" alt="">
+                    <img style="height: 60px; width: 60px; object-fit: cover" src="./uploads/${data.User.ImageProfile}" alt="">
                     <div class="pulse-css-1"></div>
                 </div>
                 <div class="message-body">
@@ -92,7 +92,7 @@ $(document).ready(function () {
                         <p>${data.Text}</p>
                     </div>
                     <div class="message-meta">
-                        <p class="mt-10">Sunday, march 17, 2021 at 2:45 PM</p>
+                        <p class="mt-10">${data.DateCreated}</p>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -152,7 +152,7 @@ $(document).ready(function () {
                         tableContent += `
             <div class="message-in">
               <div class="message-pic">
-                <img src="./images/avatar/message-1.png" alt="">
+                    <img style="height: 60px; width: 60px; object-fit: cover" src="./uploads/${msg.User.ImageProfile}" alt="">
                 <div class="pulse-css-1"></div>
               </div>
               <div class="message-body">
@@ -160,7 +160,7 @@ $(document).ready(function () {
                   <p>${msg.Text}</p>
                 </div>
                 <div class="message-meta">
-                  <p class="mt-10">Sunday, march 17, 2021 at 2:39 PM</p>
+                  <p class="mt-10">${msg.DateCreated}</p>
                 </div>
               </div>
               <div class="clearfix"></div>
@@ -171,7 +171,7 @@ $(document).ready(function () {
                         tableContent += `
             <div class="message-out">
               <div class="message-pic">
-                <img src="./images/profile/profile.png" alt="">
+                    <img style="height: 60px; width: 60px; object-fit: cover" src="./uploads/${msg.User.ImageProfile}" alt="">
                 <div class="pulse-css-1"></div>
               </div>
               <div class="message-body">
@@ -179,7 +179,7 @@ $(document).ready(function () {
                   <p>${msg.Text}</p>
                 </div>
                 <div class="message-meta">
-                  <p class="mt-10">Sunday, march 17, 2021 at 2:45 PM</p>
+                  <p class="mt-10">${msg.DateCreated}</p>
                 </div>
               </div>
               <div class="clearfix"></div>
@@ -268,10 +268,7 @@ $(document).ready(function () {
                     
                                    <li class="waves-effect waves-teal ${groupId == c.Id ? "active" : ""}"  data-id="${c.Id}">
                                         <div class="left d-flex">
-                                            <div class="avatar">
-                                                <img src="/images/avatar/message-2.png" alt="">
-                                                <div class="pulse-css-1"></div>
-                                            </div>
+                                           
                                             <div class="content">
                                                 <div class="username">
                                                     <div class="name h6">
@@ -322,7 +319,7 @@ $(document).ready(function () {
                       
                       <div class="message-in">
                                         <div class="message-pic">
-                                            <img src="./images/avatar/message-1.png" alt="">
+                    <img style="height: 60px; width: 60px; object-fit: cover" src="./uploads/${msg.User.ImageProfile}" alt="">
                                             <div class="pulse-css-1"></div>
                                         </div>
                                         <div class="message-body">
@@ -330,7 +327,7 @@ $(document).ready(function () {
                                                 <p>${msg.Text}</p>
                                             </div>
                                             <div class="message-meta">
-                                                <p class="mt-10">Sunday, march 17, 2021 at 2:39 PM</p>
+                  <p class="mt-10">${msg.DateCreated}</p>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
@@ -342,7 +339,7 @@ $(document).ready(function () {
                         tableContent += `
                      <div class="message-out">
                                         <div class="message-pic">
-                                            <img src="./images/profile/profile.png" alt="">
+                    <img style="height: 60px; width: 60px; object-fit: cover" src="./uploads/${msg.User.ImageProfile}" alt="">
                                             <div class="pulse-css-1"></div>
                                         </div>
                                         <div class="message-body">
@@ -350,7 +347,7 @@ $(document).ready(function () {
                                         <p>${msg.Text}</p>
                                     </div>
                                             <div class="message-meta">
-                                                <p class="mt-10">Sunday, march 17, 2021 at 2:45 PM</p>
+                  <p class="mt-10">${msg.DateCreated}</p>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
